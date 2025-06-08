@@ -1,0 +1,574 @@
+[
+  {
+    "id": 1,
+    "shortForm": "CZMG",
+    "fullForm": "Smt Chandramaniben Zaverchand Meghji Gosrani BCA College",
+    "courses": [
+      {
+        "id": 1,
+        "shortForm": "BCA",
+        "fullForm": "Bachelor of Computer Application",
+        "from": "2022",
+        "to": "2025",
+        "batches": [
+          {
+            "id": 1,
+            "batchName": "BCA Batch 2022-25",
+            "students": [
+              { "id": 1, "name": "Aarav Shah", "rollNo": "BCA2201" },
+              { "id": 2, "name": "Diya Patel", "rollNo": "BCA2202" },
+              { "id": 3, "name": "Rohan Mehta", "rollNo": "BCA2203" }
+            ]
+          },
+          {
+            "id": 2,
+            "batchName": "BCA Batch 2023-26",
+            "students": [
+              { "id": 4, "name": "Kiran Joshi", "rollNo": "BCA2301" },
+              { "id": 5, "name": "Sonal Shah", "rollNo": "BCA2302" }
+            ]
+          }
+        ],
+        "semesters": [
+          {
+            "id": 1,
+            "semesterName": "Semester 1",
+            "syllabusPdf": "/pdfs/data-structures.pdf",
+            "tracks": [
+              {
+                "id": 1,
+                "name": "Compulsory",
+                "subjects": [
+                  { "id": 1, "code": "BCA101", "name": "Fundamentals of IT" },
+                  { "id": 2, "code": "BCA102", "name": "Mathematics I" }
+                ]
+              },
+              {
+                "id": 2,
+                "name": "Optional",
+                "subjects": [
+                  { "id": 3, "code": "BCA103", "name": "Basics of Web" }
+                ]
+              }
+            ]
+          },
+          {
+            "id": 2,
+            "semesterName": "Semester 2",
+            "syllabusPdf": "/pdfs/data-structures.pdf",
+            "tracks": [
+              {
+                "id": 1,
+                "name": "Compulsory",
+                "subjects": [
+                  { "id": 1, "code": "BCA201", "name": "Data Structures" },
+                  { "id": 2, "code": "BCA202", "name": "OOP with C++" }
+                ]
+              },
+              {
+                "id": 2,
+                "name": "Optional",
+                "subjects": [
+                  { "id": 3, "code": "BCA203", "name": "Computer Organization" }
+                ]
+              }
+            ]
+          },
+          {
+            "id": 3,
+            "semesterName": "Semester 3",
+            "syllabusPdf": "/pdfs/software-engineering.pdf",
+            "tracks": [
+              {
+                "id": 1,
+                "name": "Compulsory",
+                "subjects": [
+                  { "id": 1, "code": "BCA301", "name": "Software Engineering" },
+                  { "id": 2, "code": "BCA302", "name": "Database Management Systems" }
+                ]
+              },
+              {
+                "id": 2,
+                "name": "Optional",
+                "subjects": [
+                  { "id": 3, "code": "BCA303", "name": "Mobile Application Development" }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "shortForm": "MSc IT",
+        "fullForm": "Master of Science in Information Technology",
+        "from": "2022",
+        "to": "2024",
+        "batches": [
+          {
+            "id": 1,
+            "batchName": "MSc IT Batch 2022-24",
+            "students": [
+              { "id": 1, "name": "Neha Joshi", "rollNo": "MSC2201" },
+              { "id": 2, "name": "Kunal Desai", "rollNo": "MSC2202" },
+              { "id": 3, "name": "Sneha Vora", "rollNo": "MSC2203" }
+            ]
+          },
+          {
+            "id": 2,
+            "batchName": "MSc IT Batch 2023-25",
+            "students": [
+              { "id": 4, "name": "Harsh Mehta", "rollNo": "MSC2301" },
+              { "id": 5, "name": "Priya Shah", "rollNo": "MSC2302" }
+            ]
+          }
+        ],
+        "semesters": [
+          {
+            "id": 1,
+            "semesterName": "Semester 1",
+            "syllabusPdf": "/pdfs/operating-systems.pdf",
+            "tracks": [
+              {
+                "id": 1,
+                "name": "Compulsory",
+                "subjects": [
+                  { "id": 1, "code": "MIT101", "name": "Advanced DBMS" },
+                  { "id": 2, "code": "MIT102", "name": "Operating Systems" }
+                ]
+              },
+              {
+                "id": 2,
+                "name": "Optional",
+                "subjects": [
+                  { "id": 3, "code": "MIT103", "name": "Web Technologies" }
+                ]
+              }
+            ]
+          },
+          {
+            "id": 2,
+            "semesterName": "Semester 2",
+            "syllabusPdf": "/pdfs/operating-systems.pdf",
+            "tracks": [
+              {
+                "id": 1,
+                "name": "Compulsory",
+                "subjects": [
+                  { "id": 1, "code": "MIT201", "name": "Machine Learning" },
+                  { "id": 2, "code": "MIT202", "name": "Cloud Computing" }
+                ]
+              },
+              {
+                "id": 2,
+                "name": "Optional",
+                "subjects": [
+                  { "id": 3, "code": "MIT203", "name": "Python for Data Science" }
+                ]
+              }
+            ]
+          },
+          {
+            "id": 3,
+            "semesterName": "Semester 3",
+            "syllabusPdf": "/pdfs/advanced-algorithms.pdf",
+            "tracks": [
+              {
+                "id": 1,
+                "name": "Compulsory",
+                "subjects": [
+                  { "id": 1, "code": "MIT301", "name": "Advanced Algorithms" },
+                  { "id": 2, "code": "MIT302", "name": "Data Mining" }
+                ]
+              },
+              {
+                "id": 2,
+                "name": "Optional",
+                "subjects": [
+                  { "id": 3, "code": "MIT303", "name": "Cyber Security" }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "shortForm": "BSc CS",
+        "fullForm": "Bachelor of Science in Computer Science",
+        "from": "2023",
+        "to": "2026",
+        "batches": [
+          {
+            "id": 1,
+            "batchName": "BSc CS Batch 2023-26",
+            "students": [
+              { "id": 1, "name": "Riya Mehta", "rollNo": "BSC2301" },
+              { "id": 2, "name": "Jayesh Patel", "rollNo": "BSC2302" }
+            ]
+          }
+        ],
+        "semesters": [
+          {
+            "id": 1,
+            "semesterName": "Semester 1",
+            "syllabusPdf": "/pdfs/computer-networks.pdf",
+            "tracks": [
+              {
+                "id": 1,
+                "name": "Compulsory",
+                "subjects": [
+                  { "id": 1, "code": "BSC101", "name": "Computer Networks" },
+                  { "id": 2, "code": "BSC102", "name": "Discrete Mathematics" }
+                ]
+              },
+              {
+                "id": 2,
+                "name": "Optional",
+                "subjects": [
+                  { "id": 3, "code": "BSC103", "name": "Introduction to AI" }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "shortForm": "JVIMS",
+    "fullForm": "Shri Jaysukhlal Vadhar Institute Of Management Studies",
+    "courses": [
+      {
+        "id": 1,
+        "shortForm": "IMBA",
+        "fullForm": "Integrated Master of Business Administration",
+        "from": "2021",
+        "to": "2024",
+        "batches": [
+          {
+            "id": 1,
+            "batchName": "IMBA Batch 2021-24",
+            "students": [
+              { "id": 1, "name": "Aditya Thakkar", "rollNo": "IMBA2101" },
+              { "id": 2, "name": "Isha Parmar", "rollNo": "IMBA2102" },
+              { "id": 3, "name": "Nikhil Bhatt", "rollNo": "IMBA2103" }
+            ]
+          },
+          {
+            "id": 2,
+            "batchName": "IMBA Batch 2022-25",
+            "students": [
+              { "id": 4, "name": "Mitali Shah", "rollNo": "IMBA2201" },
+              { "id": 5, "name": "Saurabh Reddy", "rollNo": "IMBA2202" }
+            ]
+          }
+        ],
+        "semesters": [
+          {
+            "id": 1,
+            "semesterName": "Semester 1",
+            "syllabusPdf": "/pdfs/digital-electronics.pdf",
+            "tracks": [
+              {
+                "id": 1,
+                "name": "Compulsory",
+                "subjects": [
+                  { "id": 1, "code": "MBA101", "name": "Management Principles" },
+                  { "id": 2, "code": "MBA102", "name": "Microeconomics" }
+                ]
+              },
+              {
+                "id": 2,
+                "name": "Optional",
+                "subjects": [
+                  { "id": 3, "code": "MBA103", "name": "Corporate Communication" }
+                ]
+              }
+            ]
+          },
+          {
+            "id": 2,
+            "semesterName": "Semester 2",
+            "syllabusPdf": "/pdfs/digital-electronics.pdf",
+            "tracks": [
+              {
+                "id": 1,
+                "name": "Compulsory",
+                "subjects": [
+                  { "id": 1, "code": "MBA201", "name": "Marketing Management" },
+                  { "id": 2, "code": "MBA202", "name": "Business Statistics" }
+                ]
+              },
+              {
+                "id": 2,
+                "name": "Optional",
+                "subjects": [
+                  { "id": 3, "code": "MBA203", "name": "Digital Marketing" }
+                ]
+              }
+            ]
+          },
+          {
+            "id": 3,
+            "semesterName": "Semester 3",
+            "syllabusPdf": "/pdfs/financial-accounting.pdf",
+            "tracks": [
+              {
+                "id": 1,
+                "name": "Compulsory",
+                "subjects": [
+                  { "id": 1, "code": "MBA301", "name": "Financial Accounting" },
+                  { "id": 2, "code": "MBA302", "name": "Business Ethics" }
+                ]
+              },
+              {
+                "id": 2,
+                "name": "Optional",
+                "subjects": [
+                  { "id": 3, "code": "MBA303", "name": "Entrepreneurship" }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "shortForm": "PGDM",
+        "fullForm": "Post Graduate Diploma in Management",
+        "from": "2023",
+        "to": "2025",
+        "batches": [
+          {
+            "id": 1,
+            "batchName": "PGDM Batch 2023-25",
+            "students": [
+              { "id": 1, "name": "Rakesh Kumar", "rollNo": "PGDM2301" },
+              { "id": 2, "name": "Neeta Verma", "rollNo": "PGDM2302" }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "shortForm": "SMCET",
+    "fullForm": "Shree Manibhai College of Engineering and Technology",
+    "courses": [
+      {
+        "id": 1,
+        "shortForm": "BE",
+        "fullForm": "Bachelor of Engineering",
+        "from": "2020",
+        "to": "2024",
+        "batches": [
+          {
+            "id": 1,
+            "batchName": "BE Batch 2020-24",
+            "students": [
+              { "id": 1, "name": "Rajiv Pandya", "rollNo": "BE2001" },
+              { "id": 2, "name": "Nisha Rawal", "rollNo": "BE2002" }
+            ]
+          }
+        ],
+        "semesters": [
+          {
+            "id": 1,
+            "semesterName": "Semester 1",
+            "syllabusPdf": "/pdfs/engineering-maths.pdf",
+            "tracks": [
+              {
+                "id": 1,
+                "name": "Compulsory",
+                "subjects": [
+                  { "id": 1, "code": "ENG101", "name": "Engineering Mathematics" },
+                  { "id": 2, "code": "ENG102", "name": "Physics" }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "shortForm": "ME",
+        "fullForm": "Master of Engineering",
+        "from": "2022",
+        "to": "2024",
+        "batches": [
+          {
+            "id": 1,
+            "batchName": "ME Batch 2022-24",
+            "students": [
+              { "id": 1, "name": "Chirag Solanki", "rollNo": "ME2201" }
+            ]
+          }
+        ],
+        "semesters": [
+          {
+            "id": 1,
+            "semesterName": "Semester 1",
+            "syllabusPdf": "/pdfs/advanced-thermo.pdf",
+            "tracks": [
+              {
+                "id": 1,
+                "name": "Compulsory",
+                "subjects": [
+                  { "id": 1, "code": "ME101", "name": "Advanced Thermodynamics" }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "shortForm": "RKC",
+    "fullForm": "Rajkot College of Commerce",
+    "courses": [
+      {
+        "id": 1,
+        "shortForm": "BCom",
+        "fullForm": "Bachelor of Commerce",
+        "from": "2023",
+        "to": "2026",
+        "batches": [
+          {
+            "id": 1,
+            "batchName": "BCom Batch 2023-26",
+            "students": [
+              { "id": 1, "name": "Pooja Rana", "rollNo": "BCOM2301" },
+              { "id": 2, "name": "Akash Jain", "rollNo": "BCOM2302" }
+            ]
+          }
+        ],
+        "semesters": [
+          {
+            "id": 1,
+            "semesterName": "Semester 1",
+            "syllabusPdf": "/pdfs/accounting-basics.pdf",
+            "tracks": [
+              {
+                "id": 1,
+                "name": "Compulsory",
+                "subjects": [
+                  { "id": 1, "code": "BCOM101", "name": "Financial Accounting" },
+                  { "id": 2, "code": "BCOM102", "name": "Business Communication" }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "shortForm": "MCom",
+        "fullForm": "Master of Commerce",
+        "from": "2022",
+        "to": "2024",
+        "batches": [
+          {
+            "id": 1,
+            "batchName": "MCom Batch 2022-24",
+            "students": [
+              { "id": 1, "name": "Ritika Mehta", "rollNo": "MCOM2201" }
+            ]
+          }
+        ],
+        "semesters": [
+          {
+            "id": 1,
+            "semesterName": "Semester 1",
+            "syllabusPdf": "/pdfs/adv-accounting.pdf",
+            "tracks": [
+              {
+                "id": 1,
+                "name": "Compulsory",
+                "subjects": [
+                  { "id": 1, "code": "MCOM101", "name": "Advanced Accounting" }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "shortForm": "SNMC",
+    "fullForm": "Saurashtra Nursing and Medical College",
+    "courses": [
+      {
+        "id": 1,
+        "shortForm": "BSc Nursing",
+        "fullForm": "Bachelor of Science in Nursing",
+        "from": "2021",
+        "to": "2025",
+        "batches": [
+          {
+            "id": 1,
+            "batchName": "BSc Nursing Batch 2021-25",
+            "students": [
+              { "id": 1, "name": "Harshita Chauhan", "rollNo": "NUR2101" }
+            ]
+          }
+        ],
+        "semesters": [
+          {
+            "id": 1,
+            "semesterName": "Semester 1",
+            "syllabusPdf": "/pdfs/nursing-anatomy.pdf",
+            "tracks": [
+              {
+                "id": 1,
+                "name": "Compulsory",
+                "subjects": [
+                  { "id": 1, "code": "NUR101", "name": "Anatomy & Physiology" }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "shortForm": "GNM",
+        "fullForm": "General Nursing and Midwifery",
+        "from": "2020",
+        "to": "2023",
+        "batches": [
+          {
+            "id": 1,
+            "batchName": "GNM Batch 2020-23",
+            "students": [
+              { "id": 1, "name": "Payal Singh", "rollNo": "GNM2001" }
+            ]
+          }
+        ],
+        "semesters": [
+          {
+            "id": 1,
+            "semesterName": "Semester 1",
+            "syllabusPdf": "/pdfs/fundamentals-nursing.pdf",
+            "tracks": [
+              {
+                "id": 1,
+                "name": "Compulsory",
+                "subjects": [
+                  { "id": 1, "code": "GNM101", "name": "Nursing Fundamentals" }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+
+]

@@ -1,0 +1,376 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+body {
+  overflow-y: hidden;
+}
+
+@font-face {
+  font-family: "urbanist-regular";
+  src: url("../src/assets/font/Urbanist/static/Urbanist-Regular.ttf")
+    format("truetype");
+}
+
+@font-face {
+  font-family: "urbanist-semibold";
+  src: url("../src/assets/font/Urbanist/static/Urbanist-SemiBold.ttf")
+    format("truetype");
+}
+
+@font-face {
+  font-family: "urbanist-medium";
+  src: url("../src/assets/font/Urbanist/static/Urbanist-Medium.ttf")
+    format("truetype");
+}
+
+
+.top-right {
+  --r: 30px; /* radius */
+  --s: 40px; /* size of the inner curve */
+  --x: 25px; /* horizontal offset (no percentange) */
+  --y: 5px; /* vertical offset (no percentange) */
+
+  --_m: /calc(2 * var(--r)) calc(2 * var(--r)) radial-gradient(#000 70%, #0000
+        72%);
+  --_g: conic-gradient(
+    from 90deg at calc(100% - var(--r)) calc(100% - var(--r)),
+    #0000 25%,
+    #000 0
+  );
+  --_d: (var(--s) + var(--r));
+  mask: calc(100% - var(--_d) - var(--x)) 100% var(--_m),
+    100% calc(100% - var(--_d) - var(--y)) var(--_m),
+    radial-gradient(var(--s) at 100% 100%, #0000 99%, #000 calc(100% + 1px))
+      calc(-1 * var(--r) - var(--x)) calc(-1 * var(--r) - var(--y)),
+    var(--_g) calc(-1 * var(--_d) - var(--x)) 0,
+    var(--_g) 0 calc(-1 * var(--_d) - var(--y));
+  mask-repeat: no-repeat;
+}
+
+.topRightBar::before {
+  content: "";
+  width: 40px;
+  position: absolute;
+  bottom: -40px;
+  right: -1px;
+  aspect-ratio: 1;
+  z-index: 10;
+  rotate: 90deg;
+  background-image: radial-gradient(
+    circle at 100% 100%,
+    transparent 40px,
+    white 40px
+  );
+  /* box-shadow: -10px -10px white; */
+}
+
+.child {
+  background-image: url("../public/assets/img/dashboard-img.png");
+  background-size: cover;
+  background-position: center;
+  width: 100%;
+  /* height: 96.5vh; */
+  border-radius: 40px;
+  background-repeat: no-repeat;
+  background-position: 0px -290px;
+}
+
+.c1,
+.c1::before,
+.c2,
+.c2::before,
+.c3,
+.c3::before,
+.c4,
+.c4::before,
+.c5,
+.c5::before,
+.c6,
+.c6::before,
+.c7,
+.c7::before,
+.c8,
+.c8::before,
+.c9,
+.c9::before {
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+.c1,
+.c2,
+.c3,
+.c4,
+.c5,
+.c6,
+.c7,
+.c8,
+.c9 {
+  clip-path: inset(0);
+}
+
+.c5 {
+  border-radius: 30px;
+}
+
+.c8 {
+  border-radius: 24px;
+}
+
+.c1::before {
+  content: "";
+  width: 40px;
+  position: absolute;
+  left: -30px;
+  /* bottom: -1px; */
+  top: 0;
+  aspect-ratio: 1;
+  z-index: 10;
+  rotate: 90deg;
+  background-image: radial-gradient(
+    circle at 100% 100%,
+    transparent 40px,
+    red 40px
+  );
+}
+
+.c9::before, .c9::after {
+  content: "";
+  width: 40px;
+  position: absolute;
+  left: 0px;
+  bottom: -1px;
+  aspect-ratio: 1;
+  z-index: 10;
+  rotate: -90deg;
+  background-image: radial-gradient(
+    circle at 100% 100%,
+    transparent 40px,
+    white 40px
+  );
+}
+
+.c13::before, .c13::after {
+  content: "";
+  width: 40px;
+  position: absolute;
+  /* left: 137.5px;
+  bottom: 12.5px; */
+  /* left: -0.9%;
+  bottom: -2.2%; */
+  left: -16px;
+  bottom: -16px;
+  aspect-ratio: 1;
+  z-index: 10;
+  rotate: -90deg;
+  background-image: radial-gradient(
+    circle at 100% 100%,
+    transparent 40px,
+    white 40px
+  );
+}
+
+.invert-4 {
+  border-radius: 0 0 0 25px;
+  background-color: #fff;
+  will-change: transform, clip-path;
+}
+
+.c6::before {
+  content: "";
+  width: 40px;
+  position: absolute;
+  right: 0px;
+  bottom: 0px;
+  aspect-ratio: 1;
+  z-index: 10;
+  rotate: 180deg;
+  background-image: radial-gradient(
+    circle at 100% 100%,
+    transparent 40px,
+    white 30px
+  );
+  box-shadow: -10px -10px white;
+}
+
+.cut-out::before {
+  content: "";
+  width: 40px;
+  position: absolute;
+  bottom: -1%;
+  left: -40%;
+  aspect-ratio: 1;
+  z-index: 10;
+  rotate: 180deg;
+  background-image: radial-gradient(
+    circle at 100% 100%,
+    transparent 40px,
+    white 40px
+  );
+}
+
+.cut-out-two::before {
+  content: "";
+  width: 40px;
+  position: absolute;
+  bottom: 95px;
+  right: -1px;
+  aspect-ratio: 1;
+  z-index: 10;
+  rotate: 180deg;
+  background-image: radial-gradient(
+    circle at 100% 100%,
+    transparent 40px,
+    white 40px
+  );
+}
+
+.c7::before {
+  content: "";
+  width: 40px;
+  position: absolute;
+  bottom: 0%;
+  right: 0px;
+  aspect-ratio: 1;
+  z-index: 10;
+  rotate: 180deg;
+  background-image: radial-gradient(
+    circle at 100% 100%,
+    transparent 40px,
+    white 40px
+  );
+}
+
+.c12::before {
+  content: "";
+  width: 40px;
+  position: absolute;
+  top: 0%;
+  right: 0px;
+  aspect-ratio: 1;
+  z-index: 10;
+  rotate: 90deg;
+  background-image: radial-gradient(
+    circle at 100% 100%,
+    transparent 40px,
+    white 40px
+  );
+}
+
+.c8 {
+  background-color: #000;
+  background-image: url("../public/assets/img/cube.png");
+  background-size: cover;
+  background-position: -105px 170px;
+  background-repeat: no-repeat;
+}
+
+
+.attendance-info {
+  background-image: url("../public/assets/icons/attendance-shape-two.svg");
+  background-size: contain;
+  background-position: bottom left;
+  /* background-position: 0px 14px; */
+  background-repeat: no-repeat;
+}
+
+.qr-code {
+  background-image: url("../public/assets/icons/qr-code-sm.svg");
+  background-size: contain;
+  background-position: right top;
+  background-repeat: no-repeat;
+}
+
+.courses-bg {
+   background-image: url("../public/assets/icons/courses-bg.svg");
+  /* background-size: 100% 100%; */
+  background-size: contain;
+  /* background-position: bottom left; */
+  background-position: bottom left;
+  /* background-position: 0px 14px; */
+  background-repeat: no-repeat;
+   background-origin: content-box;
+  }
+  
+  /* position: relative;
+    overflow: hidden; 
+    min-height: 300px; 
+.courses-bg .content-container {
+  position: relative;
+  z-index: 1;
+  max-width: 100%;
+} */
+
+.your-info {
+  background-image: url("../public/assets/icons/your-info.svg");
+  background-size: contain;
+  background-position: bottom left;
+  background-repeat: no-repeat;
+}
+
+.about-info {
+  background-image: url("../public/assets/icons/about-info.svg");
+  background-size: contain;
+  background-position: bottom left;
+  background-repeat: no-repeat;
+}
+
+.award-info {
+   background-image: url("../public/assets/icons/award-info.svg");
+  background-size: contain;
+  background-position: bottom right;
+  background-repeat: no-repeat;
+}
+
+.list-bg {
+  background-image: url("../public/assets/img/list-bg.svg");
+  background-size: contain;
+  background-position: bottom left;
+  background-repeat: no-repeat;
+}
+
+/* .dynamic-div {
+  background-image: url("../public/assets/img/dynamic-div.svg");
+  background-size: contain;
+  background-position: bottom right;
+  background-repeat: no-repeat;
+} */
+/* 
+.rect-shape {
+  background-image: url("../public/assets/img/rect-shape.svg");
+  background-size: contain;
+  background-position: right top;
+  background-repeat: no-repeat;
+} */
+
+/* Chrome, Safari, Edge */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  opacity: 0;
+  display: none;
+  pointer-events: none;
+}
+
+/* Firefox */
+input[type="date"] {
+  -moz-appearance: textfield;
+}
+
+
+
+@media (min-width:320px) and (max-width:1020px) {
+  .child {
+  background-image: url("../public/assets/img/dashboard-img.png");
+  background-size: auto;
+  background-position: center;
+  width: 100%;
+  /* height: 96.5vh; */
+  border-radius: 40px;
+  background-repeat: no-repeat;
+  background-position: 0px -290px;
+}
+}

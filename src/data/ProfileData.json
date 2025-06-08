@@ -1,0 +1,56 @@
+{
+  "profile": {
+    "name": "Adam Thompson",
+    "designation": "Senior Mathematics Faculty",
+    "experience": "12+ Years",
+    "email": "adamtsmon@gmail.com",
+    "phone": "+91 5688 5578 57",
+    "about": "With 10+ years of experience teaching high school math, I focus on building strong foundations while making concepts engaging and practical. I aim to boost student confidence, encourage curiosity, and support success in both academics and competitive exams.",
+    "expertise": [
+      "Data Interpretation",
+      "Trigonometry",
+      "Linear Algebra",
+      "Algebra",
+      "Math Reasoning",
+      "Problem Solving",
+      "Geometry"
+    ],
+    "awards": [
+      {
+        "title": "Excellence in Teaching Award",
+        "year": 2022
+      },
+      {
+        "title": "Excellence in Curriculum Innovation",
+        "year": 2021
+      },
+      {
+        "title": "Outstanding Contribution to Education",
+        "year": 2023
+      },
+      {
+        "title": "Excellence in Mathematics Education Award",
+        "year": 2020
+      }
+    ],
+    "certificates": [
+      {
+        "title": "Certified Professional Educator (CPE)",
+        "year": 2021
+      },
+      {
+        "title": "Diploma in Educational Leadership",
+        "year": 2022
+      },
+      {
+        "title": "Certification in Digital Teaching Tools",
+        "year": 2023
+      },
+      {
+        "title": "Advanced Certification in Mathematical Problem Solving",
+        "year": 2022
+      }
+    ],
+    "profileImage": "/assets/icons/profile-avatar.svg"
+  }
+}

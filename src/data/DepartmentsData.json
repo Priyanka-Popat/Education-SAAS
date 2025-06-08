@@ -1,0 +1,36 @@
+[
+  {
+    "id": 1,
+    "name": "CZMG",
+    "courses": [
+      {
+        "title": "BCA",
+        "syllabusPdf": "/pdfs/data-structures.pdf"
+      },
+      {
+        "title": "Msc IT",
+        "syllabusPdf": "/pdfs/operating-systems.pdf"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "JVIMS",
+    "courses": [
+      {
+        "title": "IMBA",
+        "syllabusPdf": "/pdfs/digital-electronics.pdf"
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "name": "KMGIS",
+    "courses": [
+      {
+        "title": "LLB",
+        "syllabusPdf": "/pdfs/thermodynamics.pdf"
+      }
+    ]
+  }
+]
