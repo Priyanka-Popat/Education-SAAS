@@ -14,7 +14,7 @@ function DashboardLayout({ children, className = "", headerComponent,  breadcrum
         <div
           className={`${className} h-[96.5vh] rounded-[40px] grid grid-cols-12 grid-rows-[1fr_1fr_auto_1fr_1fr_1fr_1fr_1fr_1fr_1fr_auto]`}
         >
-          <div className="c2 row-start-1 col-start-1 lg:col-span-3 col-span-6 row-span-2 pt-5 ps-7 text-white">
+          <div className="c2 row-start-1 col-start-1 col-span-3 row-span-2 pt-5 ps-7 text-white">
             {headerComponent}
           </div>
           {breadcrumbs.length > 0 && (
