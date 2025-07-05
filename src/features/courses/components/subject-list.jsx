@@ -4,14 +4,14 @@ const SubjectList = ({ selectedSemester }) => {
       {selectedSemester ? (
         selectedSemester.tracks.map((track) => (
           <div key={track.id} className="space-y-4">
-            <h3 className="text-white text-xs font-unurbanistSemiBold">
+            <h3 className="text-white text-xs 4xl:text-2xl 2xl:text-sm 3xl:text-base font-unurbanistSemiBold">
               {track.name}
             </h3>
             <ul className="space-y-2">
               {track.subjects.map((subject) => (
                 <li
                   key={subject.id}
-                  className="flex justify-between items-center bg-white/5 hover:bg-white/10 transition-colors px-4 py-2 rounded-lg cursor-pointer text-xs text-white"
+                  className="flex justify-between items-center bg-white/5 hover:bg-white/10 transition-colors px-4 py-2 4xl:py-4 rounded-lg cursor-pointer text-white font-urbanistMedium text-xs 4xl:text-2xl 2xl:text-sm 3xl:text-base"
                 >
                   <span>
                     <strong>{subject.code}</strong> - {subject.name}
@@ -23,7 +23,7 @@ const SubjectList = ({ selectedSemester }) => {
         ))
       ) : (
         <p className="text-white/50">
-          No subjects available for this semester
+          No subjects Found
         </p>
       )}
     </div>

@@ -22,7 +22,7 @@ const navItems = [
 
 const SideBar = () => {
   return (
-    <div className="w-full h-full flex flex-col justify-start gap-y-2 items-center">
+    <div className="xl:w-full h-full flex flex-col justify-start gap-y-2 items-center">
       {navItems.map((item) => (
         <NavLink key={item.name} to={item.path} className="w-full">
           {({ isActive }) => {
@@ -36,13 +36,13 @@ const SideBar = () => {
                 }`}
               >
                 <Icon
-                  className={`w-[20px] h-[20px] ${
+                  className={`w-[20px] h-[20px] 4xl:w-[30px] 4xl:h-[30px] 3xl:w-[25px] 3xl:h-[25px] ${
                     isActive
                       ? "stroke-white"
                       : "stroke-gray-400 group-hover:stroke-white"
                   }`}
                 />
-                <p className="">{item.name}</p>
+                <p className="4xl:text-2xl 3xl:text-xl hd:text-sm text-sm">{item.name}</p>
               </div>
             );
           }}

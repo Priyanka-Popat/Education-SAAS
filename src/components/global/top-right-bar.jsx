@@ -1,12 +1,25 @@
 import { useState, useRef, useEffect } from "react";
-import SearchBar from '../ui/search-bar';
-import data from "../../data/ProfileData.json";
+import SearchBar from "@/components/ui/search-bar";
+import data from "@/data/ProfileData.json";
 import { useNavigate } from "react-router-dom";
+import LogoutDialog from "../ui/logout";
+import { X } from "lucide-react";
+import { Bell, BellOff  } from "lucide-react";
 
 const TopRightBar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef(null);
   const navigate = useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleLogout = () => {
+    console.log("User logged out");
+    setIsModalOpen(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -15,41 +28,91 @@ const TopRightBar = () => {
       }
     }
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+    function handleEscKey(event) {
+      if (event.key === "Escape") {
+        setMenuOpen(false);
+      }
+    }
+
+    if (menuOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener("keydown", handleEscKey);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleEscKey);
+    };
+  }, [menuOpen]);
 
   return (
-    <div className="topRightBar bg-primary rounded-[24px] px-5 flex items-center gap-x-2 justify-between w-full h-full">
-      <SearchBar />
+    <>
+      <div className="topRightBar bg-primary rounded-[24px] px-5 grid grid-cols-[1fr_0.5fr] xl:gap-x-3 lg:gap-x-0 w-full h-full">
+        <SearchBar />
 
-      <div className="flex items-center gap-x-5" ref={menuRef}>
-        <div className="rounded-full bg-[#FFFFFF0F] w-[70px] h-[45px] flex justify-center items-center relative">
-          <img src="/assets/icons/purple.svg" className="absolute top-1 right-0" alt="" />
-          <img src="/assets/icons/notification-icon.svg" alt="" className="w-6" />
-        </div>
+        <div
+          className="flex items-center 4xl:gap-x-6 3xl:gap-x-4 hd:gap-x-2 2xl:gap-x-3 lg:gap-x-2 w-full justify-end"
+          
+        >
+          <div className="rounded-full bg-[#FFFFFF0F] 4xl:w-[80px] 4xl:h-[80px] 3xl:w-[55px] 3xl:h-[55px] hd:w-[47px] hd:h-[47px] lg:h-[40px] lg:w-[40px] flex justify-center items-center relative">
+            <img
+              src="/assets/icons/purple.svg"
+              className="absolute top-1 right-0 4xl:w-[13px] "
+              alt=""
+            />
+            <img
+              src="/assets/icons/notification-icon.svg"
+              alt=""
+              className="w-5 h-5 4xl:w-7 4xl:h-7 3xl:w-6 3xl:h-6 2xl:w-5 2xl:h-5 lg:w-4 lg:h-4"
+            />
+          </div>
+          {/* <Bell className="w-5 h-5 4xl:w-7 4xl:h-7 3xl:w-6 3xl:h-6 2xl:w-5 2xl:h-5 lg:w-4 lg:h-4 text-white srtoke-2" /> */}
 
-        <div className="sudoProfileClass z-50 relative">
-          <img
-            src={data.profile.profileImage}
-            alt="profile"
-            className="w-[60px] cursor-pointer"
-            onClick={() => setMenuOpen(prev => !prev)}
-          />
+          <div ref={menuRef} className="sudoProfileClass z-50 relative">
+            <img
+              src={data.profile.profileImage}
+              alt="profile"
+              className="4xl:w-[70px] 4xl:h-[70px] 3xl:w-[50px] 3xl:h-[50px] hd:w-[45px] hd:h-[45px] lg:h-[35px] lg:w-[35px] cursor-pointer"
+              onClick={() => setMenuOpen((prev) => !prev)}
+            />
 
-          {menuOpen && (
-            <div className="absolute right-0 mt-2 w-40 bg-white rounded-lg shadow-lg py-2 z-[9999] text-black">
-              <button className="w-full text-left px-4 py-2 hover:bg-gray-100" onClick={() => navigate("/profile")}>
-                Profile
-              </button>
-              <button className="w-full text-left px-4 py-2 hover:bg-gray-100">
-                Logout
-              </button>
-            </div>
-          )}
+            {menuOpen && (
+              <div className="absolute right-0 mt-2 w-40 bg-white rounded-lg shadow-lg py-2 z-[9999] text-black">
+                <button
+                  className="w-full text-left px-4 py-2 hover:bg-gray-100"
+                  onClick={() => navigate("/profile")}
+                >
+                  Profile
+                </button>
+                <button
+                  className="w-full text-left px-4 py-2 hover:bg-gray-100"
+                  onClick={() => {
+                    setMenuOpen(false);
+                    setIsModalOpen(true);
+                  }}
+                >
+                  Logout
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
-    </div>
+
+      {isModalOpen && (
+        <div className="fixed inset-0 z-50 bg-black/60 flex items-stretch justify-stretch">
+          <div className="relative w-full h-full overflow-auto">
+            <button
+              onClick={handleCancel}
+              className="absolute top-4 right-4 text-white hover:text-gray-300 z-10"
+            >
+              <X size={24} />
+            </button>
+            <LogoutDialog onClose={handleCancel} handleLogout={handleLogout} />
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 

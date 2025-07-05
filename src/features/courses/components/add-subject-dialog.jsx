@@ -96,7 +96,7 @@ export default function Dialog({ onClose }) {
 
       {!isOnline && (
         <>
-          <div className="flex justify-between gap-x-4">
+          <div className="flex justify-between md:flex-row flex-col gap-4">
             <div className="w-full">
               <label className="block text-white text-sm font-medium mb-2">
                 From <span className="text-red">*</span>

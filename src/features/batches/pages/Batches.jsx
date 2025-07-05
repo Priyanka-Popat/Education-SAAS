@@ -1,21 +1,18 @@
 import { useState, useEffect } from "react";
+import { X } from "lucide-react";
+import nestedData from "@/data/NestedData.json";
 import DashboardLayout from "@/components/global/dashboard-layout";
 import GreetingHeader from "@/components/global/greeting-header";
-import AddBatch from "@/features/batches/components/add-batch-dialog.jsx";
-import nestedData from "@/data/NestedData.json";
-import {
-  ChevronDown,
-  ArrowRight,
-  ArrowUpRight,
-  PencilLine,
-  X,
-} from "lucide-react";
 import DepartmentFilter from "@/components/ui/department-filter";
 import CourseFilter from "@/components/ui/course-filter";
 import Heading from "@/components/ui/heading";
 import AddButton from "@/components/ui/add-button";
-import BatchList from "../components/batch-list";
-import BatchSelection from "../components/batch-selection";
+import AttendanceBg from "@/components/ui/attendance-bg";
+import AddBatch from "@/features/batches/components/add-batch-dialog.jsx";
+import BatchList from "@/features/batches/components/batch-list";
+import BatchSelection from "@/features/batches/components/batch-selection";
+import BatchesSm from "@/features/batches/components/batches-sm";
+import SearchBar from "@/components/ui/search-bar";
 
 const Batches = () => {
   const [selectedDepartment, setSelectedDepartment] = useState(null);
@@ -41,10 +38,6 @@ const Batches = () => {
     }
   }, [selectedCourse]);
 
-  const selectedBatch = selectedCourse?.batches?.find(
-    (b) => b.id === selectedBatchId
-  );
-
   const handleClose = () => setIsModalOpen(false);
 
   return (
@@ -57,47 +50,56 @@ const Batches = () => {
           { label: "Batches", href: "/batches" },
         ]}
       >
-        <div className="col-start-1 row-start-2 col-span-12 row-span-9 relative px-4 pb-4 c9 text-white">
-          <div className="attendance-info grid grid-cols-11 grid-rows-7 w-full h-full">
-            <Heading heading="Batches" />
+        <div className="lg:col-start-1 lg:row-start-3 xl:row-start-2 lg:col-span-12 lg:row-span-9 col-start-1 row-start-3 col-span-6 row-span-10 relative px-4 hdplus:px-[21px] 2xl:px-5 2xl:pb-5 pb-4 c9 lg:pt-0 xl:pt-[1.5rem] 4xl:pt-[2.5rem] 3xl:pt-[2rem] 2xl:pt-[2rem] text-white hidden lg:block">
+          <div className="w-full relative h-full">
+            <AttendanceBg />
+            <div className="grid grid-cols-11 grid-rows-9 3xl:grid-rows-8 w-full h-full relative">
+              <Heading heading="Batches" />
 
-            <div className="col-start-6 row-start-1 col-span-6 flex px-5 py-5 items-end justify-end h-full gap-6">
-              <DepartmentFilter
-                selectedDepartment={selectedDepartment}
-                setSelectedDepartment={(dept) => {
-                  setSelectedDepartment(dept);
-                  setSelectedCourse(dept?.courses?.[0] || null);
-                }}
-                setSelectedDeptId={() => {}}
-              />
+              <div className="relative col-start-5 row-start-1 col-span-7 flex px-5 py-5 4xl:p-0 2xl:p-0 lg:p-0 items-end 2xl:items-start lg:items-start justify-end h-full gap-x-3">
+                
+                <input type="search" className="p-2 pr-10 bg-[#FFFFFF0F] border border-white/20 text-white font-urbanistRegular rounded-[6px] 4xl:rounded-[10px] py-2 px-4 4xl:py-3 2xl:py-1.5 lg:py-1.5 cursor-pointer text-xs 4xl:text-2xl 3xl:text-base 2xl:text-sm lg:text-xs"  placeholder="Search..." />
+              {/* className="bg-[#FFFFFF0F] border border-white/30 rounded-md px-4 py-1.5 placeholder:text-sm" */}
+                <DepartmentFilter
+                  selectedDepartment={selectedDepartment}
+                  setSelectedDepartment={(dept) => {
+                    setSelectedDepartment(dept);
+                    setSelectedCourse(dept?.courses?.[0] || null);
+                  }}
+                  setSelectedDeptId={() => {}}
+                />
 
-              <CourseFilter
+                <CourseFilter
+                  selectedCourse={selectedCourse}
+                  setSelectedCourse={(course) => {
+                    setSelectedCourse(course);
+                    setSelectedBatchId(course?.batches?.[0]?.id || null);
+                  }}
+                  courses={selectedDepartment?.courses || []}
+                />
+
+                <AddButton
+                  label="Add  Batch"
+                  onClick={() => setIsModalOpen(true)}
+                />
+              </div>
+
+              <BatchSelection
                 selectedCourse={selectedCourse}
-                setSelectedCourse={(course) => {
-                  setSelectedCourse(course);
-                  setSelectedBatchId(course?.batches?.[0]?.id || null);
-                }}
-                courses={selectedDepartment?.courses || []}
-              />
-
-              <AddButton
-                label="Add new Batch"
-                onClick={() => setIsModalOpen(true)}
-              />
-            </div>
-
-            <BatchSelection
-              selectedCourse={selectedCourse}
-              selectedBatchId={selectedBatchId}
-              setSelectedBatchId={setSelectedBatchId}
-            />
-
-            <div className="col-start-1 row-start-2 col-span-8 row-span-5 px-5 pt-8 pb-5 overflow-y-auto max-h-[480px]">
-              <BatchList
-                batches={selectedCourse?.batches || []}
                 selectedBatchId={selectedBatchId}
-                onSelect={setSelectedBatchId}
+                setSelectedBatchId={setSelectedBatchId}
               />
+              {/* <div className="col-start-7 row-start-2 col-span-2 flex justify-center items-end">
+                <SearchBar  className={"!w-full !h-[70%]"}/>
+              </div> */}
+
+              <div className="col-start-1 row-start-2 col-span-8 row-span-7 px-5 pt-3 4xl:pt-3 pb-5 c13">
+                <BatchList
+                  batches={selectedCourse?.batches || []}
+                  selectedBatchId={selectedBatchId}
+                  onSelect={setSelectedBatchId}
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -116,6 +118,18 @@ const Batches = () => {
           </div>
         </div>
       )}
+
+      <BatchesSm
+        selectedDepartment={selectedDepartment}
+        setSelectedDepartment={setSelectedDepartment}
+        selectedCourse={selectedCourse}
+        setSelectedCourse={setSelectedCourse}
+        selectedBatchId={selectedBatchId}
+        setSelectedBatchId={setSelectedBatchId}
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+        nestedData={nestedData}
+      />
     </>
   );
 };

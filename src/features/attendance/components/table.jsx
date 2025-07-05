@@ -1,4 +1,5 @@
-import attendanceData from "@/data/AttendanceData.json";
+import initialAttendanceData from "@/data/AttendanceData.json";
+import { useState } from "react";
 
 const config = {
   Present: {
@@ -47,13 +48,22 @@ const getButtonProps = (status, buttonType) => {
       backgroundColor: isActive ? colors.bg : colors.faded,
       borderColor: colors.bg,
     },
-    className: `w-6 h-6 text-sm rounded-full font-urbanistRegular border cursor-pointer`,
+    className: `w-6 h-6 4xl:h-10 4xl:w-10 3xl:h-8 3xl:w-8 rounded-full font-urbanistRegular border cursor-pointer text-sm 4xl:text-2xl 3xl:text-lg hd:text-sm`,
   };
 };
 
 const AttendanceTable = () => {
+    const [attendanceData, setAttendanceData] = useState(initialAttendanceData);
+  
+    const handleStatusChange = (index, newStatus) => {
+    setAttendanceData(prev =>
+      prev.map((student, i) =>
+        i === index ? { ...student, status: newStatus } : student
+      )
+    );
+  };
   return (
-    <div className="w-full rounded-xl overflow-hidden">
+    <div className="relative w-full rounded-xl overflow-hidden">
       <table className="min-w-full table-auto border-collapse text-white">
         <colgroup>
           <col style={{ width: "25%" }} />
@@ -64,24 +74,24 @@ const AttendanceTable = () => {
 
         <thead>
           <tr>
-            <th className="px-6 py-2 text-base text-left font-urbanistSemiBold">
+            <th className="px-6 py-2 3xl:py-1 3xl:pb-5 3xl:px-6 text-base 4xl:text-2xl 3xl:text-xl hd:text-sm lg:text-sm text-left font-urbanistSemiBold">
               Name
             </th>
-            <th className="px-6 py-2 text-base text-center font-urbanistSemiBold">
+            <th className="px-6 py-2 3xl:py-1 3xl:pb-5 3xl:px-6 text-base text-center 4xl:text-2xl 3xl:text-xl hd:text-sm lg:text-sm font-urbanistSemiBold">
               Roll No.
             </th>
-            <th className="px-6 py-2 text-base text-center font-urbanistSemiBold">
-              QR Status
+            <th className="px-6 py-2 3xl:py-1 3xl:pb-5 3xl:px-6 text-base text-center 4xl:text-2xl 3xl:text-xl hd:text-sm lg:text-sm font-urbanistSemiBold">
+              Status
             </th>
-            <th className="px-6 py-2 text-base text-right font-urbanistSemiBold">
+            <th className="px-6 py-2 3xl:py-1 3xl:pb-5 3xl:px-6 text-base text-right 4xl:text-2xl 3xl:text-xl
+            hd:text-sm lg:text-sm font-urbanistSemiBold">
               Edit Attendance
             </th>
           </tr>
         </thead>
       </table>
-
-      <div className="max-h-[430px] overflow-y-auto">
-        <table className="min-w-full table-auto border-separate border-spacing-y-2 text-white">
+      <div className="max-h-[430px] 4xl:max-h-[64vh] 3xl:max-h-[60vh] hdplus:max-h-[62vh] hd:max-h-[62vh] 2xl:max-h-[60vh] lg:max-h-[55vh] overflow-y-auto scrollbar-thin">
+        <table className="min-w-full table-auto border-separate border-spacing-y-2 4xl:border-spacing-y-5 text-white">
           <colgroup>
             <col style={{ width: "25%" }} />
             <col style={{ width: "20%" }} />
@@ -92,20 +102,20 @@ const AttendanceTable = () => {
           <tbody>
             {attendanceData.map((student, index) => (
               <tr key={index} className="bg-[#ffffff0a]">
-                <td className="px-6 py-3 text-sm rounded-l-xl font-urbanistRegular">
-                  <div className="flex items-center gap-2">
+                <td className="px-6 py-3 2xl:py-4 2xl:px-12 hd:py-2 hd:px-7 lg:py-2 text-sm 4xl:text-2xl 3xl:text-lg hd:text-sm rounded-l-xl font-urbanistRegular">
+                  <div className="flex items-center gap-2 4xl:gap-6">
                     <img
                       src={student.avatar}
                       alt={`${student.name} avatar`}
-                      className="w-6 h-6 rounded-full"
+                      className="w-6 h-6 4xl:w-14 4xl:h-14 3xl:h-10 3xl:w-10 rounded-full"
                     />
                     {student.name}
                   </div>
                 </td>
-                <td className="px-6 py-3 text-sm text-center font-urbanistRegular">
+                <td className="px-6 py-3 2xl:py-4 2xl:px-12 hd:py-2 hd:px-7 lg:py-2  text-sm 4xl:text-2xl 3xl:text-lg text-center hd:text-sm font-urbanistRegular">
                   {student.rollNo}
                 </td>
-                <td className="px-6 py-3 text-sm text-center font-urbanistRegular">
+                <td className="px-6 py-3 2xl:py-4 2xl:px-12 hd:py-2 hd:px-7 lg:py-2 text-sm 4xl:text-2xl 3xl:text-lg text-center hd:text-sm font-urbanistRegular">
                   <span
                     className={`${statusColor(
                       student.status
@@ -114,11 +124,11 @@ const AttendanceTable = () => {
                     {student.status}
                   </span>
                 </td>
-                <td className="px-6 py-3 rounded-r-xl">
+                <td className="px-6 py-3 2xl:py-4 2xl:px-12 hd:py-2 lg:py-2 hd:px-7 rounded-r-xl">
                   <div className="flex gap-3 justify-end">
-                    <button {...getButtonProps(student.status, "P")}>P</button>
-                    <button {...getButtonProps(student.status, "A")}>A</button>
-                    <button {...getButtonProps(student.status, "L")}>L</button>
+                    <button {...getButtonProps(student.status, "P")} onClick={() => handleStatusChange(index, "Present")}>P</button>
+                    <button {...getButtonProps(student.status, "A")} onClick={() => handleStatusChange(index, "Absent")}>A</button>
+                    <button {...getButtonProps(student.status, "L")} onClick={() => handleStatusChange(index, "Leave")}>L</button>
                   </div>
                 </td>
               </tr>

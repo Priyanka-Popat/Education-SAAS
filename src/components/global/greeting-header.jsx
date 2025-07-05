@@ -8,8 +8,8 @@ const GreetingHeader = ({ heading }) => {
 
   return (
     <div className="">
-      <p className="lg:text-[25px] font-urbanistSemiBold text-lg">{ heading }</p>
-      <p className="lg:text-sm text-xs font-urbanistRegular">{ formattedDate }</p>
+      <p className="font-urbanistSemiBold text-lg 4xl:text-4xl 3xl:text-[25px] hd:text-xl hdplus:text-2xl 2xl:text-[25px] lg:text-[19px]">{ heading }</p>
+      <p className="lg:text-sm text-xs font-urbanistRegular 4xl:text-xl 3xl:text-base hd:text-sm hdplus:text-base 2xl:text-base 2xl:mt-1 lg:mt-0">{ formattedDate }</p>
     </div>
   );
 };

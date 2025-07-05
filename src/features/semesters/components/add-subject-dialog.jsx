@@ -43,12 +43,16 @@ export default function Dialog({ onClose }) {
   const totalSteps = 2;
 
   const handleNext = () => {
-    if (currentStep < 3) {
+    console.log(currentStep)
+    console.log("nexttt")
+    if (currentStep < totalSteps) {
       setCurrentStep(currentStep + 1);
     }
   };
 
   const handleBack = () => {
+    console.log(currentStep)
+    console.log("backkk")
     if (currentStep > 1) {
       setCurrentStep(currentStep - 1);
     }
@@ -93,16 +97,12 @@ export default function Dialog({ onClose }) {
   };
 
   const isTrackComplete = (track) => {
-    return (
-      track.fullForm &&
-      track.shortForm &&
-      track.startDate &&
-      track.endDate &&
-      track.syllabusFile
-    );
+    return track.fullForm;
   };
 
-  const isAddTrackDisabled = !subjectTracks.every(isTrackComplete);
+  // const isAddTrackDisabled = !subjectTracks.every(isTrackComplete);
+
+    const isAddTrackDisabled =false
 
   const isSubjectComplete = (subject) => {
     return (
@@ -114,7 +114,8 @@ export default function Dialog({ onClose }) {
     );
   };
 
-  const isAddSubjectDisabled = !subjects.every(isSubjectComplete);
+  // const isAddSubjectDisabled = !subjects.every(isSubjectComplete);
+const isAddSubjectDisabled = false
 
   const renderTrackStep = () => (
     <div className="space-y-6">
@@ -160,7 +161,7 @@ export default function Dialog({ onClose }) {
             <input
               type="text"
               placeholder="Enter Subject Track Name"
-              value={track.name}
+              value={track.fullForm}
               onChange={(e) =>
                 setSubjectTracks((prevTracks) => {
                   const updatedTracks = [...prevTracks];
@@ -263,7 +264,7 @@ export default function Dialog({ onClose }) {
             <input
               type="text"
               placeholder="Enter Subject Name"
-              value=""
+              value={subject.subjectCode}
               onChange={(e) =>
                 handleCourseChange(index, "shortForm", e.target.value)
               }
@@ -351,16 +352,30 @@ export default function Dialog({ onClose }) {
             >
               Cancel
             </button>
-            <button
+            {
+              <button
               onClick={
                 currentStep === totalSteps
                   ? () => alert("Added Successfully")
-                  : handleNext
+                  : () => handleNext()
               }
               className="bg-secondary text-white font-medium px-6 py-2 rounded-lg transition-colors"
             >
               {currentStep === 2 ? "Add" : "Next"}
             </button>
+              // <button
+              //   onClick={() => {
+              //     if (currentStep === totalSteps) {
+              //       alert("Added Successfully");
+              //     } else {
+              //       handleNext();
+              //     }
+              //   }}
+              //   className="bg-secondary text-white font-medium px-6 py-2 rounded-lg transition-colors"
+              // >
+              //   {currentStep === totalSteps ? "Add" : "Next"}
+              // </button>
+            }
           </div>
         </div>
       </div>

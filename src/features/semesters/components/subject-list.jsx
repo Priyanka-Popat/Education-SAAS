@@ -7,14 +7,16 @@ const SubjectList = ({ subjects = [] }) => {
         subjects.map((subj) => (
           <div
             key={subj.id}
-            className="flex justify-between items-center bg-white/5 hover:bg-white/10 transition-colors px-4 py-2 rounded-lg cursor-pointer text-white"
+            className="flex justify-between items-center bg-white/5 hover:bg-white/10 transition-colors px-4 py-2 4xl:py-4 rounded-lg cursor-pointer text-white font-urbanistMedium text-xs 4xl:text-2xl 2xl:text-sm 3xl:text-base"
           >
-            <p className="font-urbanistMedium text-xs">{subj.code}</p>
-            <p className="font-urbanistMedium text-xs">{subj.name}</p>
+            <p className="font-urbanistMedium">{subj.code}</p>
+            <p className="font-urbanistMedium text-right">{subj.name}</p>
           </div>
         ))
       ) : (
-        <p>No subjects found</p>
+        <p className="text-white/50">
+          No subjects Found
+        </p>
       )}
     </div>
   );

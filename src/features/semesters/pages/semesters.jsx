@@ -1,23 +1,29 @@
+import { useState, useEffect } from "react";
+import nestedData from "@/data/NestedData.json";
 import DashboardLayout from "@/components/global/dashboard-layout";
 import GreetingHeader from "@/components/global/greeting-header";
-import nestedData from "@/data/NestedData.json";
-import { useState, useEffect } from "react";
 import DepartmentFilter from "@/components/ui/department-filter";
 import CourseFilter from "@/components/ui/course-filter";
 import AddButton from "@/components/ui/add-button";
 import Heading from "@/components/ui/heading";
+import AttendanceBg from "@/components/ui/attendance-bg";
 import SemesterList from "@/features/semesters/components/semester-list";
-import TrackSelection from "../components/track-selection";
-import SemesterDialog from "../components/semester-dialog";
+import TrackSelection from "@/features/semesters/components/track-selection";
+import SemesterDialog from "@/features/semesters/components/semester-dialog";
+import SemesterSm from "@/features/semesters/components/semester-sm";
+import SearchBar from "@/components/ui/search-bar";
 
 const Semesters = () => {
   const [selectedDepartment, setSelectedDepartment] = useState(null);
   const [selectedCourse, setSelectedCourse] = useState(null);
-
   const [selectedSemesterIndex, setSelectedSemesterIndex] = useState(0);
   const [selectedTrackName, setSelectedTrackName] = useState("Compulsory");
-
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const semesters = selectedCourse?.semesters || [];
+  const selectedSemester = semesters[selectedSemesterIndex] || null;
+  const selectedTrack = selectedSemester?.tracks?.find(
+    (track) => track.name === selectedTrackName
+  );
 
   useEffect(() => {
     if (nestedData.length > 0) {
@@ -42,9 +48,6 @@ const Semesters = () => {
     setSelectedSemesterIndex(0);
   }, [selectedCourse]);
 
-  const semesters = selectedCourse?.semesters || [];
-  const selectedSemester = semesters[selectedSemesterIndex] || null;
-
   useEffect(() => {
     if (selectedSemester?.tracks?.length > 0) {
       setSelectedTrackName(selectedSemester.tracks[0].name);
@@ -53,9 +56,9 @@ const Semesters = () => {
     }
   }, [selectedSemester]);
 
-  const selectedTrack = selectedSemester?.tracks?.find(
-    (track) => track.name === selectedTrackName
-  );
+  useEffect(() => {
+    console.log("Selected course changed:", selectedCourse);
+  }, [selectedCourse]);
 
   const handleDepartmentChange = (dept) => {
     setSelectedDepartment(dept);
@@ -65,14 +68,6 @@ const Semesters = () => {
     setSelectedCourse(courseObj);
     setSelectedSemesterIndex(0);
   };
-
-  const handleClose = () => {
-    setIsModalOpen(false);
-  };
-
-  useEffect(() => {
-    console.log("Selected course changed:", selectedCourse);
-  }, [selectedCourse]);
 
   return (
     <>
@@ -84,43 +79,49 @@ const Semesters = () => {
           { label: "Semesters", href: "/semesters" },
         ]}
       >
-        <div className="col-start-1 row-start-2 col-span-12 row-span-9 relative px-4 pb-4 c9 text-white">
-          <div className="attendance-info grid grid-cols-11 grid-rows-7 w-full h-full">
-            <Heading heading="Semesters" />
+        <div className="lg:col-start-1 lg:row-start-3 xl:row-start-2 lg:col-span-12 lg:row-span-9 col-start-1 row-start-3 col-span-6 row-span-10 relative px-4 hdplus:px-[21px] 2xl:px-5 2xl:pb-5 pb-4 c9 xl:pt-[1.5rem] lg:pt-0 4xl:pt-[2.5rem] 3xl:pt-[2rem] 2xl:pt-[2rem] text-white hidden lg:block">
+          <div className="w-full relative h-full">
+            <AttendanceBg />
+            <div className="grid grid-cols-11 grid-rows-9 3xl:grid-rows-8 w-full h-full">
+              <Heading heading="Semesters" />
 
-            <div className="col-start-6 row-start-1 col-span-6 flex px-5 py-5 items-end justify-end h-full gap-6">
-              <DepartmentFilter
-                selectedDepartment={selectedDepartment}
-                setSelectedDepartment={handleDepartmentChange}
-                setSelectedDeptId={null}
+              <div className="relative col-start-5 row-start-1 col-span-7 flex px-5 py-5 4xl:p-0 2xl:p-0 lg:p-0 items-end 2xl:items-start lg:items-start justify-end h-full gap-x-3">
+                <input type="search" className="p-2 pr-10 bg-[#FFFFFF0F] border border-white/20 text-white font-urbanistRegular rounded-[6px] 4xl:rounded-[10px] py-2 px-4 4xl:py-3 2xl:py-1.5 lg:py-1.5 cursor-pointer text-xs 4xl:text-2xl 3xl:text-base 2xl:text-sm lg:text-xs"  placeholder="Search..." />
+                <DepartmentFilter
+                  selectedDepartment={selectedDepartment}
+                  setSelectedDepartment={handleDepartmentChange}
+                  setSelectedDeptId={null}
+                />
+
+                <CourseFilter
+                  selectedCourse={selectedCourse}
+                  setSelectedCourse={handleCourseChange}
+                  courses={selectedDepartment?.courses || []}
+                />
+
+                <AddButton
+                  label="Add Semester"
+                  onClick={() => setIsModalOpen(true)}
+                />
+              </div>
+
+              <TrackSelection
+                tracks={selectedSemester?.tracks || []}
+                selectedTrackName={selectedTrackName}
+                setSelectedTrackName={setSelectedTrackName}
+                subjects={selectedTrack?.subjects || []}
+                onAddSubject={() => setIsModalOpen(true)}
               />
 
-              <CourseFilter
-                selectedCourse={selectedCourse}
-                setSelectedCourse={handleCourseChange}
-                courses={selectedDepartment?.courses || []}
-              />
+              
 
-              <AddButton
-                label="Add new Semester"
-                onClick={() => setIsModalOpen(true)}
-              />
-            </div>
-
-            <TrackSelection
-              tracks={selectedSemester?.tracks || []}
-              selectedTrackName={selectedTrackName}
-              setSelectedTrackName={setSelectedTrackName}
-              subjects={selectedTrack?.subjects || []}
-              onAddSubject={() => setIsModalOpen(true)}
-            />
-
-            <div className="col-start-1 row-start-2 col-span-8 c13 row-span-5 px-5 pt-8 pb-5 overflow-y-auto max-h-[480px]">
-              <SemesterList
-                semesters={semesters}
-                selectedSemesterIndex={selectedSemesterIndex}
-                onSelectSemester={setSelectedSemesterIndex}
-              />
+              <div className="col-start-1 row-start-2 col-span-8 row-span-7 px-5 pt-3 4xl:pt-3 pb-5 c13">
+                <SemesterList
+                  semesters={semesters}
+                  selectedSemesterIndex={selectedSemesterIndex}
+                  onSelectSemester={setSelectedSemesterIndex}
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -129,6 +130,19 @@ const Semesters = () => {
       <SemesterDialog
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
+      />
+
+      <SemesterSm
+        selectedDepartment={selectedDepartment}
+        setSelectedDepartment={handleDepartmentChange}
+        selectedCourse={selectedCourse}
+        setSelectedCourse={handleCourseChange}
+        selectedSemesterIndex={selectedSemesterIndex}
+        setSelectedSemesterIndex={setSelectedSemesterIndex}
+        selectedTrackName={selectedTrackName}
+        setSelectedTrackName={setSelectedTrackName}
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
       />
     </>
   );

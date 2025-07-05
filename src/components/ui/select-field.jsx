@@ -8,16 +8,17 @@ const SelectField = ({
   className = "",
   labelClass = "",
   selectClass = "",
+  iconClass = "",
   id,
   name,
   disabled = false,
 }) => {
   return (
-    <div className={`w-full ${className}`}>
+    <div className={`w-full mt[-10px] ${className}`}>
       {label && (
         <label
           htmlFor={id || name}
-          className={`block text-white font-medium mb-2 ${labelClass}`}
+          className={`block text-white font-urbanistMedium 2xl:text-sm mb-[2px] 3xl:mb-2 4xl:mb-3 2xl:mb-2 text-base 4xl:text-[26px] 3xl:text-[18px] hd:text-sm xl:text-sm lg:text-xs ${labelClass}`}
         >
           {label}
         </label>
@@ -29,7 +30,7 @@ const SelectField = ({
           value={value}
           onChange={onChange}
           disabled={disabled}
-          className={`w-full appearance-none p-2 pr-10 rounded bg-white/10 border border-white/20 text-white font-urbanistRegular text-sm ${selectClass}`}
+          className={`w-full appearance-none p-2 pr-10 4xl:p-4 3xl:p-3 rounded bg-white/10 border border-white/20 text-white font-urbanistRegular text-sm 2xl:text-sm 4xl:text-xl ${selectClass}`}
           style={{
             backgroundColor: "rgba(255, 255, 255, 0.05)",
             color: "white",
@@ -45,8 +46,8 @@ const SelectField = ({
             </option>
           ))}
         </select>
-        <div className="absolute inset-y-0 right-2 flex items-center pointer-events-none">
-          <ChevronDown size={18} className="text-white/70" />
+        <div className="absolute inset-y-0 right-1 flex items-center pointer-events-none">
+          <ChevronDown className={`text-white/70 w-5 4xl:w-71 ${iconClass}`} />
         </div>
       </div>
     </div>

@@ -1,6 +1,7 @@
 import React from "react";
 import SelectField from "@/components/ui/select-field";
 import StudentList from "./student-list";
+import MdBg from "@/components/ui/md-bg";
 
 const BatchSelection = ({
   selectedCourse,
@@ -13,8 +14,10 @@ const BatchSelection = ({
 
   return (
     <>
-      <div className="col-start-9 row-start-2 col-span-5 px-4">
+      <div className="relative col-start-9 row-start-2 row-span-1 3xl:row-span-1 col-span-5 px-4 pt-4 2xl:pt-0  hd:pt-0 lg:pt-0">
+        <div className="w-full lg:mb-6">
         <SelectField
+        className="h-full flex justify-start 4xl:justify-start 3xl:justify-start 2xl:justify-start hd:justify-start flex-col"
           label="Batch"
           value={selectedBatchId || ""}
           onChange={(e) => setSelectedBatchId(Number(e.target.value))}
@@ -26,10 +29,12 @@ const BatchSelection = ({
           }
           disabled={!selectedCourse?.batches?.length}
         />
+        </div>
       </div>
 
-      <div className="ps-4 pt-4 col-start-9 row-start-3 col-span-3 row-span-5 w-full">
-        <div className="w-full h-full qr-code">
+      <div className="h-[65%] lg:h-full lg:mt-0 rounded-2xl relative md:p-0 lg:ps-3 lg:pt-4 3xl:ps-5 4xl:ps-10 4xl:pt-7 4xl:pe-2 col-start-9 row-start-3 col-span-3 row-span-7 w-full">
+        <MdBg />
+        <div className="w-full h-full relative">
           <div className="flex flex-col justify-between h-full gap-y-8 items-center p-5">
             <StudentList students={selectedBatch?.students || []} />
           </div>

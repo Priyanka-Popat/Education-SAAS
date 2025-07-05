@@ -1,5 +1,6 @@
 import SemesterList from "./semester-list";
 import AddButtonSecondary from "@/components/ui/add-button-secondary";
+import MdBg from "@/components/ui/md-bg";
 import SelectField from "@/components/ui/select-field";
 
 const CourseFilterSection = ({
@@ -11,25 +12,30 @@ const CourseFilterSection = ({
 }) => {
   return (
     <>
-      <div className="col-start-9 row-start-2 col-span-5 px-4">
-      <SelectField
-        label="Select Course"
-        value={selectedCourseId}
-        onChange={(e) => setSelectedCourseId(Number(e.target.value))}
-        options={
-          selectedDept?.courses?.map((course) => ({
-            label: course.shortForm,
-            value: course.id,
-          })) || []
-        }
+      <div className="relative col-start-9 row-start-2 row-span-1 col-span-5 px-4 pt-4 2xl:pt-0  hd:pt-0 lg:pt-0">
+        {/* 4xl:pb-16 3xl:pb-14 4xl:pr-5 2xl:pb-16 hd:pb-16 lg:pt-0 lg:pb-14 */}
+        <SelectField
+          className="h-full flex justify-start 4xl:justify-start 3xl:justify-start 2xl:justify-start hd:justify-start flex-col"
+          label="Select Course"
+          value={selectedCourseId}
+          onChange={(e) => setSelectedCourseId(Number(e.target.value))}
+          options={
+            selectedDept?.courses?.map((course) => ({
+              label: course.shortForm,
+              value: course.id,
+            })) || []
+          }
         />
-        </div>
+      </div>
+      <div className="h-[65%] lg:h-full lg:mt-0 rounded-2xl relative md:p-0 lg:ps-3 lg:pt-4 3xl:ps-5 4xl:ps-10 4xl:pt-7 4xl:pe-2 col-start-9 row-start-3 col-span-3 row-span-7 w-full">
+        <MdBg />
 
-      <div className="ps-4 pt-4 col-start-9 row-start-3 col-span-3 row-span-5 w-full">
-        <div className="w-full h-full qr-code">
-          <div className="flex flex-col justify-between h-full gap-y-8 items-center p-5">
+        <div className="w-full h-full relative">
+          <div className="flex flex-col justify-between h-full w-full gap-y-8 items-center pt-5 px-5 pb-2 lg:px-3 hd:px-6 lg:pt-5 hd:pt-6 2xl:pt-8 3xl:pt-5">
             <div className="w-full">
-              <p className="font-urbanistSemiBold pb-5 text-sm">Semesters</p>
+              <p className="font-urbanistSemiBold pb-5 2xl:pb-4 text-sm 4xl:text-3xl 3xl:text-xl 2xl:text-lg">
+                Semesters
+              </p>
 
               <SemesterList semesters={selectedCourse?.semesters || []} />
             </div>
