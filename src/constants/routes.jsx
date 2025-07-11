@@ -8,7 +8,8 @@ const Departments = lazy(() => import("@/features/departments/pages/departments"
 const Semesters = lazy(() => import("@/features/semesters/pages/semesters"));
 const Batches = lazy(() => import("@/features/batches/pages/batches"));
 const Syllabus = lazy(() => import("@/features/syllabus/pages/syllabus"));
-const Students = lazy(() => import("@/features/Students/pages/students"));
+const Students = lazy(() => import("@/features/students/pages/students"));
+const Login = lazy(() => import("@/features/login/pages/login"));
 
 export const routes = [
   { name: "Dashboard", path: "/", element: <Dashboard /> },
@@ -20,4 +21,5 @@ export const routes = [
   { name: "Batches", description: "All Batches are listed here", path: "/batches", element: <Batches /> },
   { name: "Syllabus", description: "All Syllabus are listed here", path: "/syllabus", element: <Syllabus /> },
   { name: "Students", description: "All Students are listed here", path: "/students", element: <Students /> },
+  { name: "Login", description: "Login", path: "/login", element: <Login /> },
 ];

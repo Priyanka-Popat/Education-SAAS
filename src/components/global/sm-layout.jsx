@@ -15,7 +15,7 @@ const SmLayout = ({ children, headerComponent, breadcrumbs = [] }) => {
 
   useEffect(() => {
     const handleClickOutside = (e) => {
-      // Close sidebar if click is outside sidebar
+      // Close sidebar 
       if (
         menuOpen &&
         sideBarRef.current &&
@@ -24,7 +24,7 @@ const SmLayout = ({ children, headerComponent, breadcrumbs = [] }) => {
         setMenuOpen(false);
       }
 
-      // Close profile dropdown if click is outside profile menu
+      // Close profile 
       if (
         profileOpen &&
         profileRef.current &&

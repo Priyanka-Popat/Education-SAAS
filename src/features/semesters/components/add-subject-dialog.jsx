@@ -1,92 +1,37 @@
-import { useState, useEffect, useRef } from "react";
-import {
-  Calendar,
-  Upload,
-  Plus,
-  ChevronDown,
-  CheckCircle,
-  Icon,
-} from "lucide-react";
+import { useState, useRef } from "react";
+import { Plus, ChevronDown } from "lucide-react";
+import { useEffect } from "react";
 
-export default function Dialog({ onClose }) {
+export default function Dialog({ onClose, mode = "add", semesterToEdit }) {
   const modalRef = useRef(null);
   const [currentStep, setCurrentStep] = useState(1);
-  const [courseName, setCourseName] = useState("");
-  const [startDate, setStartDate] = useState("May 23, 2025");
-  const [endDate, setEndDate] = useState("May 23, 2025");
-  const [syllabusFile, setSyllabusFile] = useState(null);
-
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key === "Escape") {
-        onClose();
-      }
-    };
-
-    const handleClickOutside = (e) => {
-      if (modalRef.current && !modalRef.current.contains(e.target)) {
-        onClose();
-      }
-    };
-
-    document.addEventListener("keydown", handleKeyDown);
-    document.addEventListener("mousedown", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [onClose]);
-  const [Department, setDepartment] = useState("");
-  const [isOnline, setIsOnline] = useState(false);
-
   const totalSteps = 2;
 
-  const handleNext = () => {
-    console.log(currentStep)
-    console.log("nexttt")
-    if (currentStep < totalSteps) {
-      setCurrentStep(currentStep + 1);
-    }
-  };
-
-  const handleBack = () => {
-    console.log(currentStep)
-    console.log("backkk")
-    if (currentStep > 1) {
-      setCurrentStep(currentStep - 1);
-    }
-  };
-
-  const addNewCourse = () => {
-    setCourses((prev) => [
-      {
-        fullForm: "",
-        shortForm: "",
-        startDate: "",
-        endDate: "",
-        syllabusFile: null,
-      },
-      ...prev,
-    ]);
-  };
-
-  const handleCourseChange = (index, field, value) => {
-    const updatedCourses = [...courses];
-    updatedCourses[index][field] = value;
-    setCourses(updatedCourses);
-  };
-
   const [subjectTracks, setSubjectTracks] = useState([
-    { fullForm: "", isElective: false },
+    { fullForm: "", isElective: false, selectedSemester: "Semester 1" },
   ]);
 
   const [subjects, setSubjects] = useState([
     { subjectTrack: "", subjectCode: "", subjectName: "" },
   ]);
 
+  const handleNext = () => {
+    if (currentStep < totalSteps) {
+      setCurrentStep(currentStep + 1);
+    }
+  };
+
+  const handleBack = () => {
+    if (currentStep > 1) {
+      setCurrentStep(currentStep - 1);
+    }
+  };
+
   const addNewTrack = () => {
-    setSubjectTracks((prev) => [...prev, { fullForm: "", isElective: false }]);
+    setSubjectTracks((prev) => [
+      ...prev,
+      { fullForm: "", isElective: false, selectedSemester: "Semester 1" },
+    ]);
   };
 
   const addNewSubject = () => {
@@ -96,40 +41,46 @@ export default function Dialog({ onClose }) {
     ]);
   };
 
-  const isTrackComplete = (track) => {
-    return track.fullForm;
+  const handleWrapperClick = (e) => {
+    if (modalRef.current && !modalRef.current.contains(e.target)) {
+      onClose();
+    }
   };
 
-  // const isAddTrackDisabled = !subjectTracks.every(isTrackComplete);
+  useEffect(() => {
+    if (mode === "edit" && semesterToEdit) {
+      const tracks = semesterToEdit.tracks || [];
 
-    const isAddTrackDisabled =false
+      setSubjectTracks(
+        tracks.map((track) => ({
+          fullForm: track.name || "",
+          isElective: track.isElective || false,
+          selectedSemester: semesterToEdit.semesterName || "Semester 1",
+        }))
+      );
 
-  const isSubjectComplete = (subject) => {
-    return (
-      subject.fullForm &&
-      subject.shortForm &&
-      subject.startDate &&
-      subject.endDate &&
-      subject.syllabusFile
-    );
-  };
+      const flatSubjects = tracks.flatMap((track) =>
+        (track.subjects || []).map((subject) => ({
+          subjectTrack: track.name || "",
+          subjectCode: subject.code || "",
+          subjectName: subject.name || "",
+        }))
+      );
 
-  // const isAddSubjectDisabled = !subjects.every(isSubjectComplete);
-const isAddSubjectDisabled = false
+      setSubjects(flatSubjects);
+    }
+  }, [mode, semesterToEdit]);
 
   const renderTrackStep = () => (
     <div className="space-y-6">
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-2xl font-semibold text-white font-urbanistSemiBold">
-          Add Subject Track
+          {mode === "edit" ? "Edit Subject Track" : "Add Subject Track"}
         </h2>
         <button
           type="button"
           onClick={addNewTrack}
-          className={`text-white bg-white/5 hover:bg-white/20 rounded-full w-8 h-8 flex items-center justify-center ${
-            isAddTrackDisabled ? "opacity-50 cursor-not-allowed" : ""
-          }`}
-          disabled={isAddTrackDisabled}
+          className={`text-white bg-white/5 hover:bg-white/20 rounded-full w-8 h-8 flex items-center justify-center`}
           title="Add Track"
         >
           <Plus className="w-5 h-5" />
@@ -145,9 +96,10 @@ const isAddSubjectDisabled = false
             <select
               className="w-full appearance-none border-gray-600 bg-white/5 text-white rounded-lg px-4 py-3 focus:outline-none cursor-pointer"
               value=""
-              onChange={(e) => e.target.value}
+              onChange={(e) => {}}
             >
               <option className="bg-primary">Semester 1</option>
+              <option className="bg-primary">Semester 2</option>
             </select>
             <div className="absolute inset-y-0 right-2 flex items-center pointer-events-none">
               <ChevronDown size={18} className="text-white/70" />
@@ -177,6 +129,14 @@ const isAddSubjectDisabled = false
             <input
               type="checkbox"
               id={`elective-${index}`}
+              checked={track.isElective}
+              onChange={(e) =>
+                setSubjectTracks((prev) => {
+                  const updated = [...prev];
+                  updated[index].isElective = e.target.checked;
+                  return updated;
+                })
+              }
               className="w-4 h-4 accent-purple-500"
             />
             <label htmlFor={`elective-${index}`} className="text-sm text-white">
@@ -192,15 +152,12 @@ const isAddSubjectDisabled = false
     <div className="space-y-6">
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-2xl font-semibold text-white font-urbanistSemiBold">
-          Add Subjects
+          {mode === "edit" ? "Edit Subjects" : "Add Subjects"}
         </h2>
         <button
           type="button"
           onClick={addNewSubject}
-          className={`text-white bg-white/5 hover:bg-white/20 rounded-full w-8 h-8 flex items-center justify-center ${
-            isAddSubjectDisabled ? "opacity-50 cursor-not-allowed" : ""
-          }`}
-          disabled={isAddSubjectDisabled}
+          className={`text-white bg-white/5 hover:bg-white/20 rounded-full w-8 h-8 flex items-center justify-center`}
           title="Add Subject"
         >
           <Plus className="w-5 h-5" />
@@ -215,26 +172,20 @@ const isAddSubjectDisabled = false
             </label>
             <div className="relative">
               <select
-                id="learningStyle"
                 className="w-full appearance-none border-gray-600 bg-white/5 text-white rounded-lg px-4 py-3 focus:outline-none cursor-pointer"
                 value={subject.subjectTrack}
-                onChange={(e) =>
-                  setSubjects((prevSubjects) => {
-                    const updatedSubjects = [...prevSubjects];
-                    updatedSubjects[index].subjectTrack = e.target.value;
-                    return updatedSubjects;
-                  })
-                }
+                onChange={(e) => {
+                  const updatedSubjects = [...subjects];
+                  updatedSubjects[index].subjectTrack = e.target.value;
+                  setSubjects(updatedSubjects);
+                }}
               >
-                <option className="bg-primary" value="">
-                  Compulsory
-                </option>
-                <option className="bg-primary" value="visual">
-                  Elective
-                </option>
-                <option className="bg-primary" value="auditory">
-                  Core
-                </option>
+                <option value="">Select</option>
+                {subjectTracks.map((track, idx) => (
+                  <option key={idx} value={track.fullForm}>
+                    {track.fullForm}
+                  </option>
+                ))}
               </select>
               <div className="absolute inset-y-0 right-2 flex items-center pointer-events-none">
                 <ChevronDown size={18} className="text-white/70" />
@@ -249,9 +200,13 @@ const isAddSubjectDisabled = false
             <input
               type="text"
               placeholder="Enter Subject Code"
-              value=""
+              value={subject.subjectCode}
               onChange={(e) =>
-                handleCourseChange(index, "fullForm", e.target.value)
+                setSubjects((prevSubjects) => {
+                  const updatedSubjects = [...prevSubjects];
+                  updatedSubjects[index].subjectCode = e.target.value;
+                  return updatedSubjects;
+                })
               }
               className="w-full bg-white/5 border border-gray-600 rounded-lg px-4 py-2 placeholder:text-sm text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
@@ -264,9 +219,13 @@ const isAddSubjectDisabled = false
             <input
               type="text"
               placeholder="Enter Subject Name"
-              value={subject.subjectCode}
+              value={subject.subjectName}
               onChange={(e) =>
-                handleCourseChange(index, "shortForm", e.target.value)
+                setSubjects((prevSubjects) => {
+                  const updatedSubjects = [...prevSubjects];
+                  updatedSubjects[index].subjectName = e.target.value;
+                  return updatedSubjects;
+                })
               }
               className="w-full bg-white/5 border border-gray-600 rounded-lg px-4 py-2 placeholder:text-sm text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
@@ -277,9 +236,13 @@ const isAddSubjectDisabled = false
   );
 
   return (
-    <div className="min-h-screen inset-0 bg-black bg-opacity-70 backdrop-blur-sm flex items-center justify-center z-50">
+    <div
+      onClick={handleWrapperClick}
+      className="min-h-screen fixed inset-0 bg-black bg-opacity-70 backdrop-blur-sm flex items-center justify-center z-50"
+    >
       <div
         ref={modalRef}
+        onClick={(e) => e.stopPropagation()}
         className="w-full max-w-[38rem] bg-primary rounded-xl p-6"
       >
         <div className="flex items-center justify-between mb-6">
@@ -290,11 +253,11 @@ const isAddSubjectDisabled = false
               }`}
             ></div>
             <span
-              className={
+              className={`mx-2 ${
                 currentStep === 1
-                  ? "text-secondary font-medium mx-2"
-                  : "text-gray-400 mx-2"
-              }
+                  ? "text-secondary font-medium"
+                  : "text-gray-400"
+              }`}
             >
               Subject Track
             </span>
@@ -306,11 +269,11 @@ const isAddSubjectDisabled = false
               }`}
             ></div>
             <span
-              className={
+              className={`mx-2 ${
                 currentStep === 2
-                  ? "text-secondary font-medium mx-2"
-                  : "text-gray-400 mx-2"
-              }
+                  ? "text-secondary font-medium"
+                  : "text-gray-400"
+              }`}
             >
               Subject
             </span>
@@ -330,7 +293,6 @@ const isAddSubjectDisabled = false
             className={`font-medium transition-colors ${
               currentStep === 1 ? "hidden" : "text-secondary"
             }`}
-            disabled={currentStep === 1}
           >
             Back
           </button>
@@ -342,40 +304,27 @@ const isAddSubjectDisabled = false
               Skip
             </button>
           )}
-
           <div className="flex gap-3">
             <button
-              onClick={() => {
-                onClose();
-              }}
+              onClick={onClose}
               className="text-gray-400 hover:text-gray-300 font-medium px-6 py-2 transition-colors"
             >
               Cancel
             </button>
-            {
-              <button
+            <button
               onClick={
                 currentStep === totalSteps
                   ? () => alert("Added Successfully")
-                  : () => handleNext()
+                  : handleNext
               }
               className="bg-secondary text-white font-medium px-6 py-2 rounded-lg transition-colors"
             >
-              {currentStep === 2 ? "Add" : "Next"}
+              {currentStep === totalSteps
+                ? mode === "edit"
+                  ? "Update"
+                  : "Add"
+                : "Next"}
             </button>
-              // <button
-              //   onClick={() => {
-              //     if (currentStep === totalSteps) {
-              //       alert("Added Successfully");
-              //     } else {
-              //       handleNext();
-              //     }
-              //   }}
-              //   className="bg-secondary text-white font-medium px-6 py-2 rounded-lg transition-colors"
-              // >
-              //   {currentStep === totalSteps ? "Add" : "Next"}
-              // </button>
-            }
           </div>
         </div>
       </div>

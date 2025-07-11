@@ -26,20 +26,26 @@ export default function DataTable({ data, columns, onAdd, onEdit }) {
   const selectColumn = {
     id: "select",
     header: ({ table }) => (
+      <div className="flex justify-center items-center">
+
       <input
-        className="accent-secondary w-4 h-4"
+        className="transparent-checkbox w-3 h-3"
         type="checkbox"
         checked={table.getIsAllPageRowsSelected()}
         onChange={table.getToggleAllPageRowsSelectedHandler()}
-      />
+        />
+        </div>
     ),
     cell: ({ row }) => (
+      <div className="flex justify-center items-center">
+
       <input
         type="checkbox"
-        className="accent-secondary w-4 h-4"
+        className="transparent-checkbox w-3 h-3"
         checked={row.getIsSelected()}
         onChange={row.getToggleSelectedHandler()}
-      />
+        />
+        </div>
     ),
     enableSorting: false,
     enableHiding: false,
@@ -71,8 +77,8 @@ export default function DataTable({ data, columns, onAdd, onEdit }) {
   });
 
   return (
-    <div className="w-full flex flex-col gap-6">
-      <div className="relative flex flex-col gap-4 overflow-auto">
+    <div className="w-full flex flex-col gap-6 h-full">
+      <div className="relative flex flex-col gap-4 justify-between overflow-auto h-full">
         <div className="overflow-y-auto rounded-[20px]">
           <table className="min-w-full table-auto border-separate border-spacing-y-2 text-white">
             <thead className="bg-secondary sticky top-0 z-10">
@@ -89,25 +95,9 @@ export default function DataTable({ data, columns, onAdd, onEdit }) {
                           i === 0 ? "rounded-tl-2xl" : ""
                         }`}
                       >
-                        {!header.isPlaceholder && (
-                          <button
-                            onClick={header.column.getToggleSortingHandler?.()}
-                            className="flex items-center space-x-1"
-                          >
-                            <span>
-                              {flexRender(
-                                header.column.columnDef.header,
-                                header.getContext()
-                              )}
-                            </span>
-                            <span>
-                              {header.column.getIsSorted() === "asc"
-                                ? "▲"
-                                : header.column.getIsSorted() === "desc"
-                                ? "▼"
-                                : ""}
-                            </span>
-                          </button>
+                        {flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
                         )}
                       </th>
                     );
@@ -132,14 +122,12 @@ export default function DataTable({ data, columns, onAdd, onEdit }) {
                       const align =
                         cell.column.columnDef.meta?.align || "center";
                       const roundedClass =
-                        cellIndex === 0
-                          ? "rounded-l-xl"
-                          : ""
+                        cellIndex === 0 ? "rounded-l-xl" : "";
 
                       return (
                         <td
                           key={cell.id}
-                          className={`px-6 py-1s text-sm font-urbanistRegular text-center ${roundedClass}`}
+                          className={`px-6 py-1 text-sm font-urbanistRegular text-center ${roundedClass}`}
                         >
                           {flexRender(
                             cell.column.columnDef.cell,
@@ -157,7 +145,7 @@ export default function DataTable({ data, columns, onAdd, onEdit }) {
                           />
                           <Trash2
                             className="w-5 h-5 text-white cursor-pointer hover:scale-110 transition-transform"
-                            onClick={() => onEdit(row.original)} 
+                            onClick={() => onEdit(row.original)}
                           />
                         </div>
                       </td>

@@ -1,7 +1,13 @@
 import { X } from "lucide-react";
 import AddDepartment from "./add-deparment-dialog";
 
-const DepartmentModal = ({ isOpen, onClose }) => {
+const DepartmentModal = ({
+  isOpen,
+  onClose,
+  mode = "add",
+  initialData = {},
+  onSubmit,
+}) => {
   if (!isOpen) return null;
 
   return (
@@ -13,7 +19,12 @@ const DepartmentModal = ({ isOpen, onClose }) => {
         >
           <X size={24} />
         </button>
-        <AddDepartment onClose={onClose} />
+        <AddDepartment
+          onClose={onClose}
+          mode={mode}
+          initialData={initialData}
+          onSubmit={onSubmit}
+        />
       </div>
     </div>
   );

@@ -15,12 +15,15 @@ export default function Dialog({ onClose, initialDeptId }) {
     },
   ]);
 
-  const selectedDepartment = departments.find(
-    (dept) => dept.id === selectedDeptId
-  );
-  const departmentName = selectedDepartment
-    ? selectedDepartment.shortForm
-    : "Unknown Department";
+ 
+
+
+ const selectedDepartment = departments.find(
+     (dept) => String(dept.id) === String(selectedDeptId)
+   );
+   const departmentName = selectedDepartment
+     ? selectedDepartment.shortForm
+     : "Unknown Department";
 
   const addNewCourse = () => {
     setCourses((prev) => [

@@ -7,7 +7,8 @@ import {
   Users,
   Notebook,
   ClipboardList,
-  FileText
+  FileText,
+  User
 } from "lucide-react";
 
 const navItems = [
@@ -18,6 +19,7 @@ const navItems = [
   { name: "Semester", icon: Notebook, path: "/semesters" },
   { name: "Batches", icon: Users, path: "/batches" },
   { name: "Attendance", icon: ClipboardList, path: "/attendance" },
+  { name: "Students", icon: User, path: "/students" },
 ];
 
 const SideBar = () => {
@@ -32,9 +34,10 @@ const SideBar = () => {
                 className={`p-3 rounded-[14px] cursor-pointer group flex items-center justify-start gap-x-4 w-full ${
                   isActive
                     ? "bg-secondary text-white"
-                    : "text-gray-400 hover:text-white hover:bg-secondary"
+                    : "text-gray-400 hover:text-white hover:bg-white/10"
                 }`}
               >
+                {/* hover:bg-[#9166f7] */}
                 <Icon
                   className={`w-[20px] h-[20px] 4xl:w-[30px] 4xl:h-[30px] 3xl:w-[25px] 3xl:h-[25px] ${
                     isActive

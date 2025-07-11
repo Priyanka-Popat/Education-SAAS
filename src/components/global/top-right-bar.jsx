@@ -47,25 +47,14 @@ const TopRightBar = () => {
 
   return (
     <>
-      <div className="topRightBar bg-primary rounded-[24px] px-5 grid grid-cols-[1fr_0.5fr] xl:gap-x-3 lg:gap-x-0 w-full h-full">
+      <div className="topRightBar bg-primary rounded-[24px] px-5 grid grid-cols-[1fr_auto] xl:gap-x-3 lg:gap-x-0 w-full h-full">
         <SearchBar />
 
         <div
           className="flex items-center 4xl:gap-x-6 3xl:gap-x-4 hd:gap-x-2 2xl:gap-x-3 lg:gap-x-2 w-full justify-end"
           
         >
-          <div className="rounded-full bg-[#FFFFFF0F] 4xl:w-[80px] 4xl:h-[80px] 3xl:w-[55px] 3xl:h-[55px] hd:w-[47px] hd:h-[47px] lg:h-[40px] lg:w-[40px] flex justify-center items-center relative">
-            <img
-              src="/assets/icons/purple.svg"
-              className="absolute top-1 right-0 4xl:w-[13px] "
-              alt=""
-            />
-            <img
-              src="/assets/icons/notification-icon.svg"
-              alt=""
-              className="w-5 h-5 4xl:w-7 4xl:h-7 3xl:w-6 3xl:h-6 2xl:w-5 2xl:h-5 lg:w-4 lg:h-4"
-            />
-          </div>
+          
           {/* <Bell className="w-5 h-5 4xl:w-7 4xl:h-7 3xl:w-6 3xl:h-6 2xl:w-5 2xl:h-5 lg:w-4 lg:h-4 text-white srtoke-2" /> */}
 
           <div ref={menuRef} className="sudoProfileClass z-50 relative">

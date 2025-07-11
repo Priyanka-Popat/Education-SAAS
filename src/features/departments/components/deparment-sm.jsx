@@ -14,6 +14,7 @@ import AddButtonSecondary from "@/components/ui/add-button-secondary";
 import MdListBg from "@/components/ui/md-list-bg";
 import SmBg from "@/components/ui/sm-bg";
 import DepartmentDialog from "@/features/departments/components/department-dialog";
+import RectSearchBar from "@/components/ui/rect-search-bar";
 
 const DepartmentSm = ({
   departments,
@@ -23,6 +24,7 @@ const DepartmentSm = ({
   selectedDept,
   selectedCourseId,
   selectedCourse,
+  onEditClick
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isCourseModalOpen, setIsCourseModalOpen] = useState(false);
@@ -68,7 +70,7 @@ const DepartmentSm = ({
                       Departments
                     </p>
                   </div>
-                  <div className="flex justify-end">
+                  <div className="flex justify-end px-1">
                     <AddButtonSecondary
                       icon={true}
                       className={"h-[60%]"}
@@ -77,12 +79,8 @@ const DepartmentSm = ({
                     />
                   </div>
 
-                  <div className="flex justify-end  col-span-3 mb-2 px-5">
-                    <input
-                      type="search"
-                      className="p-2 pr-10 bg-[#FFFFFF0F] border border-white/20 text-white font-urbanistRegular rounded-[6px] 4xl:rounded-[10px] py-2 px-4 4xl:py-3 2xl:py-1.5 lg:py-1.5 cursor-pointer text-xs 4xl:text-2xl 3xl:text-base 2xl:text-sm lg:text-xs"
-                      placeholder="Search..."
-                    />
+                  <div className="flex justify-end col-span-3 mb-2 px-5">
+                    <RectSearchBar className={"w-full"} />
                   </div>
 
                   <div className="col-span-3 flex flex-col row-start-3 row-span-4 gap-y-3 px-5 pb-5 overflow-y-auto max-h-[600px] h-[100%] scrollbar-thin flex-1">
@@ -92,9 +90,14 @@ const DepartmentSm = ({
                           className="flex items-center gap-x-2"
                           key={dept.id}
                         >
-                          <div className="p-2 rounded-full border border-secondary">
-                            <PencilLine className="w-5 h-5 " />
-                          </div>
+                          <button
+                            onClick={() => onEditClick(dept)}
+                            className="relative btn-slide p-2.5 4xl:p-4 3xl:p-3 2xl:p-3 rounded-full border border-secondary transition-colors duration-300 text-white group"
+                          >
+                            <span className="relative z-10 flex items-center justify-center">
+                              <PencilLine className="w-5 h-5 4xl:w-6 4xl:h-6 ..." />
+                            </span>
+                          </button>
                           <li
                             onClick={() => {
                               if (dept.id !== selectedDeptId) {
@@ -153,7 +156,7 @@ const DepartmentSm = ({
                   Departments
                 </p>
               </div>
-              <div className="flex justify-end">
+              <div className="flex justify-end px-1">
                 <AddButtonSecondary
                   icon={true}
                   className={"h-[60%]"}
@@ -162,72 +165,77 @@ const DepartmentSm = ({
                 />
               </div>
               <div className="flex justify-end  col-span-3 mb-2 px-5">
-                    <input type="search" className="p-2 pr-10 bg-[#FFFFFF0F] border border-white/20 text-white font-urbanistRegular rounded-[6px] 4xl:rounded-[10px] py-2 px-4 4xl:py-3 2xl:py-1.5 lg:py-1.5 cursor-pointer text-xs 4xl:text-2xl 3xl:text-base 2xl:text-sm lg:text-xs"  placeholder="Search..." />
-                  </div>
+                <RectSearchBar className={"w-full"} />
+              </div>
               <div className="col-span-3 flex flex-col row-start-3 row-span-4 gap-y-3 px-5 pb-5 overflow-y-auto max-h-[600px] h-[100%] scrollbar-thin flex-1 ">
                 <ul className="space-y-2">
                   {departments.map((dept) => (
-                    <li
-                      className="flex flex-col items-center gap-x-2"
-                      key={dept.id}
-                    >
-                      <div
-                        onClick={() => {
-                          if (expandedDeptId === dept.id) {
-                            setExpandedDeptId(null);
-                          } else {
-                            setExpandedDeptId(dept.id);
-                            setSelectedDeptId(dept.id);
-                            setSelectedCourseId(dept.courses?.[0]?.id || "");
-                          }
-                        }}
-                        className={`flex items-center w-full justify-between gap-2 px-4 py-3 text-sm rounded-lg cursor-pointer transition-colors ${
-                          expandedDeptId === dept.id
-                            ? "bg-secondary"
-                            : "bg-white/5 hover:bg-white/10"
-                        } text-white`}
+                    <div className="flex gap-x-2 items-center" key={dept.id}>
+                      <button onClick={() => onEditClick(dept)} className="">
+                        <PencilLine className="w-5 h-5 4xl:w-6 4xl:h-6 text-white" />
+                      </button>
+                      <li
+                        className="flex flex-col items-center gap-x-2 w-full"
+                        key={dept.id}
                       >
-                        {dept.shortForm} : {dept.fullForm}
-                        <div className="h-[40px] flex items-center justify-center">
-                          {expandedDeptId === dept.id ? (
-                            <ChevronUp className="w-5 h-5 " />
-                          ) : (
-                            <ChevronDown className="w-5 h-5 " />
-                          )}
+                        <div
+                          onClick={() => {
+                            if (expandedDeptId === dept.id) {
+                              setExpandedDeptId(null);
+                            } else {
+                              setExpandedDeptId(dept.id);
+                              setSelectedDeptId(dept.id);
+                              setSelectedCourseId(dept.courses?.[0]?.id || "");
+                            }
+                          }}
+                          className={`flex items-center w-full justify-between gap-2 px-4 py-3 text-sm rounded-lg cursor-pointer transition-colors ${
+                            expandedDeptId === dept.id
+                              ? "bg-secondary"
+                              : "bg-white/5 hover:bg-white/10"
+                          } text-white`}
+                        >
+                          {dept.shortForm} : {dept.fullForm}
+                          <div className="h-[40px] flex items-center justify-center">
+                            {expandedDeptId === dept.id ? (
+                              <ChevronUp className="w-5 h-5 " />
+                            ) : (
+                              <ChevronDown className="w-5 h-5 " />
+                            )}
+                          </div>
                         </div>
-                      </div>
 
-                      {/* accordionn */}
-                      {expandedDeptId === dept.id && (
-                        <div className="mt-4 space-y-2 w-full">
-                          {dept.courses.map((course) => (
-                            <div key={course.id} className=" px-4">
-                              <p className="text-sm font-semibold text-[#9e7ceb]">
-                                {course.shortForm} - {course.fullForm}
-                              </p>
-                              <ul className="list-disc text-sm text-white mt-2">
-                                {course.semesters?.map((sem) => (
-                                  <li
-                                    key={sem.id}
-                                    className="flex items-center justify-between border-b border-white/20 py-2"
-                                  >
-                                    <span>{sem.semesterName}</span>
-                                    <a
-                                      href={sem.syllabusPdf}
-                                      target="_blank"
-                                      rel="noopener noreferrer"
-                                      className="text-xs text-secondary hover:underline ml-2 px-2 py-0.5 rounded"
+                        {/* accordionn */}
+                        {expandedDeptId === dept.id && (
+                          <div className="mt-4 space-y-2 w-full">
+                            {dept.courses.map((course) => (
+                              <div key={course.id} className=" px-4">
+                                <p className="text-sm font-semibold text-[#9e7ceb]">
+                                  {course.shortForm} - {course.fullForm}
+                                </p>
+                                <ul className="list-disc text-sm text-white mt-2">
+                                  {course.semesters?.map((sem) => (
+                                    <li
+                                      key={sem.id}
+                                      className="flex items-center justify-between border-b border-white/20 py-2"
                                     >
-                                      View Syllabus
-                                    </a>
-                                  </li>
-                                ))}
-                              </ul>
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    </li>
+                                      <span>{sem.semesterName}</span>
+                                      <a
+                                        href={sem.syllabusPdf}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="text-xs text-secondary hover:underline ml-2 px-2 py-0.5 rounded"
+                                      >
+                                        View Syllabus
+                                      </a>
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </li>
+                    </div>
                   ))}
                 </ul>
               </div>

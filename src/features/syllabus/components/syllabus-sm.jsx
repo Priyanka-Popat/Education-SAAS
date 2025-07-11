@@ -1,7 +1,7 @@
 import SmLayout from "@/components/global/sm-layout";
 import GreetingHeader from "@/components/global/greeting-header";
 import AddButtonSecondary from "@/components/ui/add-button-secondary";
-import { Filter, ChevronUp, ChevronDown } from "lucide-react";
+import { Filter, ChevronUp, ChevronDown, PencilLine } from "lucide-react";
 import DepartmentFilter from "@/components/ui/department-filter";
 import CourseFilter from "@/components/ui/course-filter";
 import { useState, useEffect, useMemo } from "react";
@@ -9,6 +9,7 @@ import Table from "@/components/global/table";
 import FilterSidebar from "@/components/ui/filter-sidebar";
 import SyllabusBgMd from "@/features/syllabus/components/syllabus-bg-md";
 import SmBg from "@/components/ui/sm-bg";
+import RectSearchBar from "@/components/ui/rect-search-bar";
 
 const SyllabusSm = ({
   SyllabusData,
@@ -17,6 +18,7 @@ const SyllabusSm = ({
   selectedDepartment,
   setSelectedDepartment,
   selectedCourse,
+  onEdit,
   setSelectedCourse,
 }) => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -117,9 +119,9 @@ const SyllabusSm = ({
 
             <div className="relative grid grid-cols-3 gap-y-3 h-full grid-rows-[auto_auto_1fr_1fr_1fr_1fr]">
               <div className="flex col-span-2 pt-5 px-5">
-              <p className="font-urbanistSemiBold text-lg">Syllabus</p>
+                <p className="font-urbanistSemiBold text-lg">Syllabus</p>
               </div>
-              <div className="flex justify-end gap-x-2">
+              <div className="flex justify-end px-1 gap-x-2">
                 <div
                   className="bg-[#1C1C1C] w-7 h-7 flex items-center justify-center rounded-full border border-[#606060]"
                   onClick={() => setIsFilterOpen(true)}
@@ -134,12 +136,8 @@ const SyllabusSm = ({
                 />
               </div>
               <div className="flex justify-end  col-span-3 mb-2 px-5">
-                    <input
-                      type="search"
-                      className="p-2 pr-10 bg-[#FFFFFF0F] border border-white/20 text-white font-urbanistRegular rounded-[6px] 4xl:rounded-[10px] py-2 px-4 4xl:py-3 2xl:py-1.5 lg:py-1.5 cursor-pointer text-xs 4xl:text-2xl 3xl:text-base 2xl:text-sm lg:text-xs"
-                      placeholder="Search..."
-                    />
-                  </div>
+                <RectSearchBar className="w-full md:w-auto" />
+              </div>
               {/* tablet */}
               <div className="col-span-3 row-start-3 row-span-4 px-5 pb-5 flex-col gap-y-3 overflow-y-auto max-h-[550px] relative z-10  hidden scrollbar-thin md:flex">
                 {filteredSyllabus.length > 0 ? (
@@ -147,6 +145,7 @@ const SyllabusSm = ({
                     data={filteredSyllabus}
                     headers={headers}
                     showActions={true}
+                    onEdit={onEdit}
                   />
                 ) : (
                   <p className="text-center text-white text-lg mt-10">
@@ -169,69 +168,92 @@ const SyllabusSm = ({
                           ?.syllabusPdf || "";
 
                       return (
-                        <li
-                          className="flex flex-col items-center gap-x-2"
+                        <div
+                          className="flex gap-x-2 items-center"
                           key={course.id}
                         >
-                          <div
+                          <button
                             onClick={() =>
-                              setSelectedCourseId(
-                                selectedCourseId === course.id
-                                  ? null
-                                  : course.id
-                              )
+                              onEdit({
+                                Course: `${course.shortForm} : ${course.fullForm}`,
+                                From: course.from,
+                                To: course.to,
+                                syllabusPdf:
+                                  course.semesters?.find(
+                                    (sem) => sem.syllabusPdf
+                                  )?.syllabusPdf || "",
+                              })
                             }
-                            className={`flex items-center w-full justify-between gap-2 px-4 py-3 text-sm rounded-lg cursor-pointer transition-colors ${
-                              selectedCourseId === course.id
-                                ? "bg-secondary"
-                                : "bg-white/5 hover:bg-white/10"
-                            } text-white`}
+                            className=""
                           >
-                            <div className="flex flex-col">
-                              <span className="font-semibold">
-                                {course.shortForm} : {course.fullForm}
-                              </span>
-                            </div>
-                            <div className="h-[40px] flex items-center justify-center">
-                              {selectedCourseId === course.id ? (
-                                <ChevronUp className="w-5 h-5" />
-                              ) : (
-                                <ChevronDown className="w-5 h-5" />
-                              )}
-                            </div>
-                          </div>
-
-                          {selectedCourseId === course.id && (
-                            <div className="mt-2 px-4 w-full flex items-center justify-between border-b border-white/20 py-2">
-                              <div className="flex flex-col gap-y-2">
-                                <p className="text-white text-sm">
-                                  From:{" "}
-                                  <span className="text-grey">
-                                    {course.from}
-                                  </span>
-                                </p>
-                                <p className="text-white text-sm">
-                                  To:{" "}
-                                  <span className="text-grey">{course.to}</span>
-                                </p>
+                            <PencilLine className="w-5 h-5 4xl:w-6 4xl:h-6 text-white" />
+                          </button>
+                          <li
+                            className="flex flex-col items-center gap-x-2 w-full"
+                            key={course.id}
+                          >
+                            <div
+                              onClick={() =>
+                                setSelectedCourseId(
+                                  selectedCourseId === course.id
+                                    ? null
+                                    : course.id
+                                )
+                              }
+                              className={`flex items-center w-full justify-between gap-2 px-4 py-3 text-sm rounded-lg cursor-pointer transition-colors ${
+                                selectedCourseId === course.id
+                                  ? "bg-secondary"
+                                  : "bg-white/5 hover:bg-white/10"
+                              } text-white`}
+                            >
+                              <div className="flex flex-col">
+                                <span className="font-semibold">
+                                  {course.shortForm} : {course.fullForm}
+                                </span>
                               </div>
-                              {syllabusPdf ? (
-                                <a
-                                  href={syllabusPdf}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="text-sm text-secondary underline"
-                                >
-                                  View Syllabus
-                                </a>
-                              ) : (
-                                <p className="text-sm text-gray-400">
-                                  No syllabus available
-                                </p>
-                              )}
+                              <div className="h-[40px] flex items-center justify-center">
+                                {selectedCourseId === course.id ? (
+                                  <ChevronUp className="w-5 h-5" />
+                                ) : (
+                                  <ChevronDown className="w-5 h-5" />
+                                )}
+                              </div>
                             </div>
-                          )}
-                        </li>
+
+                            {selectedCourseId === course.id && (
+                              <div className="mt-2 px-4 w-full flex items-center justify-between border-b border-white/20 py-2">
+                                <div className="flex flex-col gap-y-2">
+                                  <p className="text-white text-sm">
+                                    From:{" "}
+                                    <span className="text-grey">
+                                      {course.from}
+                                    </span>
+                                  </p>
+                                  <p className="text-white text-sm">
+                                    To:{" "}
+                                    <span className="text-grey">
+                                      {course.to}
+                                    </span>
+                                  </p>
+                                </div>
+                                {syllabusPdf ? (
+                                  <a
+                                    href={syllabusPdf}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-sm text-secondary underline"
+                                  >
+                                    View Syllabus
+                                  </a>
+                                ) : (
+                                  <p className="text-sm text-gray-400">
+                                    No syllabus available
+                                  </p>
+                                )}
+                              </div>
+                            )}
+                          </li>
+                        </div>
                       );
                     })}
                 </ul>

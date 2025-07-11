@@ -7,10 +7,10 @@ const dateOptions = [
   "5 July 2025",
 ];
 
-const DateFilter = ({ selected, setFilters }) => {
+const DateFilter = ({ selected, setFilters, showLabel = true }) => {
   return (
     <div className="flex flex-col gap-1">
-      <label className="text-white text-sm">Date :</label>
+      {showLabel && <label className="text-white text-sm">Date :</label>}
       <div className="relative">
         <select
           value={selected}

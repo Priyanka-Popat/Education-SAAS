@@ -15,8 +15,9 @@ import {
 import AddButtonSecondary from "@/components/ui/add-button-secondary";
 import MdListBg from "@/components/ui/md-list-bg";
 import SmBg from "@/components/ui/sm-bg";
-import SubjectDialog from "@/features/courses/components/subject-dialog.jsx";
+import SubjectDialog from "@/features/semesters/components/semester-dialog.jsx";
 import FilterSidebar from "@/components/ui/filter-sidebar";
+import RectSearchBar from "@/components/ui/rect-search-bar";
 
 const CoursesSm = ({
   selectedDeptId,
@@ -30,6 +31,7 @@ const CoursesSm = ({
   courses,
   selectedDepartment,
   setSelectedDepartment,
+  onEdit
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isCourseModalOpen, setIsCourseModalOpen] = useState(false);
@@ -76,7 +78,7 @@ const CoursesSm = ({
                       Courses
                     </p>
                   </div>
-                  <div className="flex justify-end gap-x-2">
+                  <div className="flex justify-end px-1 gap-x-2">
                     <div
                       className="bg-[#1C1C1C] w-7 h-7 flex items-center justify-center rounded-full border border-[#606060]"
                       onClick={() => setIsFilterOpen(true)}
@@ -92,11 +94,7 @@ const CoursesSm = ({
                   </div>
 
                   <div className="flex justify-end  col-span-3 mb-2 px-5">
-                    <input
-                      type="search"
-                      className="p-2 pr-10 bg-[#FFFFFF0F] border border-white/20 text-white font-urbanistRegular rounded-[6px] 4xl:rounded-[10px] py-2 px-4 4xl:py-3 2xl:py-1.5 lg:py-1.5 cursor-pointer text-xs 4xl:text-2xl 3xl:text-base 2xl:text-sm lg:text-xs"
-                      placeholder="Search..."
-                    />
+                    <RectSearchBar className={"w-full"} />
                   </div>
 
                   <div className="col-span-3 flex flex-col row-start-3 row-span-4 gap-y-3 px-5 pb-5 overflow-y-auto max-h-[600px] h-[100%] scrollbar-thin flex-1">
@@ -106,9 +104,14 @@ const CoursesSm = ({
                           className="flex items-center gap-x-2"
                           key={course.id}
                         >
-                          <div className="p-2 4xl:p-4 3xl:p-3 2xl:p-3 rounded-full border border-secondary">
-                            <PencilLine className="w-5 h-5 4xl:w-7 4xl:h-7 3xl:w-6 3xl:h-6 2xl:w-5 2xl:h-5 lg:w-4 lg:h-4 " />
-                          </div>
+                          <button
+                            onClick={() => onEdit(course)}
+                            className="relative btn-slide p-2.5 4xl:p-4 3xl:p-3 2xl:p-3 rounded-full border border-secondary transition-colors duration-300 text-white group"
+                          >
+                            <span className="relative z-10 flex items-center justify-center">
+                              <PencilLine className="w-5 h-5 4xl:w-6 4xl:h-6" />
+                            </span>
+                          </button>
                           <li
                             onClick={() => {
                               setSelectedCourseId(course.id);
@@ -163,7 +166,7 @@ const CoursesSm = ({
                   Courses
                 </p>
               </div>
-              <div className="flex justify-end gap-x-2">
+              <div className="flex justify-end px-1 gap-x-2">
                 <div
                   className="bg-[#1C1C1C] w-7 h-7 flex items-center justify-center rounded-full border border-[#606060]"
                   onClick={() => setIsFilterOpen(true)}
@@ -179,82 +182,82 @@ const CoursesSm = ({
               </div>
 
               <div className="flex justify-end  col-span-3 mb-2 px-5">
-                <input
-                  type="search"
-                  className="p-2 pr-10 bg-[#FFFFFF0F] border border-white/20 text-white font-urbanistRegular rounded-[6px] 4xl:rounded-[10px] py-2 px-4 4xl:py-3 2xl:py-1.5 lg:py-1.5 cursor-pointer text-xs 4xl:text-2xl 3xl:text-base 2xl:text-sm lg:text-xs"
-                  placeholder="Search..."
-                />
+                <RectSearchBar className={"w-full"} />
               </div>
 
               <div className="col-span-3 flex flex-col row-start-3 row-span-4 gap-y-3 px-5 pb-5 overflow-y-auto max-h-[600px] h-[100%] scrollbar-thin flex-1 ">
                 <ul className="space-y-2">
                   {courses.map((course) => (
-                    <li
-                      className="flex flex-col items-center gap-x-2"
-                      key={course.id}
-                    >
-                      {/* Accordion Trigger */}
-                      <div
-                        onClick={() => {
-                          if (expandedCourseId === course.id) {
-                            setExpandedCourseId(null);
-                          } else {
-                            setExpandedCourseId(course.id);
-                            setSelectedCourseId(course.id);
-                            setSelectedSemesterName(
-                              course.semesters?.[0]?.semesterName || ""
-                            );
-                          }
-                        }}
-                        className={`flex items-center w-full justify-between gap-2 px-4 py-3 text-sm rounded-lg cursor-pointer transition-colors ${
-                          expandedCourseId === course.id
-                            ? "bg-secondary"
-                            : "bg-white/5 hover:bg-white/10"
-                        } text-white`}
+                    <div className="flex gap-x-2 items-center" key={course.id}>
+                      <button onClick={() => onEdit(course)} className="">
+                        <PencilLine className="w-5 h-5 4xl:w-6 4xl:h-6 text-white" />
+                      </button>
+                      <li
+                        className="flex flex-col items-center gap-x-2 w-full"
+                        key={course.id}
                       >
-                        {course.shortForm} : {course.fullForm}
-                        <div className="h-[40px] flex items-center justify-center">
-                          {expandedCourseId === course.id ? (
-                            <ChevronUp className="w-5 h-5" />
-                          ) : (
-                            <ChevronDown className="w-5 h-5" />
-                          )}
+                        <div
+                          onClick={() => {
+                            if (expandedCourseId === course.id) {
+                              setExpandedCourseId(null);
+                            } else {
+                              setExpandedCourseId(course.id);
+                              setSelectedCourseId(course.id);
+                              setSelectedSemesterName(
+                                course.semesters?.[0]?.semesterName || ""
+                              );
+                            }
+                          }}
+                          className={`flex items-center w-full justify-between gap-2 px-4 py-3 text-sm rounded-lg cursor-pointer transition-colors ${
+                            expandedCourseId === course.id
+                              ? "bg-secondary"
+                              : "bg-white/5 hover:bg-white/10"
+                          } text-white`}
+                        >
+                          {course.shortForm} : {course.fullForm}
+                          <div className="h-[40px] flex items-center justify-center">
+                            {expandedCourseId === course.id ? (
+                              <ChevronUp className="w-5 h-5" />
+                            ) : (
+                              <ChevronDown className="w-5 h-5" />
+                            )}
+                          </div>
                         </div>
-                      </div>
 
-                      {/* Accordion Content */}
-                      {expandedCourseId === course.id && (
-                        <div className="mt-4 space-y-4 w-full px-4">
-                          {course.semesters?.map((sem) => (
-                            <div
-                              key={sem.id}
-                              className="border-b border-white/20 py-2"
-                            >
-                              <p className="text-sm font-semibold text-[#9e7ceb]">
-                                {sem.semesterName}
-                              </p>
+                        {/* Accordion Content */}
+                        {expandedCourseId === course.id && (
+                          <div className="mt-4 space-y-4 w-full px-4">
+                            {course.semesters?.map((sem) => (
+                              <div
+                                key={sem.id}
+                                className="border-b border-white/20 py-2"
+                              >
+                                <p className="text-sm font-semibold text-[#9e7ceb]">
+                                  {sem.semesterName}
+                                </p>
 
-                              <ul className="list-disc text-sm text-white mt-2 ml-4">
-                                {sem.tracks?.map((track) => (
-                                  <li key={track.id} className="mb-2">
-                                    <span className="text-secondary font-medium">
-                                      {track.name}:
-                                    </span>
-                                    <ul className="ml-4 mt-1 list-square">
-                                      {track.subjects.map((subj) => (
-                                        <li key={subj.id}>
-                                          {subj.code} - {subj.name}
-                                        </li>
-                                      ))}
-                                    </ul>
-                                  </li>
-                                ))}
-                              </ul>
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    </li>
+                                <ul className="list-disc text-sm text-white mt-2 ml-4">
+                                  {sem.tracks?.map((track) => (
+                                    <li key={track.id} className="mb-2">
+                                      <span className="text-secondary font-medium">
+                                        {track.name}:
+                                      </span>
+                                      <ul className="ml-4 mt-1 list-square">
+                                        {track.subjects.map((subj) => (
+                                          <li key={subj.id}>
+                                            {subj.code} - {subj.name}
+                                          </li>
+                                        ))}
+                                      </ul>
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </li>
+                    </div>
                   ))}
                 </ul>
               </div>

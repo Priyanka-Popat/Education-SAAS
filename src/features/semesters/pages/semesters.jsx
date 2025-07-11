@@ -9,9 +9,10 @@ import Heading from "@/components/ui/heading";
 import AttendanceBg from "@/components/ui/attendance-bg";
 import SemesterList from "@/features/semesters/components/semester-list";
 import TrackSelection from "@/features/semesters/components/track-selection";
-import SemesterDialog from "@/features/semesters/components/semester-dialog";
+import SemDialog from "@/features/semesters/components/semester-dialog.jsx";
 import SemesterSm from "@/features/semesters/components/semester-sm";
 import SearchBar from "@/components/ui/search-bar";
+import RectSearchBar from "@/components/ui/rect-search-bar";
 
 const Semesters = () => {
   const [selectedDepartment, setSelectedDepartment] = useState(null);
@@ -19,11 +20,20 @@ const Semesters = () => {
   const [selectedSemesterIndex, setSelectedSemesterIndex] = useState(0);
   const [selectedTrackName, setSelectedTrackName] = useState("Compulsory");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSemDialogOpen, setIsSemDialogOpen] = useState(false);
   const semesters = selectedCourse?.semesters || [];
   const selectedSemester = semesters[selectedSemesterIndex] || null;
   const selectedTrack = selectedSemester?.tracks?.find(
     (track) => track.name === selectedTrackName
   );
+  const [editSemesterData, setEditSemesterData] = useState(null);
+  const [isEditMode, setIsEditMode] = useState(false);
+
+  const handleEditSemester = (semesterObj) => {
+    setEditSemesterData(semesterObj);
+    setIsEditMode(true);
+    setIsSemDialogOpen(true);
+  };
 
   useEffect(() => {
     if (nestedData.length > 0) {
@@ -85,8 +95,8 @@ const Semesters = () => {
             <div className="grid grid-cols-11 grid-rows-9 3xl:grid-rows-8 w-full h-full">
               <Heading heading="Semesters" />
 
-              <div className="relative col-start-5 row-start-1 col-span-7 flex px-5 py-5 4xl:p-0 2xl:p-0 lg:p-0 items-end 2xl:items-start lg:items-start justify-end h-full gap-x-3">
-                <input type="search" className="p-2 pr-10 bg-[#FFFFFF0F] border border-white/20 text-white font-urbanistRegular rounded-[6px] 4xl:rounded-[10px] py-2 px-4 4xl:py-3 2xl:py-1.5 lg:py-1.5 cursor-pointer text-xs 4xl:text-2xl 3xl:text-base 2xl:text-sm lg:text-xs"  placeholder="Search..." />
+              <div className="relative col-start-4 row-start-1 col-span-8 flex px-5 py-5 4xl:p-0 2xl:p-0 lg:p-0 items-end 2xl:items-start lg:items-start justify-end h-full gap-x-3">
+                <RectSearchBar />
                 <DepartmentFilter
                   selectedDepartment={selectedDepartment}
                   setSelectedDepartment={handleDepartmentChange}
@@ -101,7 +111,11 @@ const Semesters = () => {
 
                 <AddButton
                   label="Add Semester"
-                  onClick={() => setIsModalOpen(true)}
+                  onClick={() => {
+                    setEditSemesterData(null);
+                    setIsEditMode(false);
+                    setIsSemDialogOpen(true);
+                  }}
                 />
               </div>
 
@@ -113,13 +127,12 @@ const Semesters = () => {
                 onAddSubject={() => setIsModalOpen(true)}
               />
 
-              
-
               <div className="col-start-1 row-start-2 col-span-8 row-span-7 px-5 pt-3 4xl:pt-3 pb-5 c13">
                 <SemesterList
                   semesters={semesters}
                   selectedSemesterIndex={selectedSemesterIndex}
                   onSelectSemester={setSelectedSemesterIndex}
+                  onEditSemester={handleEditSemester}
                 />
               </div>
             </div>
@@ -127,9 +140,11 @@ const Semesters = () => {
         </div>
       </DashboardLayout>
 
-      <SemesterDialog
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+      <SemDialog
+        isOpen={isSemDialogOpen}
+        onClose={() => setIsSemDialogOpen(false)}
+        isEditMode={isEditMode}
+        editSemesterData={editSemesterData}
       />
 
       <SemesterSm
@@ -143,6 +158,10 @@ const Semesters = () => {
         setSelectedTrackName={setSelectedTrackName}
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
+        setIsSemDialogOpen={setIsSemDialogOpen}
+        setEditSemesterData={setEditSemesterData}
+        setIsEditMode={setIsEditMode}
+        onEditSemester={handleEditSemester}
       />
     </>
   );

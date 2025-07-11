@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import CourseFilter from "@/components/ui/course-filter";
 import FilterSidebar from "@/components/ui/filter-sidebar";
+import RectSearchBar from "@/components/ui/rect-search-bar";
 
 const BatchesSm = ({
   selectedDepartment,
@@ -29,6 +30,7 @@ const BatchesSm = ({
   isModalOpen,
   setIsModalOpen,
   nestedData,
+  onEdit
 }) => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [expandedBatchId, setExpandedBatchId] = useState(null);
@@ -67,11 +69,11 @@ const BatchesSm = ({
                 <MdListBg />
                 <div className="relative grid grid-cols-3 gap-y-3 h-full grid-rows-[auto_auto_1fr_1fr_1fr_1fr]">
                   <div className="flex col-span-2 pt-5 px-5">
-                  <p className="font-urbanistSemiBold text-lg text-white">
-                    Batches
-                  </p>
+                    <p className="font-urbanistSemiBold text-lg text-white">
+                      Batches
+                    </p>
                   </div>
-                  <div className="flex justify-end gap-x-2">
+                  <div className="flex justify-end px-1 gap-x-2">
                     <div
                       className="bg-[#1C1C1C] w-7 h-7 flex items-center justify-center rounded-full border border-[#606060]"
                       onClick={() => setIsFilterOpen(true)}
@@ -86,11 +88,7 @@ const BatchesSm = ({
                     />
                   </div>
                   <div className="flex justify-end  col-span-3 mb-2 px-5">
-                    <input
-                      type="search"
-                      className="p-2 pr-10 bg-[#FFFFFF0F] border border-white/20 text-white font-urbanistRegular rounded-[6px] 4xl:rounded-[10px] py-2 px-4 4xl:py-3 2xl:py-1.5 lg:py-1.5 cursor-pointer text-xs 4xl:text-2xl 3xl:text-base 2xl:text-sm lg:text-xs"
-                      placeholder="Search..."
-                    />
+                    <RectSearchBar className="w-full" />
                   </div>
 
                   <div className="col-span-3 flex flex-col row-start-3 row-span-4 gap-y-3 px-5 pb-5 overflow-y-auto max-h-[600px] h-[100%] scrollbar-thin flex-1">
@@ -100,9 +98,14 @@ const BatchesSm = ({
                           className="flex items-center gap-x-2"
                           key={batch.id}
                         >
-                          <div className="p-2 4xl:p-4 3xl:p-3 2xl:p-3 rounded-full border border-secondary">
-                            <PencilLine className="w-5 h-5 4xl:w-7 4xl:h-7 3xl:w-6 3xl:h-6 2xl:w-5 2xl:h-5 lg:w-4 lg:h-4 " />
-                          </div>
+                          <button
+                            onClick={() => onEdit(batch)}
+                            className="relative btn-slide p-2.5 4xl:p-4 3xl:p-3 2xl:p-3 rounded-full border border-secondary transition-colors duration-300 text-white group"
+                          >
+                            <span className="relative z-10 flex items-center justify-center">
+                              <PencilLine className="w-5 h-5 4xl:w-6 4xl:h-6 ..." />
+                            </span>
+                          </button>
                           <li
                             className={`flex items-center w-full justify-between gap-2 px-4 py-3 text-sm rounded-lg cursor-pointer transition-colors ${
                               selectedBatchId === batch.id
@@ -146,34 +149,34 @@ const BatchesSm = ({
                 <p className="font-urbanistSemiBold text-white text-lg">
                   Batches
                 </p>
-                </div>
-                <div className="flex justify-end gap-x-2">
+              </div>
+              <div className="flex justify-end px-1 gap-x-2">
                 <div
                   className="bg-[#1C1C1C] w-7 h-7 flex items-center justify-center rounded-full border border-[#606060]"
                   onClick={() => setIsFilterOpen(true)}
                 >
                   <Filter className="w-4 h-4 text-white" />
                 </div>
-                  <AddButtonSecondary
-                    icon={true}
-                    label="Add"
-                    className={"h-[60%]"}
-                    onClick={() => setIsModalOpen(true)}
-                  />
+                <AddButtonSecondary
+                  icon={true}
+                  label="Add"
+                  className={"h-[60%]"}
+                  onClick={() => setIsModalOpen(true)}
+                />
               </div>
               <div className="flex justify-end  col-span-3 mb-2 px-5">
-                <input
-                  type="search"
-                  className="p-2 pr-10 bg-[#FFFFFF0F] border border-white/20 text-white font-urbanistRegular rounded-[6px] 4xl:rounded-[10px] py-2 px-4 4xl:py-3 2xl:py-1.5 lg:py-1.5 cursor-pointer text-xs 4xl:text-2xl 3xl:text-base 2xl:text-sm lg:text-xs"
-                  placeholder="Search..."
-                />
+                <RectSearchBar className="w-full" />
               </div>
               <div className="col-span-3 flex flex-col row-start-3 row-span-4 gap-y-3 px-5 pb-5 overflow-y-auto max-h-[600px] h-[100%] scrollbar-thin flex-1 ">
                 <ul className="space-y-2">
                   {batches.map((batch) => (
+                    <div className="flex gap-x-2 items-center" key={batch.id}>
+                      <button onClick={()=> onEdit(batch)} className="">
+                        <PencilLine className="w-5 h-5 4xl:w-6 4xl:h-6 text-white" />
+                      </button>
                     <li
                       key={batch.id}
-                      className={`flex flex-col items-center gap-x-2`}
+                      className={`flex flex-col items-center gap-x-2 w-full`}
                     >
                       <div
                         onClick={() => {
@@ -214,6 +217,7 @@ const BatchesSm = ({
                           </div>
                         )}
                     </li>
+                    </div>
                   ))}
                 </ul>
               </div>

@@ -11,6 +11,7 @@ import SyllabusBg from "@/components/ui/syllabus-bg";
 import SyllabusDialog from "@/features/syllabus/components/syllabus-dialog";
 import SyllabusSm from "@/features/syllabus/components/syllabus-sm";
 import SearchBar from "@/components/ui/search-bar";
+import RectSearchBar from "@/components/ui/rect-search-bar";
 
 const headers = [
   { key: "Course", label: "Course", align: "left", width: "35%" },
@@ -39,6 +40,32 @@ const Syllabus = () => {
   const [selectedDeptId, setSelectedDeptId] = useState(null);
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [editData, setEditData] = useState(null);
+
+  const handleEdit = (row) => {
+    const courseShortForm = row.Course?.split(" : ")[0];
+
+    const matchedCourse = selectedDepartment?.courses.find(
+      (course) => course.shortForm === courseShortForm
+    );
+
+    if (!matchedCourse) {
+      alert("Matching course not found.");
+      return;
+    }
+
+    setEditData({
+      deptId: selectedDeptId,
+      courseId: matchedCourse.id,
+      from: row.From,
+      to: row.To,
+      syllabusPdf: row.syllabusPdf,
+    });
+
+    setIsEditMode(true);
+    setIsModalOpen(true);
+  };
 
   useEffect(() => {
     if (SyllabusData.length > 0) {
@@ -129,7 +156,7 @@ const Syllabus = () => {
               <Heading heading="Syllabus" />
 
               <div className="relative col-start-5 row-start-1 col-span-7 flex px-5 py-5 4xl:p-0 2xl:p-0 lg:p-0 items-end 2xl:items-start lg:items-start justify-end h-full gap-x-3">
-                <input type="search" className="p-2 pr-10 bg-[#FFFFFF0F] border border-white/20 text-white font-urbanistRegular rounded-[6px] 4xl:rounded-[10px] py-2 px-4 4xl:py-3 2xl:py-1.5 lg:py-1.5 cursor-pointer text-xs 4xl:text-2xl 3xl:text-base 2xl:text-sm lg:text-xs"  placeholder="Search..." />
+                <RectSearchBar />
                 <DepartmentFilter
                   selectedDepartment={selectedDepartment}
                   setSelectedDepartment={(dept) => {
@@ -151,14 +178,13 @@ const Syllabus = () => {
                 />
               </div>
 
-              
-
-              <div className="col-start-1 row-start-2 col-span-12 c13 row-span-7 px-5 pt-3 4xl:pt-3 pb-5">
+              <div className="col-start-1 row-start-2 col-span-12 c13 row-span-8 px-5 pt-3 4xl:pt-3 pb-5">
                 {filteredSyllabus.length > 0 ? (
                   <Table
                     data={filteredSyllabus}
                     headers={headers}
                     showActions={true}
+                    onEdit={handleEdit}
                   />
                 ) : (
                   <p className="text-center text-white text-lg mt-10">
@@ -173,8 +199,14 @@ const Syllabus = () => {
 
       <SyllabusDialog
         isOpen={isModalOpen}
-        onClose={handleClose}
+        onClose={() => {
+          setIsModalOpen(false);
+          setIsEditMode(false);
+          setEditData(null);
+        }}
         initialDeptId={selectedDeptId}
+        isEditMode={isEditMode}
+        editData={editData}
       />
 
       <SyllabusSm
@@ -185,6 +217,7 @@ const Syllabus = () => {
         setSelectedDepartment={setSelectedDepartment}
         selectedCourse={selectedCourse}
         setSelectedCourse={setSelectedCourse}
+        onEdit={handleEdit}
       />
     </>
   );

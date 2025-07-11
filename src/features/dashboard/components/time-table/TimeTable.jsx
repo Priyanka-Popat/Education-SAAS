@@ -57,8 +57,8 @@ const TimeTable = () => {
         </div>
 
         <div className="px-4 pb-4">
-          <div className="flex justify-center overflow-y-auto max-h-[220px]">
-            <div className="flex flex-col justify-between h-full w-[100%] gap-y-2 3xl:max-h-[200px] scrollbar-thin">
+          <div className="flex justify-center overflow-y-auto max-h-[220px] scrollbar-thin">
+            <div className="flex flex-col justify-between h-full w-[100%] gap-y-2 3xl:max-h-[200px]">
               {limitedItems.map((item, idx) => (
                 <TimetableItem key={idx} {...item} />
               ))}

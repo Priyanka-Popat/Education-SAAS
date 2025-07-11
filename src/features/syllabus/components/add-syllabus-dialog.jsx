@@ -2,7 +2,12 @@ import { useState, useEffect, useRef } from "react";
 import { Calendar, Upload, ChevronDown } from "lucide-react";
 import departments from "@/data/NestedData.json";
 
-export default function Dialog({ onClose, initialDeptId }) {
+export default function Dialog({
+  onClose,
+  initialDeptId,
+  isEditMode = false,
+  editData = null,
+}) {
   const modalRef = useRef(null);
 
   const currentYear = new Date().getFullYear();
@@ -45,6 +50,15 @@ export default function Dialog({ onClose, initialDeptId }) {
     };
   }, [onClose]);
 
+  useEffect(() => {
+    if (isEditMode && editData) {
+      setSelectedDeptId(editData.deptId);
+      setSelectedCourseId(editData.courseId);
+      setFromYear(editData.from);
+      setToYear(editData.to);
+    }
+  }, [isEditMode, editData]);
+
   return (
     <div className="min-h-screen inset-0 bg-black bg-opacity-70 backdrop-blur-sm flex items-center justify-center z-50">
       <div
@@ -54,14 +68,12 @@ export default function Dialog({ onClose, initialDeptId }) {
         <div className="flex items-center justify-between mb-6">
           <div className="w-full">
             <div className={`flex-1 h-1 rounded-full mb-5 bg-secondary`}></div>
-            <span className="text-secondary font-medium">
-              Syllabus
-            </span>
+            <span className="text-secondary font-medium">Syllabus</span>
           </div>
         </div>
 
         <h2 className="text-2xl font-semibold text-white font-urbanistSemiBold mb-4">
-          Add Syllabus
+          {isEditMode ? "Edit Syllabus" : "Add Syllabus"}
         </h2>
 
         <div className="space-y-6">
@@ -82,11 +94,7 @@ export default function Dialog({ onClose, initialDeptId }) {
                   Select Department
                 </option>
                 {departments.map((dept) => (
-                  <option
-                    key={dept.id}
-                    value={dept.id}
-                    className="bg-primary"
-                  >
+                  <option key={dept.id} value={dept.id} className="bg-primary">
                     {dept.shortForm}
                   </option>
                 ))}
@@ -210,10 +218,16 @@ export default function Dialog({ onClose, initialDeptId }) {
             Cancel
           </button>
           <button
-            onClick={() => alert("Syllabus Added Successfully")}
+            onClick={() => {
+              if (isEditMode) {
+                alert("Syllabus Updated Successfully");
+              } else {
+                alert("Syllabus Added Successfully");
+              }
+            }}
             className="bg-secondary text-white font-medium px-6 py-2 rounded-lg transition-colors"
           >
-            Add
+            {isEditMode ? "Update" : "Add"}
           </button>
         </div>
       </div>

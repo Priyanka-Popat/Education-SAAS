@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import GreetingHeader from "@/components/global/greeting-header";
 import DepartmentFilter from "@/components/ui/department-filter";
 import CourseFilter from "@/components/ui/course-filter";
-import SemesterDialog from "@/features/semesters/components/semester-dialog";
+import SemesterDialog from "@/features/semesters/components/subject-dialog";
 import {
   Filter,
   ChevronDown,
@@ -17,6 +17,7 @@ import SmBg from "@/components/ui/sm-bg";
 import SmLayout from "@/components/global/sm-layout";
 import TrackSelection from "@/features/semesters/components/track-selection";
 import FilterSidebar from "@/components/ui/filter-sidebar";
+import RectSearchBar from "@/components/ui/rect-search-bar";
 
 const SemesterSm = ({
   selectedDepartment,
@@ -29,6 +30,10 @@ const SemesterSm = ({
   setSelectedTrackName,
   isModalOpen,
   setIsModalOpen,
+  setIsSemDialogOpen,
+  setEditSemesterData,
+  setIsEditMode,
+  onEditSemester
 }) => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
@@ -71,7 +76,7 @@ const SemesterSm = ({
                   <div className="flex col-span-2 pt-5 px-5">
                     <p className="font-urbanistSemiBold text-lg">Semesters</p>
                   </div>
-                  <div className="flex justify-end gap-x-2">
+                  <div className="flex justify-end px-1 gap-x-2">
                     <div
                       className="bg-[#1C1C1C] w-7 h-7 flex items-center justify-center rounded-full border border-[#606060]"
                       onClick={() => setIsFilterOpen(true)}
@@ -82,16 +87,16 @@ const SemesterSm = ({
                       icon={true}
                       className={"h-[60%]"}
                       label="Add"
-                      onClick={() => setIsModalOpen(true)}
+                      onClick={() => {
+                        setEditSemesterData(null);
+                        setIsEditMode(false);
+                        setIsSemDialogOpen(true);
+                      }}
                     />
                   </div>
 
                   <div className="flex justify-end  col-span-3 mb-2 px-5">
-                    <input
-                      type="search"
-                      className="p-2 pr-10 bg-[#FFFFFF0F] border border-white/20 text-white font-urbanistRegular rounded-[6px] 4xl:rounded-[10px] py-2 px-4 4xl:py-3 2xl:py-1.5 lg:py-1.5 cursor-pointer text-xs 4xl:text-2xl 3xl:text-base 2xl:text-sm lg:text-xs"
-                      placeholder="Search..."
-                    />
+                    <RectSearchBar className="w-full" />
                   </div>
 
                   <div className="col-span-3 flex flex-col row-start-3 row-span-4 gap-y-3 px-5 pb-5 overflow-y-auto max-h-[600px] h-[100%] scrollbar-thin flex-1">
@@ -101,9 +106,14 @@ const SemesterSm = ({
                           className="flex items-center gap-x-2"
                           key={semester.id}
                         >
-                          <div className="p-2 4xl:p-4 3xl:p-3 2xl:p-3 rounded-full border border-secondary">
-                            <PencilLine className="w-5 h-5 4xl:w-7 4xl:h-7 3xl:w-6 3xl:h-6 2xl:w-5 2xl:h-5 lg:w-4 lg:h-4 " />
-                          </div>
+                          <button
+                            onClick={() => onEditSemester(semester)}
+                            className="relative btn-slide p-2.5 4xl:p-4 3xl:p-3 2xl:p-3 rounded-full border border-secondary transition-colors duration-300 text-white group"
+                          >
+                            <span className="relative z-10 flex items-center justify-center">
+                              <PencilLine className="w-5 h-5 4xl:w-6 4xl:h-6 ..." />
+                            </span>
+                          </button>
                           <li
                             onClick={() => {
                               setSelectedSemesterIndex(index);
@@ -155,7 +165,7 @@ const SemesterSm = ({
                   Semesters
                 </p>
               </div>
-              <div className="flex justify-end gap-x-2">
+              <div className="flex justify-end px-1 gap-x-2">
                 <div
                   className="bg-[#1C1C1C] w-7 h-7 flex items-center justify-center rounded-full border border-[#606060]"
                   onClick={() => setIsFilterOpen(true)}
@@ -164,69 +174,74 @@ const SemesterSm = ({
                 </div>
                 <AddButtonSecondary
                   icon={true}
-                  label="Add"
                   className={"h-[60%]"}
-                  onClick={() => setIsModalOpen(true)}
+                  label="Add"
+                  onClick={() => {
+                    setEditSemesterData(null);
+                    setIsEditMode(false);
+                    setIsSemDialogOpen(true);
+                  }}
                 />
               </div>
 
               <div className="flex justify-end  col-span-3 mb-2 px-5">
-                <input
-                  type="search"
-                  className="p-2 pr-10 bg-[#FFFFFF0F] border border-white/20 text-white font-urbanistRegular rounded-[6px] 4xl:rounded-[10px] py-2 px-4 4xl:py-3 2xl:py-1.5 lg:py-1.5 cursor-pointer text-xs 4xl:text-2xl 3xl:text-base 2xl:text-sm lg:text-xs"
-                  placeholder="Search..."
-                />
+                <RectSearchBar className="w-full" />
               </div>
 
               <div className="col-span-3 flex flex-col row-start-3 row-span-4 gap-y-3 px-5 pb-5 overflow-y-auto max-h-[600px] h-[100%] scrollbar-thin flex-1 ">
                 <ul className="space-y-2">
                   {semesters.map((semester, index) => (
-                    <li key={semester.id} className="flex flex-col gap-y-2">
-                      <div
-                        onClick={() => {
-                          if (expandedSemesterIndex === index) {
-                            setExpandedSemesterIndex(null);
-                          } else {
-                            setExpandedSemesterIndex(index);
-                            setSelectedSemesterIndex(index);
-                            setSelectedTrackName(
-                              semester.tracks?.[0]?.name || ""
-                            );
-                          }
-                        }}
-                        className={`flex items-center justify-between px-4 py-3 rounded-lg cursor-pointer transition-colors text-white text-sm ${
-                          expandedSemesterIndex === index
-                            ? "bg-secondary"
-                            : "bg-white/5 hover:bg-white/10"
-                        }`}
-                      >
-                        {semester.semesterName}
-                        {expandedSemesterIndex === index ? (
-                          <ChevronUp className="w-5 h-5" />
-                        ) : (
-                          <ChevronDown className="w-5 h-5" />
-                        )}
-                      </div>
-
-                      {expandedSemesterIndex === index && (
-                        <div className="mt-2 space-y-4 px-4">
-                          {(semester.tracks || []).map((track) => (
-                            <div key={track.id}>
-                              <p className="text-sm font-semibold text-[#9e7ceb]">
-                                {track.name}
-                              </p>
-                              <ul className="list-disc ml-4 mt-1 text-sm text-white">
-                                {(track.subjects || []).map((subj) => (
-                                  <li key={subj.id}>
-                                    {subj.code} - {subj.name}
-                                  </li>
-                                ))}
-                              </ul>
-                            </div>
-                          ))}
+                    <div className="flex gap-x-2 items-center" key={index}>
+                      <button onClick={()=> onEditSemester(semester)} className="">
+                        <PencilLine className="w-5 h-5 4xl:w-6 4xl:h-6 text-white" />
+                      </button>
+                      <li key={semester.id} className="flex flex-col gap-y-2 w-full">
+                        <div
+                          onClick={() => {
+                            if (expandedSemesterIndex === index) {
+                              setExpandedSemesterIndex(null);
+                            } else {
+                              setExpandedSemesterIndex(index);
+                              setSelectedSemesterIndex(index);
+                              setSelectedTrackName(
+                                semester.tracks?.[0]?.name || ""
+                              );
+                            }
+                          }}
+                          className={`flex items-center justify-between px-4 py-3 rounded-lg cursor-pointer transition-colors text-white text-sm ${
+                            expandedSemesterIndex === index
+                              ? "bg-secondary"
+                              : "bg-white/5 hover:bg-white/10"
+                          }`}
+                        >
+                          {semester.semesterName}
+                          {expandedSemesterIndex === index ? (
+                            <ChevronUp className="w-5 h-5" />
+                          ) : (
+                            <ChevronDown className="w-5 h-5" />
+                          )}
                         </div>
-                      )}
-                    </li>
+
+                        {expandedSemesterIndex === index && (
+                          <div className="mt-2 space-y-4 px-4">
+                            {(semester.tracks || []).map((track) => (
+                              <div key={track.id}>
+                                <p className="text-sm font-semibold text-[#9e7ceb]">
+                                  {track.name}
+                                </p>
+                                <ul className="list-disc ml-4 mt-1 text-sm text-white">
+                                  {(track.subjects || []).map((subj) => (
+                                    <li key={subj.id}>
+                                      {subj.code} - {subj.name}
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </li>
+                    </div>
                   ))}
                 </ul>
               </div>
@@ -249,11 +264,6 @@ const SemesterSm = ({
           courses={selectedDepartment?.courses || []}
         />
       </FilterSidebar>
-
-      <SemesterDialog
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-      />
     </>
   );
 };

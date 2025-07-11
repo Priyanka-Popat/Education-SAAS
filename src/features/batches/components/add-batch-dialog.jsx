@@ -1,9 +1,16 @@
 import { useState, useEffect, useRef } from "react";
-import { Calendar, Upload, Plus, ChevronDown } from "lucide-react";
+import { Upload, ChevronDown } from "lucide-react";
 
-export default function BatchDialog({ onClose, initialDeptId }) {
+export default function BatchDialog({
+  onClose,
+  mode = "add",
+  batchToEdit = null,
+  initialDeptId,
+}) {
+  console.log("Mode:", mode);
   const modalRef = useRef(null);
   const [selectedDeptId, setSelectedDeptId] = useState(initialDeptId);
+
   const [batches, setBatches] = useState([
     {
       syllabusId: "",
@@ -12,6 +19,26 @@ export default function BatchDialog({ onClose, initialDeptId }) {
       studentsFile: null,
     },
   ]);
+
+  useEffect(() => {
+  if (mode === "edit" && batchToEdit) {
+    setBatches([{
+      syllabusId: batchToEdit.syllabusId || "",
+      fromYear: batchToEdit.fromYear || "",
+      toYear: batchToEdit.toYear || "",
+      studentsFile: batchToEdit.studentsFile || null,
+    }]);
+  } else {
+    // Clear form if switching to add mode
+    setBatches([{
+      syllabusId: "",
+      fromYear: "",
+      toYear: "",
+      studentsFile: null,
+    }]);
+  }
+}, [mode, batchToEdit]);
+
 
   const addNewBatch = () => {
     setBatches((prev) => [
@@ -31,44 +58,11 @@ export default function BatchDialog({ onClose, initialDeptId }) {
     setBatches(updated);
   };
 
-  const isBatchComplete = (batch) => {
-    return (
-      batch.syllabusId &&
-      batch.fromYear &&
-      batch.toYear &&
-      batch.studentsFile
-    );
-  };
-
-  const isAddBatchDisabled = !batches.every(isBatchComplete);
-
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key === "Escape") {
-        onClose();
-      }
-    };
-
-    const handleClickOutside = (e) => {
-      if (modalRef.current && !modalRef.current.contains(e.target)) {
-        onClose();
-      }
-    };
-
-    document.addEventListener("keydown", handleKeyDown);
-    document.addEventListener("mousedown", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [onClose]);
-
   const renderBatchStep = () => (
     <div className="space-y-6">
       <div className="flex items-center justify-center mb-4">
         <h2 className="text-2xl font-semibold text-white font-urbanistSemiBold">
-          Add Batches
+          {mode === "edit" ? "Edit Batch" : "Add Batches"}
         </h2>
       </div>
 
@@ -85,20 +79,22 @@ export default function BatchDialog({ onClose, initialDeptId }) {
               }
               className="w-full bg-white/5 appearance-none border border-gray-600 rounded-lg px-4 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
-              <option className="bg-primary" value="">2025</option>
-              <option className="bg-primary" value="">2026</option>
-              <option className="bg-primary" value="">2027</option>
-              <option className="bg-primary" value="">2028</option>
-
-              {/* {syllabuses.map((syllabus) => (
-                <option key={syllabus.id} value={syllabus.id}>
-                  {syllabus.name}
-                </option>
-              ))} */}
+              <option className="bg-primary" value="">
+                2025
+              </option>
+              <option className="bg-primary" value="">
+                2026
+              </option>
+              <option className="bg-primary" value="">
+                2027
+              </option>
+              <option className="bg-primary" value="">
+                2028
+              </option>
             </select>
-             <div className="absolute inset-y-0 right-2 top-7 flex items-center pointer-events-none">
-                  <ChevronDown size={18} className="text-white/70" />
-                </div>
+            <div className="absolute inset-y-0 right-2 top-7 flex items-center pointer-events-none">
+              <ChevronDown size={18} className="text-white/70" />
+            </div>
           </div>
 
           <div className="grid md:grid-cols-2 grid-cols-1 gap-4">
@@ -164,20 +160,37 @@ export default function BatchDialog({ onClose, initialDeptId }) {
     </div>
   );
 
+  const handleWrapperClick = (e) => {
+    if (modalRef.current && !modalRef.current.contains(e.target)) {
+      onClose();
+    }
+  };
+
+  useEffect(() => {
+    const handleEscape = (e) => {
+      if (e.key === "Escape") onClose();
+    };
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
+  }, [onClose]);
+
   return (
-    <div className="min-h-screen inset-0 bg-black bg-opacity-70 backdrop-blur-sm flex items-center justify-center z-50">
+    <div
+      onClick={handleWrapperClick}
+      className="fixed inset-0 min-h-screen bg-black bg-opacity-70 backdrop-blur-sm flex items-center justify-center z-50"
+    >
       <div
         ref={modalRef}
+        onClick={(e) => e.stopPropagation()}
         className="w-full max-w-[38rem] bg-primary rounded-xl p-6"
       >
         <div className="flex items-center justify-between mb-6">
           <div className="w-full">
             <div className={`flex-1 h-1 rounded-full mb-5 bg-secondary`}></div>
-            <span className="text-secondary font-medium">
-              Batch
-            </span>
+            <span className="text-secondary font-medium">Batch</span>
           </div>
         </div>
+        
 
         {renderBatchStep()}
 
@@ -189,10 +202,16 @@ export default function BatchDialog({ onClose, initialDeptId }) {
             Cancel
           </button>
           <button
-            onClick={() => alert("Batch Added Successfully")}
+            onClick={() => {
+              if (mode === "edit") {
+                alert("Batch Edited Successfully");
+              } else {
+                alert("Batch Added Successfully");
+              }
+            }}
             className="bg-secondary text-white font-medium px-6 py-2 rounded-lg transition-colors"
           >
-            Add
+            {mode === "edit" ? "Update" : "Add"}
           </button>
         </div>
       </div>

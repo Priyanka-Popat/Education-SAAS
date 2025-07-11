@@ -10,7 +10,7 @@ import DepartmentList from "@/features/departments/components/department-list";
 import CourseDialog from "@/features/departments/components/course-dialog";
 import DepartmentDialog from "@/features/departments/components/department-dialog";
 import DepartmentSm from "@/features/departments/components/deparment-sm";
-
+import RectSearchBar from "@/components/ui/rect-search-bar";
 
 const Departments = () => {
   const [selectedDeptId, setSelectedDeptId] = useState(null);
@@ -18,6 +18,8 @@ const Departments = () => {
   const [selectedSemesterIndex, setSelectedSemesterIndex] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isCourseModalOpen, setIsCourseModalOpen] = useState(false);
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const [editDeptData, setEditDeptData] = useState(null);
 
   const selectedDepartment = useMemo(() => {
     return departments.find((d) => d.id === Number(selectedDeptId)) || null;
@@ -52,6 +54,17 @@ const Departments = () => {
     setIsCourseModalOpen(false);
   };
 
+  const handleEditClick = (dept) => {
+    setEditDeptData({
+      department: {
+        fullForm: dept.fullForm,
+        shortForm: dept.shortForm,
+      },
+      courses: dept.courses || [],
+    });
+    setEditDialogOpen(true);
+  };
+
   return (
     <>
       <DashboardLayout
@@ -68,20 +81,25 @@ const Departments = () => {
             <div className="grid grid-cols-11 grid-rows-9 3xl:grid-rows-8 w-full h-full">
               <Heading heading="Departments" />
               <div className="relative col-start-8 row-start-1 col-span-6 gap-x-3 flex px-5 py-5 4xl:p-0 2xl:p-0 lg:p-0 items-end 2xl:items-start lg:items-start justify-end h-full">
-                <input type="search" className="p-2 pr-10 bg-[#FFFFFF0F] border border-white/20 text-white font-urbanistRegular rounded-[6px] 4xl:rounded-[10px] py-2 px-4 4xl:py-3 2xl:py-1.5 lg:py-1.5 cursor-pointer text-xs 4xl:text-2xl 3xl:text-base 2xl:text-sm lg:text-xs"  placeholder="Search..." />
+                {/* <input
+                  type="search"
+                  className="p-2 bg-[#FFFFFF0F] border border-white/20 text-white font-urbanistRegular rounded-[6px] 4xl:rounded-[10px] py-2 px-4 4xl:py-3 2xl:py-1.5 lg:py-1.5 cursor-pointer text-xs 4xl:text-2xl 3xl:text-base 2xl:text-sm lg:text-xs"
+                  placeholder="Search..."
+                /> */}
+                <RectSearchBar />
                 <AddButton
                   label="Add Department"
                   onClick={() => setIsModalOpen(true)}
                 />
               </div>
 
-              
               <div className="col-start-1 row-start-2 col-span-8 c13 row-span-6 2xl:row-span-7 px-5 pt-3 4xl:pt-3 pb-5">
                 <DepartmentList
                   departments={departments}
                   selectedDeptId={selectedDeptId}
                   setSelectedDeptId={setSelectedDeptId}
                   setSelectedCourseId={setSelectedCourseId}
+                  onEditClick={handleEditClick}
                 />
               </div>
 
@@ -105,6 +123,19 @@ const Departments = () => {
         initialDeptId={selectedDeptId}
       />
 
+      {editDialogOpen && (
+        <DepartmentDialog
+          isOpen={editDialogOpen}
+          mode="edit"
+          initialData={editDeptData}
+          onSubmit={(data) => {
+            console.log("Edited Data:", data);
+            setEditDialogOpen(false);
+          }}
+          onClose={() => setEditDialogOpen(false)}
+        />
+      )}
+
       <DepartmentSm
         departments={departments}
         selectedDeptId={selectedDeptId}
@@ -114,6 +145,7 @@ const Departments = () => {
         selectedCourseId={selectedCourseId}
         selectedCourse={selectedCourse}
         onAddCourse={() => setIsCourseModalOpen(true)}
+        onEditClick={handleEditClick}
       />
     </>
   );

@@ -1,7 +1,7 @@
 import { X } from "lucide-react";
-import AddSubject from "./add-subject-dialog";
+import AddSemester from "@/features/semesters/components/add-subject-dialog.jsx";
 
-const SubjectModal = ({ isOpen, onClose }) => {
+export default function SemesterDialog({ isOpen, onClose, mode = "add", semesterToEdit = null }) {
   if (!isOpen) return null;
 
   return (
@@ -13,10 +13,12 @@ const SubjectModal = ({ isOpen, onClose }) => {
         >
           <X size={24} />
         </button>
-        <AddSubject onClose={onClose} />
+        <AddSemester
+          onClose={onClose}
+          mode={mode}
+          semesterToEdit={semesterToEdit}
+        />
       </div>
     </div>
   );
-};
-
-export default SubjectModal;
+}

@@ -1,9 +1,13 @@
 import { useState, useEffect, useRef } from "react";
 import { Calendar, Upload, Plus } from "lucide-react";
 
-export default function Dialog({ onClose }) {
+export default function Dialog({ onClose, mode = "add", initialData = {}, onSubmit }) {
   const modalRef = useRef(null);
   const [currentStep, setCurrentStep] = useState(1);
+
+  const [Department, setDepartment] = useState("");
+  const [departmentShortForm, setDepartmentShortForm] = useState("");
+  const [isOnline, setIsOnline] = useState(false);
 
   const [courses, setCourses] = useState([
     {
@@ -14,6 +18,20 @@ export default function Dialog({ onClose }) {
       syllabusFile: null,
     },
   ]);
+
+  const totalSteps = 2;
+
+  useEffect(() => {
+    if (mode === "edit" && initialData) {
+      if (initialData.department) {
+        setDepartment(initialData.department.fullForm || "");
+        setDepartmentShortForm(initialData.department.shortForm || "");
+      }
+      if (Array.isArray(initialData.courses)) {
+        setCourses(initialData.courses);
+      }
+    }
+  }, [initialData, mode]);
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -36,13 +54,9 @@ export default function Dialog({ onClose }) {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [onClose]);
-  const [Department, setDepartment] = useState("");
-  const [isOnline, setIsOnline] = useState(false);
-
-  const totalSteps = 2;
 
   const handleNext = () => {
-    if (currentStep < 3) {
+    if (currentStep < totalSteps) {
       setCurrentStep(currentStep + 1);
     }
   };
@@ -84,11 +98,22 @@ export default function Dialog({ onClose }) {
     setCourses(updatedCourses);
   };
 
+  const handleSubmit = () => {
+    const payload = {
+      department: {
+        fullForm: Department,
+        shortForm: departmentShortForm,
+      },
+      courses,
+    };
+    onSubmit(payload);
+  };
+
   const renderDepartmentStep = () => (
     <div className="space-y-6">
-      <div className="text-center mb-8">
-        <h2 className="text-2xl font-semibold text-white mb-2 font-urbanistSemiBold">
-          Department
+      <div className=" mb-8">
+        <h2 className="text-2xl text-center font-semibold text-white mb-2 font-urbanistSemiBold">
+          {mode === "edit" ? "Edit Department" : "Add Department"}
         </h2>
       </div>
 
@@ -114,6 +139,8 @@ export default function Dialog({ onClose }) {
             <input
               type="text"
               placeholder="Enter Department Short Form"
+              value={departmentShortForm}
+              onChange={(e) => setDepartmentShortForm(e.target.value)}
               className="w-full bg-white/5 border border-gray-600 rounded-lg px-4 py-2 placeholder:text-sm text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent"
             />
           </div>
@@ -139,7 +166,7 @@ export default function Dialog({ onClose }) {
     <div className="space-y-6">
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-2xl font-semibold text-white font-urbanistSemiBold">
-          Courses
+          {mode === "edit" ? "Edit Courses" : "Add Courses"}
         </h2>
         <button
           type="button"
@@ -158,7 +185,7 @@ export default function Dialog({ onClose }) {
         <div key={index} className="bg-white/5 p-4 rounded-lg space-y-4">
           <div>
             <label className="block text-white text-sm font-medium mb-2">
-              Course Department Full Form <span className="text-red">*</span>
+              Course Full Form <span className="text-red">*</span>
             </label>
             <input
               type="text"
@@ -323,22 +350,16 @@ export default function Dialog({ onClose }) {
           </button>
           <div className="flex gap-3">
             <button
-              onClick={() => {
-                onClose();
-              }}
+              onClick={onClose}
               className="text-gray-400 hover:text-gray-300 font-medium px-6 py-2 transition-colors"
             >
               Cancel
             </button>
             <button
-              onClick={
-                currentStep === totalSteps
-                  ? () => alert("Added Successfully")
-                  : handleNext
-              }
+              onClick={currentStep === totalSteps ? handleSubmit : handleNext}
               className="bg-secondary text-white font-medium px-6 py-2 rounded-lg transition-colors"
             >
-              {currentStep === 2 ? "Add" : "Next"}
+              {currentStep === totalSteps ? (mode === "edit" ? "Update" : "Add") : "Next"}
             </button>
           </div>
         </div>

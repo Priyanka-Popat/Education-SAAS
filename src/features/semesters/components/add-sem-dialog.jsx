@@ -1,9 +1,14 @@
 import { useState, useEffect, useRef } from "react";
 import { Calendar, Plus, ChevronDown } from "lucide-react";
 
-export default function Dialog({ onClose }) {
+export default function AddSem({ onClose, isEditMode, editSemesterData }) {
   const modalRef = useRef(null);
   const [currentStep, setCurrentStep] = useState(1);
+  const [Department, setDepartment] = useState("");
+  const [isOnline, setIsOnline] = useState(false);
+  const [semesterName, setSemesterName] = useState("");
+
+  const totalSteps = 3;
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -26,10 +31,33 @@ export default function Dialog({ onClose }) {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [onClose]);
-  const [Department, setDepartment] = useState("");
-  const [isOnline, setIsOnline] = useState(false);
 
-  const totalSteps = 3;
+ useEffect(() => {
+  if (isEditMode && editSemesterData) {
+    setDepartment(editSemesterData.department || "");
+    setSemesterName(editSemesterData.semesterName || "");
+
+    // Set tracks as-is
+    setSubjectTracks(
+      (editSemesterData.tracks || []).map((track) => ({
+        fullForm: track.name,
+        isElective: track.name?.toLowerCase().includes("optional"),
+      }))
+    );
+
+    // 🔥 Flatten subjects from tracks
+    const extractedSubjects = (editSemesterData.tracks || []).flatMap((track) =>
+      (track.subjects || []).map((subject) => ({
+        subjectTrack: track.name || "", // e.g., "Compulsory"
+        subjectCode: subject.code || "",
+        subjectName: subject.name || "",
+      }))
+    );
+
+    setSubjects(extractedSubjects);
+  }
+}, [isEditMode, editSemesterData]);
+
 
   const handleNext = () => {
     if (currentStep < 3) {
@@ -43,10 +71,10 @@ export default function Dialog({ onClose }) {
     }
   };
 
-  const handleCourseChange = (index, field, value) => {
-    const updatedCourses = [...courses];
-    updatedCourses[index][field] = value;
-    setCourses(updatedCourses);
+  const handleSubjectChange = (index, field, value) => {
+    const updatedSubjects = [...subjects];
+    updatedSubjects[index][field] = value;
+    setSubjects(updatedSubjects);
   };
 
   const [subjectTracks, setSubjectTracks] = useState([
@@ -75,13 +103,7 @@ export default function Dialog({ onClose }) {
   const isAddTrackDisabled = !subjectTracks.every(isTrackComplete);
 
   const isSubjectComplete = (subject) => {
-    return (
-      subject.fullForm &&
-      subject.shortForm &&
-      subject.startDate &&
-      subject.endDate &&
-      subject.syllabusFile
-    );
+    return subject.subjectTrack && subject.subjectCode && subject.subjectName;
   };
 
   const isAddSubjectDisabled = !subjects.every(isSubjectComplete);
@@ -90,7 +112,7 @@ export default function Dialog({ onClose }) {
     <div className="space-y-6">
       <div className="text-center mb-8">
         <h2 className="text-2xl font-semibold text-white mb-2 font-urbanistSemiBold">
-          Add Semester
+          {isEditMode ? "Edit Semester" : "Add Semester"}
         </h2>
       </div>
 
@@ -109,7 +131,7 @@ export default function Dialog({ onClose }) {
                   step="1"
                   value=""
                   onChange={(e) =>
-                    handleCourseChange(index, "startDate", e.target.value)
+                    handleSubjectChange(index, "startDate", e.target.value)
                   }
                   className="w-full bg-white/5 border border-gray-600 rounded-lg px-4 py-2 text-white pr-10 placeholder:text-sm"
                   placeholder="2024"
@@ -130,7 +152,7 @@ export default function Dialog({ onClose }) {
                   step="1"
                   value=""
                   onChange={(e) =>
-                    handleCourseChange(index, "endDate", e.target.value)
+                    handleSubjectChange(index, "endDate", e.target.value)
                   }
                   className="w-full bg-white/5 border border-gray-600 rounded-lg px-4 py-2 placeholder:text-sm text-white pr-10"
                   placeholder="2025"
@@ -147,7 +169,8 @@ export default function Dialog({ onClose }) {
             <input
               type="text"
               placeholder="Enter Semester Name"
-              value=""
+              value={semesterName}
+              onChange={(e) => setSemesterName(e.target.value)}
               className="w-full bg-white/5 border border-gray-600 rounded-lg px-4 py-2 placeholder:text-sm text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent"
             />
           </div>
@@ -160,7 +183,7 @@ export default function Dialog({ onClose }) {
     <div className="space-y-6">
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-2xl font-semibold text-white font-urbanistSemiBold">
-          Add Subject Track
+          {isEditMode ? "Edit Subject Track" : "Add Subject Track"}
         </h2>
         <button
           type="button"
@@ -215,7 +238,7 @@ export default function Dialog({ onClose }) {
     <div className="space-y-6">
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-2xl font-semibold text-white font-urbanistSemiBold">
-          Add Subjects
+          {isEditMode ? "Edit Subjects" : "Add Subjects"}
         </h2>
         <button
           type="button"
@@ -272,9 +295,9 @@ export default function Dialog({ onClose }) {
             <input
               type="text"
               placeholder="Enter Subject Code"
-              value=""
+              value={subject.subjectCode}
               onChange={(e) =>
-                handleCourseChange(index, "fullForm", e.target.value)
+                handleSubjectChange(index, "subjectCode", e.target.value)
               }
               className="w-full bg-white/5 border border-gray-600 rounded-lg px-4 py-2 placeholder:text-sm text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
@@ -287,9 +310,9 @@ export default function Dialog({ onClose }) {
             <input
               type="text"
               placeholder="Enter Subject Name"
-              value=""
+              value={subject.subjectName}
               onChange={(e) =>
-                handleCourseChange(index, "shortForm", e.target.value)
+                handleSubjectChange(index, "subjectName", e.target.value)
               }
               className="w-full bg-white/5 border border-gray-600 rounded-lg px-4 py-2 placeholder:text-sm text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
@@ -388,12 +411,23 @@ export default function Dialog({ onClose }) {
             <button
               onClick={
                 currentStep === totalSteps
-                  ? () => alert("Added Successfully")
+                  ? () => {
+                      if (isEditMode) {
+                        alert("Semester updated successfully");
+                      } else {
+                        alert("Semester added successfully");
+                      }
+                      onClose();
+                    }
                   : handleNext
               }
               className="bg-secondary text-white font-medium px-6 py-2 rounded-lg transition-colors"
             >
-              {currentStep === 3 ? "Add" : "Next"}
+              {isEditMode && currentStep === 3
+                ? "Save"
+                : currentStep === 3
+                ? "Add"
+                : "Next"}
             </button>
           </div>
         </div>

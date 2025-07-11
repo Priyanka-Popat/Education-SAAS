@@ -16,7 +16,8 @@ import {
 import DeleteCourseConfirmation from "../../features/courses/components/delete-dialog";
 import EditCourseModal from "../../features/courses/components/edit-dialog";
 
-const Table = ({ data = [], headers = [], showActions = true }) => {
+const Table = ({ data = [], headers = [], showActions = true, onEdit = () => {} }) => {
+
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -68,7 +69,7 @@ const Table = ({ data = [], headers = [], showActions = true }) => {
 
   const handleEdit = (row) => {
     setEditingRow(row);
-    setIsEditOpen(true);
+     onEdit(row);
   };
 
   const handleDelete = (row) => {
@@ -88,7 +89,7 @@ const Table = ({ data = [], headers = [], showActions = true }) => {
 
   return (
     <>
-      <div className="w-full rounded-xl overflow-hidden relative">
+      <div className="w-full rounded-xl overflow-hidden relative h-full flex flex-col justify-between gap-4">
         <table className="min-w-full table-auto border-separate border-spacing-y-2 text-white">
           <thead className="bg-secondary">
             <tr>
@@ -228,18 +229,7 @@ const Table = ({ data = [], headers = [], showActions = true }) => {
         </div>
       </div>
 
-      <DeleteCourseConfirmation
-        isOpen={isDeleteOpen}
-        onClose={() => setIsDeleteOpen(false)}
-        courseToDelete={selectedRow}
-        onConfirmDelete={handleConfirmDelete}
-      />
-      <EditCourseModal
-        isOpen={isEditOpen}
-        onClose={() => setIsEditOpen(false)}
-        courseToEdit={editingRow}
-        onSubmitEdit={handleSubmitEdit}
-      />
+      
     </>
   );
 };

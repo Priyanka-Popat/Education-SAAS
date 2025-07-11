@@ -6,9 +6,21 @@
   display: none;
 }
 
+input[type="search"]::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  display: none;
+}
+
+
 body {
+  cursor: url('/assets/icons/cursor.png'), auto;
   overflow-y: hidden;
 }
+
+*::selection {
+  cursor: url('/cursor-select.png'), text;
+}
+
 
 @font-face {
   font-family: "urbanist-regular";
@@ -545,10 +557,11 @@ input[type="date"] {
   left: 50%;
   width: 0;
   height: 0;
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.1);
   border-radius: 50%;
   transform: translate(-50%, -50%);
   transition: width 0.6s, height 0.6s;
+  /* rgba(255, 255, 255, 0.3) */
 }
 
 .btn-ripple:hover::after {
@@ -560,6 +573,7 @@ input[type="date"] {
   transform: translateY(-3px);
   box-shadow: 0 10px 30px rgba(139, 92, 246, 0.4);
 }
+/* rgba(139, 92, 246, 0.4) */
 
 .btn-slide::before {
   content: "";
@@ -586,4 +600,33 @@ input[type="date"] {
 .btn-slide {
   z-index: 1;
   overflow: hidden;
+}
+
+.transparent-checkbox {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 15px;
+  height: 15px;
+  border: 1px solid white;
+  border-radius: 4px;
+  background-color: transparent;
+  cursor: pointer;
+  position: relative;
+}
+
+.transparent-checkbox:checked::after {
+  content: '✓';
+  color: white;
+  font-size: 10px;
+  position: absolute;
+  /* background-color: #713ce9;*/
+  width: 15px;
+  height: 15px; 
+  /* border: 1px solid white; */
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  /* border-radius: 4px; */
+  left: -1px;
+  top: -1px;
 }

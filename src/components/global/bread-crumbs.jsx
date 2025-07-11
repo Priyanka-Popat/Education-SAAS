@@ -8,7 +8,7 @@ export default function Breadcrumbs({ items = [] }) {
   return (
     <nav
       aria-label="Breadcrumb"
-      className="w-full md:flex justify-end p-6 overflow-x-auto hidden "
+      className="w-full md:flex justify-end p-6 overflow-x-auto hidden relative z-10"
     >
       <ol className="flex items-center space-x-1 text-sm 2xl:text-sm 3xl:text-sm 4xl:text-2xl text-white/80">
         {items.map((item, index) => {
@@ -21,7 +21,7 @@ export default function Breadcrumbs({ items = [] }) {
               {!isLast ? (
                 <Link
                   to={item.href}
-                  className="hover:text-white/95 transition-colors duration-150"
+                  className="hover:text-white/95 hover:underline transition-colors duration-150"
                 >
                   {item.label}
                 </Link>

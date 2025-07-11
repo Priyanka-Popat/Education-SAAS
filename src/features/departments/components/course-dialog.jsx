@@ -1,7 +1,14 @@
 import { X } from "lucide-react";
 import AddCourse from "./add-course-dialog";
 
-const CourseModal = ({ isOpen, onClose, initialDeptId }) => {
+const CourseModal = ({
+  isOpen,
+  onClose,
+  initialDeptId,
+  mode = "add",
+  initialData = {},
+  onSubmit,
+}) => {
   if (!isOpen) return null;
 
   return (
@@ -13,7 +20,13 @@ const CourseModal = ({ isOpen, onClose, initialDeptId }) => {
         >
           <X size={24} />
         </button>
-        <AddCourse onClose={onClose} initialDeptId={initialDeptId} />
+        <AddCourse
+          onClose={onClose}
+          initialDeptId={initialDeptId}
+          mode={mode}
+          initialData={initialData}
+          onSubmit={onSubmit}
+        />
       </div>
     </div>
   );

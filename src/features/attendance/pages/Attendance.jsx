@@ -11,6 +11,7 @@ import AttendanceTable from "@/features/attendance/components/attendance-table";
 import Qr from "@/features/attendance/components/qr-code";
 import AttendanceBgSm from "@/features/attendance/components/attendance-bg-sm";
 import { useState } from "react";
+import RectSearchBar from "@/components/ui/rect-search-bar";
 
 
 
@@ -99,7 +100,7 @@ const Attendance = () => {
               <AttendanceFilter />
 
               <div className="col-start-10 row-start-1 col-span-2 flex justify-end items-start">
-                <input type="search" className="p-2 pr-10 bg-[#FFFFFF0F] border border-white/20 text-white font-urbanistRegular rounded-[6px] 4xl:rounded-[10px] py-2 px-4 4xl:py-3 2xl:py-1.5 lg:py-1.5 cursor-pointer text-xs 4xl:text-2xl 3xl:text-base 2xl:text-sm lg:text-xs"  placeholder="Search..." />
+                <RectSearchBar />
               </div>
               <AttendanceTable />
 
@@ -126,15 +127,15 @@ const Attendance = () => {
               </div>
             </div>
 
-            <div className="md:hidden mt-4">
-               <AttendanceFilter />
-            </div>
 
             <div className="">
               <div className="flex justify-start items-center mb-5">
                 <p className="text-lg font-urbanistSemiBold">
                   Mathematics - Grade 10A
                 </p>
+              </div>
+              <div className="mb-5">
+                <RectSearchBar className={'w-full'} />
               </div>
 
               <div className="overflow-y-auto max-h-[550px] scrollbar-thin">
