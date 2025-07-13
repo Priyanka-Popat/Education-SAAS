@@ -7,17 +7,19 @@ import SmLayout from "@/components/global/sm-layout";
 import SyllabusBg from "@/components/ui/syllabus-bg";
 import Heading from "@/components/ui/heading";
 import AddButton from "@/components/ui/add-button";
-import Filters from "@/components/ui/filter";
 import DateFilter from "@/components/ui/date-filter";
-import GradeFilter from "@/components/ui/grade-filter";
 import { ChevronDown, ChevronUp, Edit3, Filter, Trash2 } from "lucide-react";
 import AddButtonSecondary from "@/components/ui/add-button-secondary";
 import SmBg from "@/components/ui/sm-bg";
 import SyllabusBgMd from "@/features/syllabus/components/syllabus-bg-md";
 import RectSearchBar from "@/components/ui/rect-search-bar";
+import GradeFilter from "@/components/ui/grade-filter";
+import SectionFilter from "@/components/ui/section-filter";
+import FilterSidebar from "@/components/ui/filter-sidebar";
 
 const Students = () => {
   const [selectedRollNos, setSelectedRollNos] = useState([]);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   const allRollNos = StudentsData.map((student) => student.rollNo);
   const areAllSelected = selectedRollNos.length === allRollNos.length;
@@ -69,11 +71,12 @@ const Students = () => {
             <SyllabusBg />
             <div className="grid grid-cols-11 grid-rows-9 3xl:grid-rows-8 w-full h-full">
               <Heading heading="Students" />
-              <div className="relative col-start-5 row-start-1 col-span-7 flex px-5 py-5 4xl:p-0 2xl:p-0 lg:p-0 items-end 2xl:items-start lg:items-start justify-end h-full gap-x-3">
+              <div className="relative col-start-4 row-start-1 col-span-8 flex px-5 py-5 4xl:p-0 2xl:p-0 lg:p-0 items-end 2xl:items-start lg:items-start justify-end h-full gap-x-3">
                 <RectSearchBar />
 
                 <DateFilter showLabel={false} />
                 <GradeFilter showLabel={false} />
+                <SectionFilter showLabel={false} />
 
                 <AddButton
                   label="Add Students"
@@ -126,14 +129,14 @@ const Students = () => {
                     <Filter className="w-4 h-4 text-white" />
                   </div>
                   <AddButtonSecondary
-                    icon={true}
+                    icon="/assets/icons/add-circle.svg"
                     className={"h-[60%]"}
                     label="Add"
                     onClick={() => setIsModalOpen(true)}
                   />
                 </div>
                 <div className="flex justify-end  col-span-3 mb-2 px-5">
-                  <RectSearchBar className={'w-full md:w-auto'} />
+                  <RectSearchBar className={"w-full md:w-auto"} />
                 </div>
                 {/* tablet */}
                 <div className="col-span-3 row-start-3 row-span-5 px-5 pb-5 flex-col gap-y-3 overflow-y-auto max-h-full h-full relative z-10  hidden scrollbar-thin md:flex">
@@ -184,7 +187,6 @@ const Students = () => {
                           </div>
                         </div>
 
-                        {/* Right side: edit and delete icons */}
                         <div className="flex items-center gap-x-2">
                           <Edit3
                             className="w-5 h-5 text-white cursor-pointer hover:scale-110 transition-transform"
@@ -204,6 +206,14 @@ const Students = () => {
           </div>
         </div>
       </SmLayout>
+      <FilterSidebar
+        isOpen={isFilterOpen}
+        onClose={() => setIsFilterOpen(false)}
+      >
+        <DateFilter />
+        <GradeFilter />
+        <SectionFilter />
+      </FilterSidebar>
     </>
   );
 };

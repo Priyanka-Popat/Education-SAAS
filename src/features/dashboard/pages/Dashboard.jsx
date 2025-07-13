@@ -3,7 +3,7 @@ import GreetingHeader from "@/components/global/greeting-header";
 import SmLayout from "@/components/global/sm-layout";
 import CurrentLecture from "@/features/dashboard/components/current-lecture";
 import LatestNews from "@/features/dashboard/components/latest-news/latest-news";
-import TimeTable from "@/features/dashboard/components/time-table/TimeTable";
+import TimeTable from "@/features/dashboard/components/time-table/time-table";
 import AssignedSubjects from "@/features/dashboard/components/assigned-subject/assigned-subjects";
 
 function Dashboard() {

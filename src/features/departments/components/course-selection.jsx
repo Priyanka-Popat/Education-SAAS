@@ -1,7 +1,9 @@
+import { useEffect, useState } from "react";
 import SemesterList from "./semester-list";
 import AddButtonSecondary from "@/components/ui/add-button-secondary";
 import MdBg from "@/components/ui/md-bg";
 import SelectField from "@/components/ui/select-field";
+import Loader from "@/components/ui/loader";
 
 const CourseFilterSection = ({
   selectedDept,
@@ -10,10 +12,21 @@ const CourseFilterSection = ({
   selectedCourse,
   onAddCourse,
 }) => {
+  const [isSemesterLoading, setIsSemesterLoading] = useState(true);
+
+  useEffect(() => {
+    setIsSemesterLoading(true);
+  }, [selectedCourseId]);
+
+  useEffect(() => {
+    if (selectedCourse?.semesters !== undefined) {
+      setIsSemesterLoading(false);
+    }
+  }, [selectedCourse]);
+
   return (
     <>
       <div className="relative col-start-9 row-start-2 row-span-1 col-span-5 px-4 pt-4 2xl:pt-0  hd:pt-0 lg:pt-0">
-        {/* 4xl:pb-16 3xl:pb-14 4xl:pr-5 2xl:pb-16 hd:pb-16 lg:pt-0 lg:pb-14 */}
         <SelectField
           className="h-full flex justify-start 4xl:justify-start 3xl:justify-start 2xl:justify-start hd:justify-start flex-col"
           label="Select Course"
@@ -27,6 +40,7 @@ const CourseFilterSection = ({
           }
         />
       </div>
+
       <div className="h-[65%] lg:h-full lg:mt-0 rounded-2xl relative md:p-0 lg:ps-3 lg:pt-4 3xl:ps-5 4xl:ps-10 4xl:pt-7 4xl:pe-2 col-start-9 row-start-3 col-span-3 row-span-7 w-full">
         <MdBg />
 
@@ -37,7 +51,13 @@ const CourseFilterSection = ({
                 Semesters
               </p>
 
-              <SemesterList semesters={selectedCourse?.semesters || []} />
+              {isSemesterLoading ? (
+                <div className="flex justify-center items-center h-24">
+                  <Loader />
+                </div>
+              ) : (
+                <SemesterList semesters={selectedCourse?.semesters || []} />
+              )}
             </div>
 
             <AddButtonSecondary label="Add Course" onClick={onAddCourse} />

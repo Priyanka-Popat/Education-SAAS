@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Calendar, Plus, ChevronDown } from "lucide-react";
+import { toast } from "react-hot-toast";
 
 export default function AddSem({ onClose, isEditMode, editSemesterData }) {
   const modalRef = useRef(null);
@@ -17,47 +18,39 @@ export default function AddSem({ onClose, isEditMode, editSemesterData }) {
       }
     };
 
-    const handleClickOutside = (e) => {
-      if (modalRef.current && !modalRef.current.contains(e.target)) {
-        onClose();
-      }
-    };
-
     document.addEventListener("keydown", handleKeyDown);
-    document.addEventListener("mousedown", handleClickOutside);
 
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
-      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [onClose]);
 
- useEffect(() => {
-  if (isEditMode && editSemesterData) {
-    setDepartment(editSemesterData.department || "");
-    setSemesterName(editSemesterData.semesterName || "");
+  useEffect(() => {
+    if (isEditMode && editSemesterData) {
+      setDepartment(editSemesterData.department || "");
+      setSemesterName(editSemesterData.semesterName || "");
 
-    // Set tracks as-is
-    setSubjectTracks(
-      (editSemesterData.tracks || []).map((track) => ({
-        fullForm: track.name,
-        isElective: track.name?.toLowerCase().includes("optional"),
-      }))
-    );
+      // Set tracks as-is
+      setSubjectTracks(
+        (editSemesterData.tracks || []).map((track) => ({
+          fullForm: track.name,
+          isElective: track.name?.toLowerCase().includes("optional"),
+        }))
+      );
 
-    // 🔥 Flatten subjects from tracks
-    const extractedSubjects = (editSemesterData.tracks || []).flatMap((track) =>
-      (track.subjects || []).map((subject) => ({
-        subjectTrack: track.name || "", // e.g., "Compulsory"
-        subjectCode: subject.code || "",
-        subjectName: subject.name || "",
-      }))
-    );
+      // 🔥 Flatten subjects from tracks
+      const extractedSubjects = (editSemesterData.tracks || []).flatMap(
+        (track) =>
+          (track.subjects || []).map((subject) => ({
+            subjectTrack: track.name || "", // e.g., "Compulsory"
+            subjectCode: subject.code || "",
+            subjectName: subject.name || "",
+          }))
+      );
 
-    setSubjects(extractedSubjects);
-  }
-}, [isEditMode, editSemesterData]);
-
+      setSubjects(extractedSubjects);
+    }
+  }, [isEditMode, editSemesterData]);
 
   const handleNext = () => {
     if (currentStep < 3) {
@@ -412,21 +405,19 @@ export default function AddSem({ onClose, isEditMode, editSemesterData }) {
               onClick={
                 currentStep === totalSteps
                   ? () => {
-                      if (isEditMode) {
-                        alert("Semester updated successfully");
-                      } else {
-                        alert("Semester added successfully");
-                      }
+                      toast.success(
+                        isEditMode ? "Semesters updated!" : "Semesters added!"
+                      );
                       onClose();
                     }
                   : handleNext
               }
               className="bg-secondary text-white font-medium px-6 py-2 rounded-lg transition-colors"
             >
-              {isEditMode && currentStep === 3
-                ? "Save"
-                : currentStep === 3
-                ? "Add"
+              {currentStep === totalSteps
+                ? isEditMode
+                  ? "Update"
+                  : "Add"
                 : "Next"}
             </button>
           </div>

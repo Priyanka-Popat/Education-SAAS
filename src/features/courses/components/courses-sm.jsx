@@ -31,7 +31,7 @@ const CoursesSm = ({
   courses,
   selectedDepartment,
   setSelectedDepartment,
-  onEdit
+  onEdit,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isCourseModalOpen, setIsCourseModalOpen] = useState(false);
@@ -86,7 +86,7 @@ const CoursesSm = ({
                       <Filter className="w-4 h-4 text-white" />
                     </div>
                     <AddButtonSecondary
-                      icon={true}
+                      icon="/assets/icons/add-circle.svg"
                       className={"h-[60%]"}
                       label="Add"
                       onClick={() => setIsCourseModalOpen(true)}
@@ -174,7 +174,7 @@ const CoursesSm = ({
                   <Filter className="w-4 h-4 text-white" />
                 </div>
                 <AddButtonSecondary
-                  icon={true}
+                  icon="/assets/icons/add-circle.svg"
                   className={"h-[60%]"}
                   label="Add"
                   onClick={() => setIsCourseModalOpen(true)}
@@ -188,76 +188,81 @@ const CoursesSm = ({
               <div className="col-span-3 flex flex-col row-start-3 row-span-4 gap-y-3 px-5 pb-5 overflow-y-auto max-h-[600px] h-[100%] scrollbar-thin flex-1 ">
                 <ul className="space-y-2">
                   {courses.map((course) => (
-                    <div className="flex gap-x-2 items-center" key={course.id}>
-                      <button onClick={() => onEdit(course)} className="">
-                        <PencilLine className="w-5 h-5 4xl:w-6 4xl:h-6 text-white" />
-                      </button>
-                      <li
-                        className="flex flex-col items-center gap-x-2 w-full"
-                        key={course.id}
+                    <li
+                      className="flex flex-col items-center gap-x-2 w-full"
+                      key={course.id}
+                    >
+                      <div
+                        onClick={() => {
+                          if (expandedCourseId === course.id) {
+                            setExpandedCourseId(null);
+                          } else {
+                            setExpandedCourseId(course.id);
+                            setSelectedCourseId(course.id);
+                            setSelectedSemesterName(
+                              course.semesters?.[0]?.semesterName || ""
+                            );
+                          }
+                        }}
+                        className={`flex items-center w-full justify-between gap-2 px-4 py-3 text-sm rounded-lg cursor-pointer transition-colors ${
+                          expandedCourseId === course.id
+                            ? "bg-secondary"
+                            : "bg-white/5 hover:bg-white/10"
+                        } text-white`}
                       >
-                        <div
-                          onClick={() => {
-                            if (expandedCourseId === course.id) {
-                              setExpandedCourseId(null);
-                            } else {
-                              setExpandedCourseId(course.id);
-                              setSelectedCourseId(course.id);
-                              setSelectedSemesterName(
-                                course.semesters?.[0]?.semesterName || ""
-                              );
-                            }
-                          }}
-                          className={`flex items-center w-full justify-between gap-2 px-4 py-3 text-sm rounded-lg cursor-pointer transition-colors ${
-                            expandedCourseId === course.id
-                              ? "bg-secondary"
-                              : "bg-white/5 hover:bg-white/10"
-                          } text-white`}
-                        >
-                          {course.shortForm} : {course.fullForm}
-                          <div className="h-[40px] flex items-center justify-center">
-                            {expandedCourseId === course.id ? (
-                              <ChevronUp className="w-5 h-5" />
-                            ) : (
-                              <ChevronDown className="w-5 h-5" />
-                            )}
-                          </div>
+                        {course.shortForm} : {course.fullForm}
+                        <div className="h-[40px] flex items-center justify-center">
+                          {expandedCourseId === course.id ? (
+                            <ChevronUp className="w-5 h-5" />
+                          ) : (
+                            <ChevronDown className="w-5 h-5" />
+                          )}
                         </div>
+                      </div>
 
-                        {/* Accordion Content */}
-                        {expandedCourseId === course.id && (
-                          <div className="mt-4 space-y-4 w-full px-4">
-                            {course.semesters?.map((sem) => (
-                              <div
-                                key={sem.id}
-                                className="border-b border-white/20 py-2"
-                              >
-                                <p className="text-sm font-semibold text-[#9e7ceb]">
-                                  {sem.semesterName}
-                                </p>
-
-                                <ul className="list-disc text-sm text-white mt-2 ml-4">
-                                  {sem.tracks?.map((track) => (
-                                    <li key={track.id} className="mb-2">
-                                      <span className="text-secondary font-medium">
-                                        {track.name}:
-                                      </span>
-                                      <ul className="ml-4 mt-1 list-square">
-                                        {track.subjects.map((subj) => (
-                                          <li key={subj.id}>
-                                            {subj.code} - {subj.name}
-                                          </li>
-                                        ))}
-                                      </ul>
-                                    </li>
-                                  ))}
-                                </ul>
-                              </div>
-                            ))}
+                      {/* Accordion Content */}
+                      {expandedCourseId === course.id && (
+                        <div className="mt-4 space-y-2 w-full px-4">
+                          <div className="flex justify-end">
+                            <AddButtonSecondary
+                              icon={
+                                <PencilLine className="w-4 4xl:w-7 2xl:w-5 lg:w-3" />
+                              }
+                              className={"!py-1"}
+                              label="Edit"
+                              onClick={() => onEdit(course)}
+                            />
                           </div>
-                        )}
-                      </li>
-                    </div>
+                          {course.semesters?.map((sem) => (
+                            <div
+                              key={sem.id}
+                              className="border-b border-white/20 pb-2"
+                            >
+                              <p className="text-sm font-semibold text-[#9e7ceb]">
+                                {sem.semesterName}
+                              </p>
+
+                              <ul className="list-disc text-sm text-white mt-2 ml-4">
+                                {sem.tracks?.map((track) => (
+                                  <li key={track.id} className="mb-2">
+                                    <span className="text-secondary font-medium">
+                                      {track.name}:
+                                    </span>
+                                    <ul className="ml-4 mt-1 list-square">
+                                      {track.subjects.map((subj) => (
+                                        <li key={subj.id}>
+                                          {subj.code} - {subj.name}
+                                        </li>
+                                      ))}
+                                    </ul>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </li>
                   ))}
                 </ul>
               </div>

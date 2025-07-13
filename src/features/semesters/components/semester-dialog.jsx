@@ -9,7 +9,7 @@ const SemDialog = ({ isOpen, onClose, isEditMode, editSemesterData }) => {
       <div className="relative w-full h-full overflow-auto">
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-white hover:text-gray-300 z-10"
+          className="fixed top-6 right-6 z-[100] hover:text-gray-300 text-white"
         >
           <X size={24} />
         </button>

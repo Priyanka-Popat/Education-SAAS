@@ -13,14 +13,11 @@ import {
   ChevronsLeft,
   ChevronsRight,
 } from "lucide-react";
-import DeleteCourseConfirmation from "../../features/courses/components/delete-dialog";
-import EditCourseModal from "../../features/courses/components/edit-dialog";
 
 const Table = ({ data = [], headers = [], showActions = true, onEdit = () => {} }) => {
 
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
-  const [isEditOpen, setIsEditOpen] = useState(false);
   const [editingRow, setEditingRow] = useState(null);
   const [rowSelection, setRowSelection] = useState({});
 
@@ -77,16 +74,6 @@ const Table = ({ data = [], headers = [], showActions = true, onEdit = () => {} 
     setIsDeleteOpen(true);
   };
 
-  const handleConfirmDelete = () => {
-    console.log("Delete confirmed:", selectedRow);
-    setIsDeleteOpen(false);
-    setSelectedRow(null);
-  };
-
-  const handleSubmitEdit = (updatedRow) => {
-    console.log("Edited row:", updatedRow);
-  };
-
   return (
     <>
       <div className="w-full rounded-xl overflow-hidden relative h-full flex flex-col justify-between gap-4">
@@ -100,7 +87,7 @@ const Table = ({ data = [], headers = [], showActions = true, onEdit = () => {} 
                 return (
                   <th
                     key={header.id}
-                    className={`px-6 py-2 text-base font-urbanistSemiBold ${
+                    className={`px-6 py-2 text-base font-urbanistRegular ${
                       i === 0
                         ? "rounded-tl-2xl" 
                         : isLastHeader 
@@ -179,7 +166,7 @@ const Table = ({ data = [], headers = [], showActions = true, onEdit = () => {} 
                 onChange={(e) => table.setPageSize(Number(e.target.value))}
               >
                 {[10, 20, 30, 40, 50].map((pageSize) => (
-                  <option key={pageSize} value={pageSize}>
+                  <option key={pageSize} value={pageSize} style={{ backgroundColor: "#131313", color: "white" }}>
                     {pageSize}
                   </option>
                 ))}
@@ -193,7 +180,7 @@ const Table = ({ data = [], headers = [], showActions = true, onEdit = () => {} 
 
             <div className="ml-auto flex items-center gap-2 lg:ml-0">
               <button
-                className="hidden h-8 w-8 p-0 lg:flex text-white hover:bg-gray-700 rounded items-center"
+                className="hidden h-8 w-8 p-0 lg:flex text-white hover:bg-gray-700 rounded items-center justify-center"
                 onClick={() => table.setPageIndex(0)}
                 disabled={!table.getCanPreviousPage()}
                 aria-label="Go to first page"
@@ -201,7 +188,7 @@ const Table = ({ data = [], headers = [], showActions = true, onEdit = () => {} 
                 <ChevronsLeft className="w-5 h-5" />
               </button>
               <button
-                className="h-8 w-8 p-0 text-white hover:bg-gray-700 rounded"
+                className="h-8 w-8 p-0 text-white hover:bg-gray-700 rounded flex justify-center items-center"
                 onClick={() => table.previousPage()}
                 disabled={!table.getCanPreviousPage()}
                 aria-label="Go to previous page"
@@ -209,7 +196,7 @@ const Table = ({ data = [], headers = [], showActions = true, onEdit = () => {} 
                 <ChevronLeft className="w-5 h-5" />
               </button>
               <button
-                className="h-8 w-8 p-0 text-white hover:bg-gray-700 rounded"
+                className="h-8 w-8 p-0 text-white hover:bg-gray-700 rounded flex justify-center items-center"
                 onClick={() => table.nextPage()}
                 disabled={!table.getCanNextPage()}
                 aria-label="Go to next page"
@@ -217,7 +204,7 @@ const Table = ({ data = [], headers = [], showActions = true, onEdit = () => {} 
                 <ChevronRight className="w-5 h-5" />
               </button>
               <button
-                className="hidden h-8 w-8 p-0 lg:flex text-white hover:bg-gray-700 rounded items-center"
+                className="hidden h-8 w-8 p-0 lg:flex text-white hover:bg-gray-700 rounded items-center justify-center"
                 onClick={() => table.setPageIndex(table.getPageCount() - 1)}
                 disabled={!table.getCanNextPage()}
                 aria-label="Go to last page"

@@ -31,7 +31,14 @@ const SearchBar = ({ className }) => {
         </span>
       </div>
 
-      {open && <UniversalSearch setOpen={setOpen} />}
+      {open && (
+  <div
+    className="fixed inset-0 flex items-start justify-center z-[70] transition-all duration-300 ease-out animate-in fade-in-0 zoom-in-95"
+  >
+    <UniversalSearch setOpen={setOpen} />
+  </div>
+)}
+
     </>
   );
 };

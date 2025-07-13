@@ -1,7 +1,13 @@
 import { useState, useEffect, useRef } from "react";
 import { Calendar, Upload, Plus } from "lucide-react";
+import { toast } from "react-hot-toast";
 
-export default function Dialog({ onClose, mode = "add", initialData = {}, onSubmit }) {
+export default function Dialog({
+  onClose,
+  mode = "add",
+  initialData = {},
+  onSubmit,
+}) {
   const modalRef = useRef(null);
   const [currentStep, setCurrentStep] = useState(1);
 
@@ -40,18 +46,10 @@ export default function Dialog({ onClose, mode = "add", initialData = {}, onSubm
       }
     };
 
-    const handleClickOutside = (e) => {
-      if (modalRef.current && !modalRef.current.contains(e.target)) {
-        onClose();
-      }
-    };
-
     document.addEventListener("keydown", handleKeyDown);
-    document.addEventListener("mousedown", handleClickOutside);
 
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
-      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [onClose]);
 
@@ -99,6 +97,15 @@ export default function Dialog({ onClose, mode = "add", initialData = {}, onSubm
   };
 
   const handleSubmit = () => {
+    // if (
+    //   !Department ||
+    //   !departmentShortForm ||
+    //   !courses.every(isCourseComplete)
+    // ) {
+    //   toast.error("Please fill out all fields before submitting.");
+    //   return;
+    // }
+
     const payload = {
       department: {
         fullForm: Department,
@@ -106,7 +113,12 @@ export default function Dialog({ onClose, mode = "add", initialData = {}, onSubm
       },
       courses,
     };
+
     onSubmit(payload);
+    toast.success(
+      mode === "edit" ? "Department updated!" : "Department added!"
+    );
+    onClose();
   };
 
   const renderDepartmentStep = () => (
@@ -359,7 +371,11 @@ export default function Dialog({ onClose, mode = "add", initialData = {}, onSubm
               onClick={currentStep === totalSteps ? handleSubmit : handleNext}
               className="bg-secondary text-white font-medium px-6 py-2 rounded-lg transition-colors"
             >
-              {currentStep === totalSteps ? (mode === "edit" ? "Update" : "Add") : "Next"}
+              {currentStep === totalSteps
+                ? mode === "edit"
+                  ? "Update"
+                  : "Add"
+                : "Next"}
             </button>
           </div>
         </div>

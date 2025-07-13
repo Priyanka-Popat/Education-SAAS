@@ -91,7 +91,7 @@ export default function DataTable({ data, columns, onAdd, onEdit }) {
                     return (
                       <th
                         key={header.id}
-                        className={`px-6 py-2 text-sm font-urbanistSemiBold text-center ${
+                        className={`px-6 py-2 text-sm font-urbanistRegular text-center ${
                           i === 0 ? "rounded-tl-2xl" : ""
                         }`}
                       >
@@ -103,7 +103,7 @@ export default function DataTable({ data, columns, onAdd, onEdit }) {
                     );
                   })}
                   {onEdit && (
-                    <th className="px-6 py-2 text-sm font-urbanistSemiBold rounded-tr-[20px]">
+                    <th className="px-6 py-2 text-sm font-urbanistRegular rounded-tr-[20px]">
                       Actions
                     </th>
                   )}
@@ -187,7 +187,7 @@ export default function DataTable({ data, columns, onAdd, onEdit }) {
                 onChange={(e) => table.setPageSize(Number(e.target.value))}
               >
                 {[5, 10, 20, 30, 40, 50].map((pageSize) => (
-                  <option key={pageSize} value={pageSize}>
+                  <option key={pageSize} value={pageSize} style={{ backgroundColor: "#131313", color: "white" }}>
                     {pageSize}
                   </option>
                 ))}
@@ -201,7 +201,7 @@ export default function DataTable({ data, columns, onAdd, onEdit }) {
 
             <div className="ml-auto flex items-center gap-2 lg:ml-0">
               <button
-                className="hidden h-8 w-8 p-0 lg:flex text-white hover:bg-gray-700 rounded items-center"
+                className="hidden h-8 w-8 p-0 lg:flex text-white hover:bg-gray-700 rounded items-center justify-center"
                 onClick={() => table.setPageIndex(0)}
                 disabled={!table.getCanPreviousPage()}
                 aria-label="Go to first page"
@@ -209,7 +209,7 @@ export default function DataTable({ data, columns, onAdd, onEdit }) {
                 <ChevronsLeft className="w-5 h-5" />
               </button>
               <button
-                className="h-8 w-8 p-0 text-white hover:bg-gray-700 rounded"
+                className="h-8 w-8 p-0 text-white hover:bg-gray-700 rounded flex justify-center items-center"
                 onClick={() => table.previousPage()}
                 disabled={!table.getCanPreviousPage()}
                 aria-label="Go to previous page"
@@ -217,7 +217,7 @@ export default function DataTable({ data, columns, onAdd, onEdit }) {
                 <ChevronLeft className="w-5 h-5" />
               </button>
               <button
-                className="h-8 w-8 p-0 text-white hover:bg-gray-700 rounded"
+                className="h-8 w-8 p-0 text-white hover:bg-gray-700 rounded flex justify-center items-center"
                 onClick={() => table.nextPage()}
                 disabled={!table.getCanNextPage()}
                 aria-label="Go to next page"
@@ -225,7 +225,7 @@ export default function DataTable({ data, columns, onAdd, onEdit }) {
                 <ChevronRight className="w-5 h-5" />
               </button>
               <button
-                className="hidden h-8 w-8 p-0 lg:flex text-white hover:bg-gray-700 rounded items-center"
+                className="hidden h-8 w-8 p-0 lg:flex text-white hover:bg-gray-700 rounded items-center justify-center"
                 onClick={() => table.setPageIndex(table.getPageCount() - 1)}
                 disabled={!table.getCanNextPage()}
                 aria-label="Go to last page"

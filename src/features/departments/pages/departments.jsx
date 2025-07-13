@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
-import departments from "@/data/NestedData.json";
+// import departments from "@/data/NestedData.json";
 import DashboardLayout from "@/components/global/dashboard-layout";
 import GreetingHeader from "@/components/global/greeting-header";
 import AttendanceBg from "@/components/ui/attendance-bg";
@@ -11,6 +11,7 @@ import CourseDialog from "@/features/departments/components/course-dialog";
 import DepartmentDialog from "@/features/departments/components/department-dialog";
 import DepartmentSm from "@/features/departments/components/deparment-sm";
 import RectSearchBar from "@/components/ui/rect-search-bar";
+import Loader from "@/components/ui/loader";
 
 const Departments = () => {
   const [selectedDeptId, setSelectedDeptId] = useState(null);
@@ -20,9 +21,12 @@ const Departments = () => {
   const [isCourseModalOpen, setIsCourseModalOpen] = useState(false);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [editDeptData, setEditDeptData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [departmentsData, setDepartmentsData] = useState([]);
+  const [isDeptLoading, setIsDeptLoading] = useState(true);
 
   const selectedDepartment = useMemo(() => {
-    return departments.find((d) => d.id === Number(selectedDeptId)) || null;
+    return departmentsData.find((d) => d.id === Number(selectedDeptId)) || null;
   }, [selectedDeptId]);
 
   const selectedCourse = useMemo(() => {
@@ -34,12 +38,16 @@ const Departments = () => {
   }, [selectedDepartment, selectedCourseId]);
 
   useEffect(() => {
-    if (!selectedDeptId && departments.length > 0) {
-      const firstDept = departments[0];
+    if (departmentsData.length > 0 && !selectedDeptId) {
+      const firstDept = departmentsData[0];
       setSelectedDeptId(firstDept.id);
       setSelectedCourseId(firstDept.courses?.[0]?.id || null);
       setSelectedSemesterIndex(0);
-    } else if (selectedDepartment) {
+    }
+  }, [departmentsData]);
+
+  useEffect(() => {
+    if (selectedDepartment) {
       if (selectedDepartment.courses?.length > 0) {
         setSelectedCourseId(selectedDepartment.courses[0].id);
       } else {
@@ -47,7 +55,7 @@ const Departments = () => {
       }
       setSelectedSemesterIndex(0);
     }
-  }, [selectedDeptId, selectedDepartment]);
+  }, [selectedDepartment]);
 
   const handleClose = () => {
     setIsModalOpen(false);
@@ -65,6 +73,21 @@ const Departments = () => {
     setEditDialogOpen(true);
   };
 
+  useEffect(() => {
+    let isMounted = true;
+
+    import("@/data/NestedData.json").then((mod) => {
+      if (isMounted) {
+        setDepartmentsData(mod.default);
+        setIsDeptLoading(false);
+      }
+    });
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
   return (
     <>
       <DashboardLayout
@@ -80,12 +103,8 @@ const Departments = () => {
             <AttendanceBg />
             <div className="grid grid-cols-11 grid-rows-9 3xl:grid-rows-8 w-full h-full">
               <Heading heading="Departments" />
-              <div className="relative col-start-8 row-start-1 col-span-6 gap-x-3 flex px-5 py-5 4xl:p-0 2xl:p-0 lg:p-0 items-end 2xl:items-start lg:items-start justify-end h-full">
-                {/* <input
-                  type="search"
-                  className="p-2 bg-[#FFFFFF0F] border border-white/20 text-white font-urbanistRegular rounded-[6px] 4xl:rounded-[10px] py-2 px-4 4xl:py-3 2xl:py-1.5 lg:py-1.5 cursor-pointer text-xs 4xl:text-2xl 3xl:text-base 2xl:text-sm lg:text-xs"
-                  placeholder="Search..."
-                /> */}
+              <div className="relative col-start-7 row-start-1 col-span-7 gap-x-3 flex px-5 py-5 4xl:p-0 2xl:p-0 lg:p-0 items-end 2xl:items-start lg:items-start justify-end h-full">
+                
                 <RectSearchBar />
                 <AddButton
                   label="Add Department"
@@ -94,13 +113,19 @@ const Departments = () => {
               </div>
 
               <div className="col-start-1 row-start-2 col-span-8 c13 row-span-6 2xl:row-span-7 px-5 pt-3 4xl:pt-3 pb-5">
-                <DepartmentList
-                  departments={departments}
-                  selectedDeptId={selectedDeptId}
-                  setSelectedDeptId={setSelectedDeptId}
-                  setSelectedCourseId={setSelectedCourseId}
-                  onEditClick={handleEditClick}
-                />
+                {isDeptLoading ? (
+                  <div className="flex justify-center items-center h-40">
+                    <Loader />
+                  </div>
+                ) : (
+                  <DepartmentList
+                    departments={departmentsData}
+                    selectedDeptId={selectedDeptId}
+                    setSelectedDeptId={setSelectedDeptId}
+                    setSelectedCourseId={setSelectedCourseId}
+                    onEditClick={handleEditClick}
+                  />
+                )}
               </div>
 
               <CourseSection
@@ -115,7 +140,14 @@ const Departments = () => {
         </div>
       </DashboardLayout>
 
-      <DepartmentDialog isOpen={isModalOpen} onClose={handleClose} />
+      <DepartmentDialog
+        isOpen={isModalOpen}
+        onClose={handleClose}
+        onSubmit={(data) => {
+          console.log("New Department Added:", data);
+          setIsModalOpen(false);
+        }}
+      />
 
       <CourseDialog
         isOpen={isCourseModalOpen}
@@ -137,7 +169,7 @@ const Departments = () => {
       )}
 
       <DepartmentSm
-        departments={departments}
+        departments={departmentsData}
         selectedDeptId={selectedDeptId}
         setSelectedDeptId={setSelectedDeptId}
         setSelectedCourseId={setSelectedCourseId}

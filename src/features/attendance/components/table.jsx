@@ -53,10 +53,10 @@ const getButtonProps = (status, buttonType) => {
 };
 
 const AttendanceTable = () => {
-    const [attendanceData, setAttendanceData] = useState(initialAttendanceData);
-  
-    const handleStatusChange = (index, newStatus) => {
-    setAttendanceData(prev =>
+  const [attendanceData, setAttendanceData] = useState(initialAttendanceData);
+
+  const handleStatusChange = (index, newStatus) => {
+    setAttendanceData((prev) =>
       prev.map((student, i) =>
         i === index ? { ...student, status: newStatus } : student
       )
@@ -74,17 +74,19 @@ const AttendanceTable = () => {
 
         <thead>
           <tr>
-            <th className="px-6 py-2 3xl:py-1 3xl:pb-5 3xl:px-6 text-base 4xl:text-2xl 3xl:text-xl hd:text-sm lg:text-sm text-left font-urbanistSemiBold">
+            <th className="px-6 py-2 3xl:py-1 3xl:pb-5 3xl:px-6 text-base 4xl:text-2xl 3xl:text-xl hd:text-sm lg:text-sm text-left font-urbanistRegular">
               Name
             </th>
-            <th className="px-6 py-2 3xl:py-1 3xl:pb-5 3xl:px-6 text-base text-center 4xl:text-2xl 3xl:text-xl hd:text-sm lg:text-sm font-urbanistSemiBold">
+            <th className="px-6 py-2 3xl:py-1 3xl:pb-5 3xl:px-6 text-base text-center 4xl:text-2xl 3xl:text-xl hd:text-sm lg:text-sm font-urbanistRegular">
               Roll No.
             </th>
-            <th className="px-6 py-2 3xl:py-1 3xl:pb-5 3xl:px-6 text-base text-center 4xl:text-2xl 3xl:text-xl hd:text-sm lg:text-sm font-urbanistSemiBold">
+            <th className="px-6 py-2 3xl:py-1 3xl:pb-5 3xl:px-6 text-base text-center 4xl:text-2xl 3xl:text-xl hd:text-sm lg:text-sm font-urbanistRegular">
               Status
             </th>
-            <th className="px-6 py-2 3xl:py-1 3xl:pb-5 3xl:px-6 text-base text-right 4xl:text-2xl 3xl:text-xl
-            hd:text-sm lg:text-sm font-urbanistSemiBold">
+            <th
+              className="px-6 py-2 3xl:py-1 3xl:pb-5 3xl:px-6 text-base text-right 4xl:text-2xl 3xl:text-xl
+            hd:text-sm lg:text-sm font-urbanistRegular"
+            >
               Edit Attendance
             </th>
           </tr>
@@ -126,9 +128,24 @@ const AttendanceTable = () => {
                 </td>
                 <td className="px-6 py-3 2xl:py-4 2xl:px-12 hd:py-2 lg:py-2 hd:px-7 rounded-r-xl">
                   <div className="flex gap-3 justify-end">
-                    <button {...getButtonProps(student.status, "P")} onClick={() => handleStatusChange(index, "Present")}>P</button>
-                    <button {...getButtonProps(student.status, "A")} onClick={() => handleStatusChange(index, "Absent")}>A</button>
-                    <button {...getButtonProps(student.status, "L")} onClick={() => handleStatusChange(index, "Leave")}>L</button>
+                    <button
+                      {...getButtonProps(student.status, "P")}
+                      onClick={() => handleStatusChange(index, "Present")}
+                    >
+                      P
+                    </button>
+                    <button
+                      {...getButtonProps(student.status, "A")}
+                      onClick={() => handleStatusChange(index, "Absent")}
+                    >
+                      A
+                    </button>
+                    <button
+                      {...getButtonProps(student.status, "L")}
+                      onClick={() => handleStatusChange(index, "Leave")}
+                    >
+                      L
+                    </button>
                   </div>
                 </td>
               </tr>

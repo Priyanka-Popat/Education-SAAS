@@ -30,7 +30,7 @@ const BatchesSm = ({
   isModalOpen,
   setIsModalOpen,
   nestedData,
-  onEdit
+  onEdit,
 }) => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [expandedBatchId, setExpandedBatchId] = useState(null);
@@ -81,7 +81,7 @@ const BatchesSm = ({
                       <Filter className="w-4 h-4 text-white" />
                     </div>
                     <AddButtonSecondary
-                      icon={true}
+                      icon="/assets/icons/add-circle.svg"
                       label="Add"
                       className={"h-[60%]"}
                       onClick={() => setIsModalOpen(true)}
@@ -158,7 +158,7 @@ const BatchesSm = ({
                   <Filter className="w-4 h-4 text-white" />
                 </div>
                 <AddButtonSecondary
-                  icon={true}
+                  icon="/assets/icons/add-circle.svg"
                   label="Add"
                   className={"h-[60%]"}
                   onClick={() => setIsModalOpen(true)}
@@ -170,10 +170,6 @@ const BatchesSm = ({
               <div className="col-span-3 flex flex-col row-start-3 row-span-4 gap-y-3 px-5 pb-5 overflow-y-auto max-h-[600px] h-[100%] scrollbar-thin flex-1 ">
                 <ul className="space-y-2">
                   {batches.map((batch) => (
-                    <div className="flex gap-x-2 items-center" key={batch.id}>
-                      <button onClick={()=> onEdit(batch)} className="">
-                        <PencilLine className="w-5 h-5 4xl:w-6 4xl:h-6 text-white" />
-                      </button>
                     <li
                       key={batch.id}
                       className={`flex flex-col items-center gap-x-2 w-full`}
@@ -205,7 +201,17 @@ const BatchesSm = ({
 
                       {expandedBatchId === batch.id &&
                         selectedBatch?.students?.length > 0 && (
-                          <div className="mt-4 space-y-4 w-full px-4">
+                          <div className="mt-4 space-y-2 w-full px-4">
+                            <div className="flex justify-end">
+                              <AddButtonSecondary
+                                icon={
+                                  <PencilLine className="w-4 4xl:w-7 2xl:w-5 lg:w-3" />
+                                }
+                                className={"!py-1"}
+                                label="Edit"
+                                onClick={() => onEdit(batch)}
+                              />
+                            </div>
                             <p className="text-sm font-semibold text-[#9e7ceb]">
                               Students
                             </p>
@@ -217,7 +223,6 @@ const BatchesSm = ({
                           </div>
                         )}
                     </li>
-                    </div>
                   ))}
                 </ul>
               </div>

@@ -1,15 +1,14 @@
 import { useState, useEffect, useRef } from "react";
 import { Upload, ChevronDown } from "lucide-react";
+import { toast } from "react-hot-toast";
 
 export default function BatchDialog({
   onClose,
   mode = "add",
   batchToEdit = null,
-  initialDeptId,
 }) {
   console.log("Mode:", mode);
   const modalRef = useRef(null);
-  const [selectedDeptId, setSelectedDeptId] = useState(initialDeptId);
 
   const [batches, setBatches] = useState([
     {
@@ -21,24 +20,27 @@ export default function BatchDialog({
   ]);
 
   useEffect(() => {
-  if (mode === "edit" && batchToEdit) {
-    setBatches([{
-      syllabusId: batchToEdit.syllabusId || "",
-      fromYear: batchToEdit.fromYear || "",
-      toYear: batchToEdit.toYear || "",
-      studentsFile: batchToEdit.studentsFile || null,
-    }]);
-  } else {
-    // Clear form if switching to add mode
-    setBatches([{
-      syllabusId: "",
-      fromYear: "",
-      toYear: "",
-      studentsFile: null,
-    }]);
-  }
-}, [mode, batchToEdit]);
-
+    if (mode === "edit" && batchToEdit) {
+      setBatches([
+        {
+          syllabusId: batchToEdit.syllabusId || "",
+          fromYear: batchToEdit.fromYear || "",
+          toYear: batchToEdit.toYear || "",
+          studentsFile: batchToEdit.studentsFile || null,
+        },
+      ]);
+    } else {
+      // Clear form if switching to add mode
+      setBatches([
+        {
+          syllabusId: "",
+          fromYear: "",
+          toYear: "",
+          studentsFile: null,
+        },
+      ]);
+    }
+  }, [mode, batchToEdit]);
 
   const addNewBatch = () => {
     setBatches((prev) => [
@@ -160,12 +162,6 @@ export default function BatchDialog({
     </div>
   );
 
-  const handleWrapperClick = (e) => {
-    if (modalRef.current && !modalRef.current.contains(e.target)) {
-      onClose();
-    }
-  };
-
   useEffect(() => {
     const handleEscape = (e) => {
       if (e.key === "Escape") onClose();
@@ -175,10 +171,7 @@ export default function BatchDialog({
   }, [onClose]);
 
   return (
-    <div
-      onClick={handleWrapperClick}
-      className="fixed inset-0 min-h-screen bg-black bg-opacity-70 backdrop-blur-sm flex items-center justify-center z-50"
-    >
+    <div className="fixed inset-0 min-h-screen bg-black bg-opacity-70 backdrop-blur-sm flex items-center justify-center z-50">
       <div
         ref={modalRef}
         onClick={(e) => e.stopPropagation()}
@@ -190,7 +183,6 @@ export default function BatchDialog({
             <span className="text-secondary font-medium">Batch</span>
           </div>
         </div>
-        
 
         {renderBatchStep()}
 
@@ -203,11 +195,12 @@ export default function BatchDialog({
           </button>
           <button
             onClick={() => {
-              if (mode === "edit") {
-                alert("Batch Edited Successfully");
-              } else {
-                alert("Batch Added Successfully");
-              }
+              toast.success(
+                mode === "edit"
+                  ? "Batch updated successfully!"
+                  : "Batch added successfully!"
+              );
+              onClose();
             }}
             className="bg-secondary text-white font-medium px-6 py-2 rounded-lg transition-colors"
           >

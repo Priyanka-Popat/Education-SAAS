@@ -27,7 +27,7 @@ const SelectField = ({
         <select
           id={id || name}
           name={name}
-          value={value}
+          value=""
           onChange={onChange}
           disabled={disabled}
           className={`w-full appearance-none p-2 pr-10 4xl:p-4 3xl:p-3 rounded bg-white/10 border border-white/20 text-white font-urbanistRegular text-sm 2xl:text-sm 4xl:text-xl ${selectClass}`}

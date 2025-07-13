@@ -11,8 +11,9 @@ import SemesterList from "@/features/semesters/components/semester-list";
 import TrackSelection from "@/features/semesters/components/track-selection";
 import SemDialog from "@/features/semesters/components/semester-dialog.jsx";
 import SemesterSm from "@/features/semesters/components/semester-sm";
-import SearchBar from "@/components/ui/search-bar";
 import RectSearchBar from "@/components/ui/rect-search-bar";
+import SubjectDialog from "@/features/semesters/components/subject-dialog";
+import Loader from "@/components/ui/loader";
 
 const Semesters = () => {
   const [selectedDepartment, setSelectedDepartment] = useState(null);
@@ -28,6 +29,10 @@ const Semesters = () => {
   );
   const [editSemesterData, setEditSemesterData] = useState(null);
   const [isEditMode, setIsEditMode] = useState(false);
+  const [isSubjectDialogOpen, setIsSubjectDialogOpen] = useState(false);
+  const [subjectDialogMode, setSubjectDialogMode] = useState("add");
+  const [subjectToEdit, setSubjectToEdit] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   const handleEditSemester = (semesterObj) => {
     setEditSemesterData(semesterObj);
@@ -42,6 +47,20 @@ const Semesters = () => {
         setSelectedCourse(nestedData[0].courses[0]);
       }
     }
+  }, []);
+
+  useEffect(() => {
+    setIsLoading(true);
+
+    if (nestedData.length > 0) {
+      setSelectedDepartment(nestedData[0]);
+
+      if (nestedData[0].courses?.length > 0) {
+        setSelectedCourse(nestedData[0].courses[0]);
+      }
+    }
+
+    setIsLoading(false);
   }, []);
 
   useEffect(() => {
@@ -124,16 +143,26 @@ const Semesters = () => {
                 selectedTrackName={selectedTrackName}
                 setSelectedTrackName={setSelectedTrackName}
                 subjects={selectedTrack?.subjects || []}
-                onAddSubject={() => setIsModalOpen(true)}
+                onAddSubject={() => {
+                  setSubjectDialogMode("add");
+                  setSubjectToEdit(null);
+                  setIsSubjectDialogOpen(true);
+                }}
               />
 
               <div className="col-start-1 row-start-2 col-span-8 row-span-7 px-5 pt-3 4xl:pt-3 pb-5 c13">
-                <SemesterList
-                  semesters={semesters}
-                  selectedSemesterIndex={selectedSemesterIndex}
-                  onSelectSemester={setSelectedSemesterIndex}
-                  onEditSemester={handleEditSemester}
-                />
+                {isLoading ? (
+                  <div className="flex justify-center items-center h-40">
+                    <Loader />
+                  </div>
+                ) : (
+                  <SemesterList
+                    semesters={semesters}
+                    selectedSemesterIndex={selectedSemesterIndex}
+                    onSelectSemester={setSelectedSemesterIndex}
+                    onEditSemester={handleEditSemester}
+                  />
+                )}
               </div>
             </div>
           </div>
@@ -145,6 +174,13 @@ const Semesters = () => {
         onClose={() => setIsSemDialogOpen(false)}
         isEditMode={isEditMode}
         editSemesterData={editSemesterData}
+      />
+
+      <SubjectDialog
+        isOpen={isSubjectDialogOpen}
+        onClose={() => setIsSubjectDialogOpen(false)}
+        mode={subjectDialogMode}
+        semesterToEdit={subjectToEdit}
       />
 
       <SemesterSm
@@ -162,6 +198,11 @@ const Semesters = () => {
         setEditSemesterData={setEditSemesterData}
         setIsEditMode={setIsEditMode}
         onEditSemester={handleEditSemester}
+        onAddSubject={() => {
+          setSubjectDialogMode("add");
+          setSubjectToEdit(null);
+          setIsSubjectDialogOpen(true);
+        }}
       />
     </>
   );

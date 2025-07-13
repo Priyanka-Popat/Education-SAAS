@@ -17,7 +17,11 @@ const CurrentLecture = () => {
         <div className="bottom-right-parent p-0.5 bg-secondary rounded-[20px] h-full">
           <div className="bottom-right bg-[#17141B] h-full rounded-[20px]">
             <div className="absolute -bottom-36 right-16 h-full w-full">
-              <img src="/assets/img/cube.png" alt="" className="w-full h-full" />
+              <img
+                src="/assets/img/cube.png"
+                alt=""
+                className="w-full h-full"
+              />
             </div>
             <div className="">
               <div className="p-5 text-white ">

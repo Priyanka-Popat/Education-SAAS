@@ -72,7 +72,7 @@ const DepartmentSm = ({
                   </div>
                   <div className="flex justify-end px-1">
                     <AddButtonSecondary
-                      icon={true}
+                      icon="/assets/icons/add-circle.svg"
                       className={"h-[60%]"}
                       label="Add"
                       onClick={() => setIsModalOpen(true)}
@@ -158,7 +158,7 @@ const DepartmentSm = ({
               </div>
               <div className="flex justify-end px-1">
                 <AddButtonSecondary
-                  icon={true}
+                  icon="/assets/icons/add-circle.svg"
                   className={"h-[60%]"}
                   label="Add"
                   onClick={() => setIsModalOpen(true)}
@@ -170,10 +170,10 @@ const DepartmentSm = ({
               <div className="col-span-3 flex flex-col row-start-3 row-span-4 gap-y-3 px-5 pb-5 overflow-y-auto max-h-[600px] h-[100%] scrollbar-thin flex-1 ">
                 <ul className="space-y-2">
                   {departments.map((dept) => (
-                    <div className="flex gap-x-2 items-center" key={dept.id}>
-                      <button onClick={() => onEditClick(dept)} className="">
-                        <PencilLine className="w-5 h-5 4xl:w-6 4xl:h-6 text-white" />
-                      </button>
+                    // <div className="flex gap-x-2 items-center" key={dept.id}>
+                      // <button onClick={() => onEditClick(dept)} className="">
+                      //   <PencilLine className="w-5 h-5 4xl:w-6 4xl:h-6 text-white" />
+                      // </button>
                       <li
                         className="flex flex-col items-center gap-x-2 w-full"
                         key={dept.id}
@@ -207,8 +207,16 @@ const DepartmentSm = ({
                         {/* accordionn */}
                         {expandedDeptId === dept.id && (
                           <div className="mt-4 space-y-2 w-full">
+                            <div className="flex justify-end">
+                              <AddButtonSecondary 
+                                icon={<PencilLine className="w-4 4xl:w-7 2xl:w-5 lg:w-3" />}
+                                className={"!py-1"}
+                                label="Edit"
+                                onClick={() => onEditClick(dept)}
+                              />
+                            </div>
                             {dept.courses.map((course) => (
-                              <div key={course.id} className=" px-4">
+                              <div key={course.id} className="px-4">
                                 <p className="text-sm font-semibold text-[#9e7ceb]">
                                   {course.shortForm} - {course.fullForm}
                                 </p>
@@ -235,7 +243,6 @@ const DepartmentSm = ({
                           </div>
                         )}
                       </li>
-                    </div>
                   ))}
                 </ul>
               </div>

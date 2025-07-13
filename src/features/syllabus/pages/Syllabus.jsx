@@ -10,7 +10,6 @@ import CourseFilter from "@/components/ui/course-filter";
 import SyllabusBg from "@/components/ui/syllabus-bg";
 import SyllabusDialog from "@/features/syllabus/components/syllabus-dialog";
 import SyllabusSm from "@/features/syllabus/components/syllabus-sm";
-import SearchBar from "@/components/ui/search-bar";
 import RectSearchBar from "@/components/ui/rect-search-bar";
 
 const headers = [
@@ -155,7 +154,7 @@ const Syllabus = () => {
             <div className="grid grid-cols-11 grid-rows-9 3xl:grid-rows-8 w-full h-full">
               <Heading heading="Syllabus" />
 
-              <div className="relative col-start-5 row-start-1 col-span-7 flex px-5 py-5 4xl:p-0 2xl:p-0 lg:p-0 items-end 2xl:items-start lg:items-start justify-end h-full gap-x-3">
+              <div className="relative col-start-4 row-start-1 col-span-8 flex px-5 py-5 4xl:p-0 2xl:p-0 lg:p-0 items-end 2xl:items-start lg:items-start justify-end h-full gap-x-3">
                 <RectSearchBar />
                 <DepartmentFilter
                   selectedDepartment={selectedDepartment}

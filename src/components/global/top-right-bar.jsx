@@ -4,7 +4,6 @@ import data from "@/data/ProfileData.json";
 import { useNavigate } from "react-router-dom";
 import LogoutDialog from "../ui/logout";
 import { X } from "lucide-react";
-import { Bell, BellOff  } from "lucide-react";
 
 const TopRightBar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -50,13 +49,7 @@ const TopRightBar = () => {
       <div className="topRightBar bg-primary rounded-[24px] px-5 grid grid-cols-[1fr_auto] xl:gap-x-3 lg:gap-x-0 w-full h-full">
         <SearchBar />
 
-        <div
-          className="flex items-center 4xl:gap-x-6 3xl:gap-x-4 hd:gap-x-2 2xl:gap-x-3 lg:gap-x-2 w-full justify-end"
-          
-        >
-          
-          {/* <Bell className="w-5 h-5 4xl:w-7 4xl:h-7 3xl:w-6 3xl:h-6 2xl:w-5 2xl:h-5 lg:w-4 lg:h-4 text-white srtoke-2" /> */}
-
+        <div className="flex items-center 4xl:gap-x-6 3xl:gap-x-4 hd:gap-x-2 2xl:gap-x-3 lg:gap-x-2 w-full justify-end">
           <div ref={menuRef} className="sudoProfileClass z-50 relative">
             <img
               src={data.profile.profileImage}

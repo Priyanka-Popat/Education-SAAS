@@ -29,9 +29,7 @@ const LatestNews = () => {
           <p className="font-urbanistSemiBold text-lg 2xl:text-lg 4xl:text-3xl 3xl:text-2xl hd:text-base lg:text-base">
             Latest News
           </p>
-          <button className="text-sm 2xl:text-sm 4xl:text-2xl 3xl:text-lg hd:text-sm lg:text-sm font-urbanistRegular text-grey">
-            View all
-          </button>
+          <ViewAllButton />
         </div>
         <div className="overflow-y-auto max-h-[250px] space-y-2 scrollbar-thin">
           {newsItems.map((item, index) => (

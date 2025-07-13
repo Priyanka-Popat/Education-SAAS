@@ -19,7 +19,7 @@ const YourInfoBg = () => {
         height="19.0707"
         transform="translate(13.7559 12.7139)"
         fill="#17141B"
-        fill-opacity="0.04"
+        fillOpacity="0.04"
       />
     </svg>
   );

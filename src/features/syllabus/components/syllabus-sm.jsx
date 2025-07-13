@@ -129,7 +129,7 @@ const SyllabusSm = ({
                   <Filter className="w-4 h-4 text-white" />
                 </div>
                 <AddButtonSecondary
-                  icon={true}
+                  icon="/assets/icons/add-circle.svg"
                   className={"h-[60%]"}
                   label="Add"
                   onClick={() => setIsModalOpen(true)}
@@ -168,60 +168,61 @@ const SyllabusSm = ({
                           ?.syllabusPdf || "";
 
                       return (
-                        <div
-                          className="flex gap-x-2 items-center"
+                        <li
+                          className="flex flex-col items-center gap-x-2 w-full"
                           key={course.id}
                         >
-                          <button
+                          <div
                             onClick={() =>
-                              onEdit({
-                                Course: `${course.shortForm} : ${course.fullForm}`,
-                                From: course.from,
-                                To: course.to,
-                                syllabusPdf:
-                                  course.semesters?.find(
-                                    (sem) => sem.syllabusPdf
-                                  )?.syllabusPdf || "",
-                              })
-                            }
-                            className=""
-                          >
-                            <PencilLine className="w-5 h-5 4xl:w-6 4xl:h-6 text-white" />
-                          </button>
-                          <li
-                            className="flex flex-col items-center gap-x-2 w-full"
-                            key={course.id}
-                          >
-                            <div
-                              onClick={() =>
-                                setSelectedCourseId(
-                                  selectedCourseId === course.id
-                                    ? null
-                                    : course.id
-                                )
-                              }
-                              className={`flex items-center w-full justify-between gap-2 px-4 py-3 text-sm rounded-lg cursor-pointer transition-colors ${
+                              setSelectedCourseId(
                                 selectedCourseId === course.id
-                                  ? "bg-secondary"
-                                  : "bg-white/5 hover:bg-white/10"
-                              } text-white`}
-                            >
-                              <div className="flex flex-col">
-                                <span className="font-semibold">
-                                  {course.shortForm} : {course.fullForm}
-                                </span>
-                              </div>
-                              <div className="h-[40px] flex items-center justify-center">
-                                {selectedCourseId === course.id ? (
-                                  <ChevronUp className="w-5 h-5" />
-                                ) : (
-                                  <ChevronDown className="w-5 h-5" />
-                                )}
-                              </div>
+                                  ? null
+                                  : course.id
+                              )
+                            }
+                            className={`flex items-center w-full justify-between gap-2 px-4 py-3 text-sm rounded-lg cursor-pointer transition-colors ${
+                              selectedCourseId === course.id
+                                ? "bg-secondary"
+                                : "bg-white/5 hover:bg-white/10"
+                            } text-white`}
+                          >
+                            <div className="flex flex-col">
+                              <span className="font-semibold">
+                                {course.shortForm} : {course.fullForm}
+                              </span>
                             </div>
+                            <div className="h-[40px] flex items-center justify-center">
+                              {selectedCourseId === course.id ? (
+                                <ChevronUp className="w-5 h-5" />
+                              ) : (
+                                <ChevronDown className="w-5 h-5" />
+                              )}
+                            </div>
+                          </div>
 
-                            {selectedCourseId === course.id && (
-                              <div className="mt-2 px-4 w-full flex items-center justify-between border-b border-white/20 py-2">
+                          {selectedCourseId === course.id && (
+                            <div className="w-full space-y-2 mt-4">
+                              <div className="flex justify-end">
+                                <AddButtonSecondary
+                                  icon={
+                                    <PencilLine className="w-4 4xl:w-7 2xl:w-5 lg:w-3" />
+                                  }
+                                  className={"!py-1"}
+                                  label="Edit"
+                                  onClick={() =>
+                                    onEdit({
+                                      Course: `${course.shortForm} : ${course.fullForm}`,
+                                      From: course.from,
+                                      To: course.to,
+                                      syllabusPdf:
+                                        course.semesters?.find(
+                                          (sem) => sem.syllabusPdf
+                                        )?.syllabusPdf || "",
+                                    })
+                                  }
+                                />
+                              </div>
+                              <div className="px-4 w-full flex items-center justify-between border-b border-white/20 py-2">
                                 <div className="flex flex-col gap-y-2">
                                   <p className="text-white text-sm">
                                     From:{" "}
@@ -251,9 +252,9 @@ const SyllabusSm = ({
                                   </p>
                                 )}
                               </div>
-                            )}
-                          </li>
-                        </div>
+                            </div>
+                          )}
+                        </li>
                       );
                     })}
                 </ul>

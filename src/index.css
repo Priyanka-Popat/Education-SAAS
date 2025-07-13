@@ -22,7 +22,7 @@ body {
 }
 
 
-@font-face {
+/* @font-face {
   font-family: "urbanist-regular";
   src: url("../src/assets/font/Urbanist/static/Urbanist-Regular.ttf")
     format("truetype");
@@ -37,6 +37,24 @@ body {
 @font-face {
   font-family: "urbanist-medium";
   src: url("../src/assets/font/Urbanist/static/Urbanist-Medium.ttf")
+    format("truetype");
+} */
+
+@font-face {
+  font-family: "geist-regular";
+  src: url("/assets/font/Geist/static/Geist-Regular.ttf")
+    format("truetype");
+}
+
+@font-face {
+  font-family: "geist-semibold";
+  src: url("/assets/font/Geist/static/Geist-SemiBold.ttf")
+    format("truetype");
+}
+
+@font-face {
+  font-family: "geist-medium";
+  src: url("/assets/font/Geist/static/Geist-Medium.ttf")
     format("truetype");
 }
 

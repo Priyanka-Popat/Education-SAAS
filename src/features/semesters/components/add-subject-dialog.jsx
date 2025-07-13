@@ -1,6 +1,8 @@
 import { useState, useRef } from "react";
 import { Plus, ChevronDown } from "lucide-react";
 import { useEffect } from "react";
+import nestedData from "@/data/NestedData.json";
+import { toast } from "react-hot-toast";
 
 export default function Dialog({ onClose, mode = "add", semesterToEdit }) {
   const modalRef = useRef(null);
@@ -41,11 +43,27 @@ export default function Dialog({ onClose, mode = "add", semesterToEdit }) {
     ]);
   };
 
-  const handleWrapperClick = (e) => {
-    if (modalRef.current && !modalRef.current.contains(e.target)) {
-      onClose();
-    }
+  const getTracks = () => {
+    const trackSet = new Set();
+
+    nestedData.forEach((college) => {
+      college.courses.forEach((course) => {
+        course.semesters?.forEach((semester) => {
+          semester.tracks?.forEach((track) => {
+            if (track.name) trackSet.add(track.name);
+          });
+        });
+      });
+    });
+
+    return Array.from(trackSet);
   };
+
+  const [trackName, setTrackName] = useState([]);
+
+  useEffect(() => {
+    setTrackName(getTracks());
+  }, []);
 
   useEffect(() => {
     if (mode === "edit" && semesterToEdit) {
@@ -70,6 +88,20 @@ export default function Dialog({ onClose, mode = "add", semesterToEdit }) {
       setSubjects(flatSubjects);
     }
   }, [mode, semesterToEdit]);
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") {
+        onClose();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [onClose]);
 
   const renderTrackStep = () => (
     <div className="space-y-6">
@@ -181,12 +213,24 @@ export default function Dialog({ onClose, mode = "add", semesterToEdit }) {
                 }}
               >
                 <option value="">Select</option>
-                {subjectTracks.map((track, idx) => (
-                  <option key={idx} value={track.fullForm}>
-                    {track.fullForm}
-                  </option>
-                ))}
+
+                {subjectTracks
+                  .filter((track) => track.fullForm.trim() !== "")
+                  .map((track, idx) => (
+                    <option key={`user-${idx}`} value={track.fullForm}>
+                      {track.fullForm}
+                    </option>
+                  ))}
+
+                {trackName
+                  .filter((name) => name.trim() !== "")
+                  .map((name, idx) => (
+                    <option key={`json-${idx}`} value={name}>
+                      {name}
+                    </option>
+                  ))}
               </select>
+
               <div className="absolute inset-y-0 right-2 flex items-center pointer-events-none">
                 <ChevronDown size={18} className="text-white/70" />
               </div>
@@ -236,10 +280,7 @@ export default function Dialog({ onClose, mode = "add", semesterToEdit }) {
   );
 
   return (
-    <div
-      onClick={handleWrapperClick}
-      className="min-h-screen fixed inset-0 bg-black bg-opacity-70 backdrop-blur-sm flex items-center justify-center z-50"
-    >
+    <div className="min-h-screen fixed inset-0 bg-black bg-opacity-70 backdrop-blur-sm flex items-center justify-center z-50">
       <div
         ref={modalRef}
         onClick={(e) => e.stopPropagation()}
@@ -314,7 +355,14 @@ export default function Dialog({ onClose, mode = "add", semesterToEdit }) {
             <button
               onClick={
                 currentStep === totalSteps
-                  ? () => alert("Added Successfully")
+                  ? () => {
+                      toast.success(
+                        mode === "edit"
+                          ? "Subject updated successfully!"
+                          : "Subject added successfully!"
+                      );
+                      onClose(); 
+                    }
                   : handleNext
               }
               className="bg-secondary text-white font-medium px-6 py-2 rounded-lg transition-colors"

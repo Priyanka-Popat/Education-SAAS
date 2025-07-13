@@ -37,9 +37,9 @@ export default {
       },
 
       fontFamily: {
-        urbanistRegular: ['"urbanist-regular"', "sans-serif"],
-        urbanistSemiBold: ['"urbanist-semibold"', "sans-serif"],
-        urbanistMedium: ['"urbanist-medium"', "sans-serif"],
+        urbanistRegular: ['"geist-regular"', "sans-serif"],
+        urbanistSemiBold: ['"geist-semibold"', "sans-serif"],
+        urbanistMedium: ['"geist-medium"', "sans-serif"],
 
       }
     },

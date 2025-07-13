@@ -3,6 +3,7 @@ import SideBar from "./side-bar";
 import Breadcrumbs from "./bread-crumbs";
 import { Menu, X } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
+import Loader from "@/components/ui/loader";
 
 function DashboardLayout({
   children,
@@ -11,6 +12,7 @@ function DashboardLayout({
   breadcrumbs = [],
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [profileOpen, setProfileOpen] = useState(false);
   const sideBarRef = useRef();
 
@@ -40,6 +42,21 @@ function DashboardLayout({
       document.removeEventListener("keydown", handleEscape);
     };
   }, [menuOpen]);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setIsLoading(false);
+    }, 100);
+    return () => clearTimeout(timeout);
+  }, []);
+
+  if (isLoading) {
+    return (
+      <div className="fixed inset-0 bg-primary flex items-center justify-center z-[9999]">
+        <Loader />
+      </div>
+    );
+  }
 
   return (
     <>

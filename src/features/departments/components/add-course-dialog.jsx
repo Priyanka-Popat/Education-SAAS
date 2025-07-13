@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Calendar, Upload, Plus } from "lucide-react";
 import departments from "@/data/NestedData.json";
+import { toast } from "react-hot-toast";
 
 export default function Dialog({
   onClose,
@@ -58,10 +59,6 @@ export default function Dialog({
     setCourses(updatedCourses);
   };
 
-  const handleDeptChange = (e) => {
-    setSelectedDeptId(e.target.value);
-  };
-
   const isCourseComplete = (course) => {
     return (
       course.fullForm &&
@@ -81,19 +78,10 @@ export default function Dialog({
       }
     };
 
-    const handleClickOutside = (e) => {
-      console.log("Click outside detected");
-      if (modalRef.current && !modalRef.current.contains(e.target)) {
-        onClose();
-      }
-    };
-
     document.addEventListener("keydown", handleKeyDown);
-    document.addEventListener("mousedown", handleClickOutside);
 
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
-      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [onClose]);
 
@@ -267,12 +255,14 @@ export default function Dialog({
                 departmentId: selectedDeptId,
                 courses,
               };
-              onSubmit(payload);
+              toast.success(
+                mode === "edit" ? "Courses updated!" : "Courses added!"
+              );
               onClose();
             }}
             className="bg-secondary text-white font-medium px-6 py-2 rounded-lg transition-colors"
           >
-            {mode === "edit" ? "update" : "add"}
+            {mode === "edit" ? "Update" : "Add"}
           </button>
         </div>
       </div>

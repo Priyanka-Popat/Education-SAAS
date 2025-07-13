@@ -5,17 +5,19 @@ import { useState, useRef, useEffect } from "react";
 import data from "@/data/ProfileData.json";
 import { useNavigate } from "react-router-dom";
 import Breadcrumbs from "./bread-crumbs";
+import Loader from "@/components/ui/loader";
 
 const SmLayout = ({ children, headerComponent, breadcrumbs = [] }) => {
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const sideBarRef = useRef();
   const profileRef = useRef();
 
   useEffect(() => {
     const handleClickOutside = (e) => {
-      // Close sidebar 
+      // Close sidebar
       if (
         menuOpen &&
         sideBarRef.current &&
@@ -24,7 +26,7 @@ const SmLayout = ({ children, headerComponent, breadcrumbs = [] }) => {
         setMenuOpen(false);
       }
 
-      // Close profile 
+      // Close profile
       if (
         profileOpen &&
         profileRef.current &&
@@ -49,6 +51,21 @@ const SmLayout = ({ children, headerComponent, breadcrumbs = [] }) => {
       document.removeEventListener("keydown", handleEscape);
     };
   }, [menuOpen, profileOpen]);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+    return () => clearTimeout(timeout);
+  }, []);
+
+  if (isLoading) {
+    return (
+      <div className="fixed inset-0 bg-primary flex items-center justify-center z-[9999]">
+        <Loader />
+      </div>
+    );
+  }
 
   return (
     <div className="bg-primary lg:hidden min-h-screen">

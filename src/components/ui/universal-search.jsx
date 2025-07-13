@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { routes } from "@/constants/routes";
-import { Search, X } from "lucide-react";
+import { Search, X, CornerDownLeft } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 export const UniversalSearch = ({ setOpen }) => {
@@ -76,7 +76,7 @@ export const UniversalSearch = ({ setOpen }) => {
     <div className="fixed inset-0 z-[70] bg-black bg-opacity-70 backdrop-blur-sm flex items-center justify-center">
       <div
         ref={dialogRef}
-        className="bg-primary border border-white/20 rounded-lg w-full max-w-md py-4 shadow-lg m-5"
+        className="bg-primary border border-white/20 rounded-2xl w-full max-w-md py-4 shadow-lg m-5"
       >
         <div className="flex items-center gap-2 px-4 pb-3">
           <div className="relative flex-1">
@@ -85,7 +85,7 @@ export const UniversalSearch = ({ setOpen }) => {
               autoFocus
               type="text"
               value={searchQuery}
-              placeholder="Type a command or search..."
+              placeholder="Search..."
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full pl-10 pr-3 py-2 rounded bg-transparent text-white placeholder:text-white/50 focus:outline-none"
             />
@@ -125,6 +125,15 @@ export const UniversalSearch = ({ setOpen }) => {
             </li>
           )}
         </ul>
+
+        <div className="border-t border-white/10 mt-4 px-4 pt-2 flex items-center justify-between text-xs text-white/60">
+          <div>Go to Page</div>
+          <div className="flex items-center gap-1">
+            <span className="ml-auto text-xs py-1 items-center bg-primary gap-1 rounded border border-grey/20 bg-muted px-1.5 text-white hidden sm:block">
+              <CornerDownLeft className="h-3 w-3" />
+            </span>
+          </div>
+        </div>
       </div>
     </div>
   );

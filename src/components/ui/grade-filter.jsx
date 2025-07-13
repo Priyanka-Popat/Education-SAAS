@@ -1,5 +1,5 @@
 import { ChevronDown } from "lucide-react";
-const gradeOptions = ["10 A", "10 B", "10 C"];
+const gradeOptions = ["10", "10", "10"];
 
 const GradeFilter = ({ selected, setFilters, showLabel = true  }) => {
   return (
@@ -8,13 +8,10 @@ const GradeFilter = ({ selected, setFilters, showLabel = true  }) => {
       <div className="relative">
         <select
           value={selected}
-          onChange={(e) =>
-            setFilters((prev) => ({ ...prev, grade: e.target.value }))
-          }
           className="w-full appearance-none p-2 pr-10 bg-white/10 border border-white/20 text-white font-urbanistRegular rounded-[6px] 4xl:rounded-[10px] py-2 px-4 4xl:py-3 2xl:py-1.5 lg:py-1.5 cursor-pointer text-xs 4xl:text-2xl 3xl:text-base 2xl:text-sm lg:text-xs"
         >
-          {gradeOptions.map((grade) => (
-            <option key={grade} value={grade}>
+          {gradeOptions.map((grade,index) => (
+            <option key={index} value={grade} style={{ backgroundColor: "#131313", color: "white" }}>
               {grade}
             </option>
           ))}

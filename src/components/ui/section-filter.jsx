@@ -1,20 +1,17 @@
 import { ChevronDown } from "lucide-react";
 const sectionOptions = ["A", "B", "C", "D", "E"];
 
-const SectionFilter = ({ selected, setFilters }) => {
+const SectionFilter = ({ selected, setFilters, showLabel = true }) => {
   return (
     <div className="flex flex-col gap-1">
-      <label className="text-white text-sm">Section :</label>
+      {showLabel && <label className="text-white text-sm">Section :</label>}
       <div className="relative">
         <select
           value={selected}
-          onChange={(e) =>
-            setFilters((prev) => ({ ...prev, section: e.target.value }))
-          }
-          className="bg-white/10 border border-white/20 text-white px-3 py-1.5 rounded-md appearance-none w-full"
+          className="w-full appearance-none p-2 pr-10 bg-white/10 border border-white/20 text-white font-urbanistRegular rounded-[6px] 4xl:rounded-[10px] py-2 px-4 4xl:py-3 2xl:py-1.5 lg:py-1.5 cursor-pointer text-xs 4xl:text-2xl 3xl:text-base 2xl:text-sm lg:text-xs"
         >
           {sectionOptions.map((section) => (
-            <option key={section} value={section}>
+            <option key={section} value={section} style={{ backgroundColor: "#131313", color: "white" }}>
               {section}
             </option>
           ))}

@@ -22,9 +22,7 @@ const SubjectList = ({ selectedSemester }) => {
           </div>
         ))
       ) : (
-        <p className="text-white/50">
-          No subjects Found
-        </p>
+        <p className="text-white/50">No subjects Found</p>
       )}
     </div>
   );

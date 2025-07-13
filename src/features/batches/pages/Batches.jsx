@@ -13,6 +13,7 @@ import BatchList from "@/features/batches/components/batch-list";
 import BatchSelection from "@/features/batches/components/batch-selection";
 import BatchesSm from "@/features/batches/components/batches-sm";
 import RectSearchBar from "@/components/ui/rect-search-bar";
+import Loader from "@/components/ui/loader";
 
 const Batches = () => {
   const [selectedDepartment, setSelectedDepartment] = useState(null);
@@ -20,7 +21,7 @@ const Batches = () => {
   const [selectedBatchId, setSelectedBatchId] = useState(null);
   const [isDesktopModalOpen, setIsDesktopModalOpen] = useState(false);
   const [isMobileModalOpen, setIsMobileModalOpen] = useState(false);
-
+  const [isLoading, setIsLoading] = useState(true);
   const [batchToEdit, setBatchToEdit] = useState(null);
 
   useEffect(() => {
@@ -31,6 +32,21 @@ const Batches = () => {
         setSelectedCourse(firstDept.courses[0]);
       }
     }
+  }, []);
+
+  useEffect(() => {
+    setIsLoading(true);
+
+    if (nestedData.length) {
+      const firstDept = nestedData[0];
+      setSelectedDepartment(firstDept);
+
+      if (firstDept.courses && firstDept.courses.length) {
+        setSelectedCourse(firstDept.courses[0]);
+      }
+    }
+
+    setIsLoading(false);
   }, []);
 
   useEffect(() => {
@@ -64,7 +80,6 @@ const Batches = () => {
 
               <div className="relative col-start-4 row-start-1 col-span-8 flex px-5 py-5 4xl:p-0 2xl:p-0 lg:p-0 items-end 2xl:items-start lg:items-start justify-end h-full gap-x-3">
                 <RectSearchBar />
-                {/* className="bg-[#FFFFFF0F] border border-white/30 rounded-md px-4 py-1.5 placeholder:text-sm" */}
                 <DepartmentFilter
                   selectedDepartment={selectedDepartment}
                   setSelectedDepartment={(dept) => {
@@ -99,15 +114,21 @@ const Batches = () => {
               />
 
               <div className="col-start-1 row-start-2 col-span-8 row-span-7 px-5 pt-3 4xl:pt-3 pb-5 c13">
-                <BatchList
-                  batches={selectedCourse?.batches || []}
-                  selectedBatchId={selectedBatchId}
-                  onSelect={setSelectedBatchId}
-                  onEdit={(batch) => {
-                    setBatchToEdit(batch);
-                    setIsDesktopModalOpen(true);
-                  }}
-                />
+                {isLoading ? (
+                  <div className="flex justify-center items-center h-40">
+                    <Loader />
+                  </div>
+                ) : (
+                  <BatchList
+                    batches={selectedCourse?.batches || []}
+                    selectedBatchId={selectedBatchId}
+                    onSelect={setSelectedBatchId}
+                    onEdit={(batch) => {
+                      setBatchToEdit(batch);
+                      setIsDesktopModalOpen(true);
+                    }}
+                  />
+                )}
               </div>
             </div>
           </div>
@@ -122,7 +143,7 @@ const Batches = () => {
                 setIsDesktopModalOpen(false);
                 setBatchToEdit(null);
               }}
-              className="absolute top-4 right-4 text-white hover:text-gray-300 z-10"
+              className="fixed top-6 right-6 z-[100] hover:text-gray-300 text-white"
             >
               <X size={24} />
             </button>

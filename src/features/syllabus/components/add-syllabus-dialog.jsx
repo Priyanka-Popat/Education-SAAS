@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Calendar, Upload, ChevronDown } from "lucide-react";
 import departments from "@/data/NestedData.json";
+import { toast } from "react-hot-toast";
 
 export default function Dialog({
   onClose,
@@ -219,11 +220,9 @@ export default function Dialog({
           </button>
           <button
             onClick={() => {
-              if (isEditMode) {
-                alert("Syllabus Updated Successfully");
-              } else {
-                alert("Syllabus Added Successfully");
-              }
+              toast.success(
+                isEditMode ? "Syllabus updated!" : "Syllabus added!"
+              );
             }}
             className="bg-secondary text-white font-medium px-6 py-2 rounded-lg transition-colors"
           >

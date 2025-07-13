@@ -14,13 +14,14 @@ const DateFilter = ({ selected, setFilters, showLabel = true }) => {
       <div className="relative">
         <select
           value={selected}
-          onChange={(e) =>
-            setFilters((prev) => ({ ...prev, date: e.target.value }))
-          }
           className="w-full appearance-none p-2 pr-10 bg-white/10 border border-white/20 text-white font-urbanistRegular rounded-[6px] 4xl:rounded-[10px] py-2 px-4 4xl:py-3 2xl:py-1.5 lg:py-1.5 cursor-pointer text-xs 4xl:text-2xl 3xl:text-base 2xl:text-sm lg:text-xs"
+          style={{
+            backgroundColor: "rgba(255, 255, 255, 0.05)",
+            color: "white",
+          }}
         >
           {dateOptions.map((date) => (
-            <option key={date} value={date}>
+            <option key={date} value={date} style={{ backgroundColor: "#131313", color: "white" }}>
               {date}
             </option>
           ))}

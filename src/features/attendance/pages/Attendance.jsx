@@ -13,8 +13,6 @@ import AttendanceBgSm from "@/features/attendance/components/attendance-bg-sm";
 import { useState } from "react";
 import RectSearchBar from "@/components/ui/rect-search-bar";
 
-
-
 // Status color
 const statusColor = (status) => {
   switch (status) {
@@ -73,12 +71,12 @@ const Attendance = () => {
   const [attendanceData, setAttendanceData] = useState(initialAttendanceData);
 
   const handleStatusChange = (index, newStatus) => {
-  setAttendanceData(prev =>
-    prev.map((student, i) =>
-      i === index ? { ...student, status: newStatus } : student
-    )
-  );
-};
+    setAttendanceData((prev) =>
+      prev.map((student, i) =>
+        i === index ? { ...student, status: newStatus } : student
+      )
+    );
+  };
 
   return (
     <>
@@ -122,11 +120,9 @@ const Attendance = () => {
                 <Qrcode />
               </div>
               <div className="w-full">
-
-               <AttendanceFilter />
+                <AttendanceFilter />
               </div>
             </div>
-
 
             <div className="">
               <div className="flex justify-start items-center mb-5">
@@ -135,7 +131,7 @@ const Attendance = () => {
                 </p>
               </div>
               <div className="mb-5">
-                <RectSearchBar className={'w-full'} />
+                <RectSearchBar className={"w-full"} />
               </div>
 
               <div className="overflow-y-auto max-h-[550px] scrollbar-thin">
@@ -169,13 +165,26 @@ const Attendance = () => {
                           </div>
 
                           <div className="flex gap-3 justify-end">
-                            <button {...getButtonProps(student.status, "P")}  onClick={() => handleStatusChange(index, "Present")}>
+                            <button
+                              {...getButtonProps(student.status, "P")}
+                              onClick={() =>
+                                handleStatusChange(index, "Present")
+                              }
+                            >
                               P
                             </button>
-                            <button {...getButtonProps(student.status, "A")}  onClick={() => handleStatusChange(index, "Absent")}>
+                            <button
+                              {...getButtonProps(student.status, "A")}
+                              onClick={() =>
+                                handleStatusChange(index, "Absent")
+                              }
+                            >
                               A
                             </button>
-                            <button {...getButtonProps(student.status, "L")}  onClick={() => handleStatusChange(index, "Leave")}>
+                            <button
+                              {...getButtonProps(student.status, "L")}
+                              onClick={() => handleStatusChange(index, "Leave")}
+                            >
                               L
                             </button>
                           </div>

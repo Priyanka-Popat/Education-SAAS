@@ -1,9 +1,8 @@
 import { useState, useMemo, useEffect } from "react";
-import courses from "@/data/NestedData.json";
+// import courses from "@/data/NestedData.json";
 import DashboardLayout from "@/components/global/dashboard-layout";
 import GreetingHeader from "@/components/global/greeting-header";
 import Heading from "@/components/ui/heading";
-import SearchBar from "@/components/ui/search-bar";
 import AddButton from "@/components/ui/add-button";
 import DepartmentFilter from "@/components/ui/department-filter";
 import AttendanceBg from "@/components/ui/attendance-bg";
@@ -13,12 +12,18 @@ import CourseList from "@/features/courses/components/course-list";
 import CourseDialog from "@/features/departments/components/course-dialog";
 import CoursesSm from "@/features/courses/components/courses-sm";
 import RectSearchBar from "@/components/ui/rect-search-bar";
+import Loader from "@/components/ui/loader";
 
 const Courses = () => {
-  const [selectedDeptId, setSelectedDeptId] = useState(courses[0]?.id);
-  const [selectedDepartment, setSelectedDepartment] = useState(courses[0]);
+  const [isCourseLoading, setIsCourseLoading] = useState(true);
+  const [departmentsData, setDepartmentsData] = useState([]);
+
+  const [selectedDeptId, setSelectedDeptId] = useState(departmentsData[0]?.id);
+  const [selectedDepartment, setSelectedDepartment] = useState(
+    departmentsData[0]
+  );
   const [selectedCourseId, setSelectedCourseId] = useState(
-    courses[0]?.courses[0]?.id
+    departmentsData[0]?.courses[0]?.id
   );
   const [selectedSemesterName, setSelectedSemesterName] = useState("");
   const [isCourseModalOpen, setIsCourseModalOpen] = useState(false);
@@ -39,6 +44,28 @@ const Courses = () => {
   const selectedSemester = selectedCourse?.semesters?.find(
     (semester) => semester.semesterName === selectedSemesterName
   );
+
+  useEffect(() => {
+    let isMounted = true;
+
+    import("@/data/NestedData.json").then((mod) => {
+      if (isMounted) {
+        const data = mod.default;
+        setDepartmentsData(data);
+        setSelectedDepartment(data[0]);
+        setSelectedDeptId(data[0]?.id);
+        setSelectedCourseId(data[0]?.courses?.[0]?.id);
+        setSelectedSemesterName(
+          data[0]?.courses?.[0]?.semesters?.[0]?.semesterName || ""
+        );
+        setIsCourseLoading(false);
+      }
+    });
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   useEffect(() => {
     if (selectedDepartment) {
@@ -99,17 +126,23 @@ const Courses = () => {
               />
 
               <div className="col-start-1 row-start-2 col-span-8 row-span-7 px-5 pt-3 4xl:pt-3 pb-5 c13">
-                <CourseList
-                  courses={filteredCourses}
-                  selectedCourseId={selectedCourseId}
-                  setSelectedCourseId={setSelectedCourseId}
-                  setSelectedSemesterName={setSelectedSemesterName}
-                  onEdit={(course) => {
-                    setEditCourseData(course);
-                    setCourseDialogMode("edit");
-                    setIsCourseModalOpen(true);
-                  }}
-                />
+                {isCourseLoading ? (
+                  <div className="flex justify-center items-center h-40">
+                    <Loader />
+                  </div>
+                ) : (
+                  <CourseList
+                    courses={filteredCourses}
+                    selectedCourseId={selectedCourseId}
+                    setSelectedCourseId={setSelectedCourseId}
+                    setSelectedSemesterName={setSelectedSemesterName}
+                    onEdit={(course) => {
+                      setEditCourseData(course);
+                      setCourseDialogMode("edit");
+                      setIsCourseModalOpen(true);
+                    }}
+                  />
+                )}
               </div>
             </div>
           </div>

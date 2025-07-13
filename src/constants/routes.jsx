@@ -16,7 +16,7 @@ export const routes = [
   { name: "Profile", path: "/profile", element: <Profile /> },
   { name: "Attendance", path: "/attendance", element: <Attendance /> },
   { name: "Courses", description: "All Courses are listed here", path: "/courses", element: <Courses /> },
-  { name: "Deparments", description: "All Deparments are listed here", path: "/departments", element: <Departments /> },
+  { name: "Departments", description: "All Deparments are listed here", path: "/departments", element: <Departments /> },
   { name: "Semesters", description: "All Semesters are listed here", path: "/semesters", element: <Semesters /> },
   { name: "Batches", description: "All Batches are listed here", path: "/batches", element: <Batches /> },
   { name: "Syllabus", description: "All Syllabus are listed here", path: "/syllabus", element: <Syllabus /> },
